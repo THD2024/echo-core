@@ -1,0 +1,43 @@
+# echo-core 仓库忽略规则（阶段收尾 P1 建立，首推前随清单送审）
+# 原则：密钥、身份、记忆、数据库、日志、运行时一律不入仓
+
+# 密钥与身份
+auth.json
+*.key
+*Key.txt
+.mimocode.jsonc
+secrets/
+
+# 记忆与个人数据
+memory/
+**/memory/
+MEMORY.md
+checkpoint.md
+notes.md
+MiMoMemory/
+MiMoCodeMemory/
+
+# 数据库与运行时
+*.db
+*.db-shm
+*.db-wal
+log/
+stats.jsonl
+gates-changelog.jsonl
+
+# 依赖与构建产物
+node_modules/
+dist/
+*.tsbuildinfo
+
+# 编辑器/系统
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
+# 追加兜底（2026-10-17 首推授权）
+mimocode.jsonc
+.env*
+*.pem
+*.log
