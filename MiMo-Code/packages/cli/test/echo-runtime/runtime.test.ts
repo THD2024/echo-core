@@ -149,3 +149,36 @@ test("concurrent initialize and shutdown calls share one operation each", async 
   expect(shutdownCalls).toBe(1)
   expect(runtime.lifecycle.snapshot().state).toBe("Stopped")
 })
+
+test("rejects shutdown before initialization without changing lifecycle state", async () => {
+  const runtime = createCoreRuntime({
+    initialize: () => {},
+    shutdown: () => {},
+  })
+
+  await expect(runtime.requestShutdown()).rejects.toBeInstanceOf(RuntimeLifecycleTransitionError)
+  expect(runtime.lifecycle.snapshot()).toEqual({ state: "Created", revision: 0 })
+})
+
+test("a queued shutdown request preserves initialization failure and does not clean up twice", async () => {
+  const gate = deferred<void>()
+  const original = new Error("initialization failed")
+  let cleanupCalls = 0
+  const runtime = createCoreRuntime({
+    initialize: async () => {
+      await gate.promise
+      throw original
+    },
+    shutdown: async () => { cleanupCalls++ },
+  })
+
+  const initializing = runtime.initialize()
+  await Promise.resolve()
+  const stopping = runtime.requestShutdown()
+  gate.resolve()
+
+  await expect(initializing).rejects.toBe(original)
+  await expect(stopping).rejects.toBe(original)
+  expect(cleanupCalls).toBe(1)
+  expect(runtime.lifecycle.snapshot()).toEqual({ state: "Failed", revision: 2, cause: original })
+})
