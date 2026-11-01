@@ -67,14 +67,14 @@ export class RuntimeContextExpiredError extends Error {
   }
 }
 
-export interface SystemCapabilityView<T extends CapabilityBag> {
+export interface SystemCapabilityView<T extends object> {
   readonly systemId: SystemId
   has<K extends keyof T & string>(capabilityId: K): boolean
   get<K extends keyof T & string>(capabilityId: K): T[K]
   list(): readonly (keyof T & string)[]
 }
 
-export interface AuthorizedCapabilityViews<T extends CapabilityBag> {
+export interface AuthorizedCapabilityViews<T extends object> {
   /**
    * Runtime/Core Assembly uses this to obtain the view it will pass to one
    * specific system. Systems should receive only their own returned view.
@@ -101,12 +101,12 @@ function hasOwn(value: object, key: PropertyKey): boolean {
  * over-grants fail closed. A denied requested capability is simply omitted
  * from that system's view; attempting to access it throws.
  */
-export async function authorizeCapabilityViews<T extends CapabilityBag>(input: {
+export async function authorizeCapabilityViews<T extends object>(input: {
   readonly available: T
   readonly declarations: readonly CapabilityDeclaration[]
   readonly authorize: CapabilityAuthorizer
 }): Promise<AuthorizedCapabilityViews<T>> {
-  const available = input.available
+  const available = input.available as Readonly<Record<string, unknown>>
   const views = new Map<SystemId, SystemCapabilityView<T>>()
   const seenSystems = new Set<SystemId>()
   let active = true
