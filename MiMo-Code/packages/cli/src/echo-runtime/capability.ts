@@ -4,6 +4,20 @@
  * Host supplies the authorization policy; Runtime validates its decisions and
  * exposes only the capabilities granted to each declared system.
  *
+ * Payload ownership and mutability contract:
+ * - `available` is created and owned by the caller (Host / Core Assembly).
+ *   Runtime only reads references out of it and never clones or deep-freezes
+ *   payloads.
+ * - When several systems are granted the same capability id, they receive the
+ *   same object reference. Shared mutation is visible across those systems.
+ * - An authorized system may mutate a granted payload's internal state. This
+ *   module does not sandbox JavaScript, deep-isolate objects, or revoke
+ *   references that were already handed out; `revoke()` only invalidates the
+ *   View methods (`has` / `get` / `list`) on the capability context.
+ * - Payloads are intentionally NOT bulk `Object.freeze`d: freezing would only
+ *   pretend at isolation without changing ownership, and would break callers
+ *   that legitimately share mutable state through a capability bag.
+ *
  * This module deliberately contains no business routing or system lifecycle
  * orchestration. It is a small foundation primitive intended to be owned by
  * a Runtime instance.
@@ -106,6 +120,9 @@ export async function authorizeCapabilityViews<T extends object>(input: {
   readonly declarations: readonly CapabilityDeclaration[]
   readonly authorize: CapabilityAuthorizer
 }): Promise<AuthorizedCapabilityViews<T>> {
+  // T extends object (not Record<string, unknown>) so interface-shaped bags
+  // stay assignable; the cast only re-enables dynamic string-key reads that
+  // hasOwn already gates at runtime.
   const available = input.available as Readonly<Record<string, unknown>>
   const views = new Map<SystemId, SystemCapabilityView<T>>()
   const seenSystems = new Set<SystemId>()
@@ -191,10 +208,16 @@ export async function authorizeCapabilityViews<T extends object>(input: {
         if (!hasOwn(scoped, capabilityId)) {
           throw new CapabilityAccessError(declaration.systemId, capabilityId)
         }
+        // scoped is a null-prototype string bag; the declared key was validated
+        // against available, so the value is T[K] at runtime. TS cannot carry
+        // that proof from CapabilityId (string) into keyof T & string.
         return scoped[capabilityId] as T[K]
       },
       list() {
         assertActive()
+        // Object.keys only yields string[]; every own key of scoped was written
+        // from a declared capability, so the runtime set is keyof T & string.
+        // A cast is required unless list() widens its public return type.
         return Object.freeze(Object.keys(scoped) as (keyof T & string)[])
       },
     })
