@@ -1,5 +1,6 @@
 import {
   createRuntimeLifecycle,
+  RuntimeLifecycleTransitionError,
   type RuntimeLifecycleView,
 } from "./lifecycle"
 
@@ -43,7 +44,10 @@ export function createCoreRuntime(hooks: CoreRuntimeLifecycleHooks): CoreRuntime
   let shutdown: Promise<void> | undefined
 
   const initialize = (): Promise<void> => {
-    if (initialization) return initialization
+    if (initialization) {
+      if (view.snapshot().state === "Initializing") return initialization
+      return Promise.reject(new RuntimeLifecycleTransitionError(view.snapshot().state, "Initializing"))
+    }
 
     controller.beginInitialization()
     initialization = Promise.resolve()
