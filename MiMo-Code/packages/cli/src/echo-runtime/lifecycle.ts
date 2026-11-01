@@ -17,14 +17,11 @@ export type RuntimeLifecycleState =
   | "Stopped"
   | "Failed"
 
-export type RuntimeLifecycleSnapshot =
-  | Readonly<{ state: "Created"; revision: number }>
-  | Readonly<{ state: "Initializing"; revision: number }>
-  | Readonly<{ state: "Ready"; revision: number }>
-  | Readonly<{ state: "Running"; revision: number }>
-  | Readonly<{ state: "Stopping"; revision: number }>
-  | Readonly<{ state: "Stopped"; revision: number }>
-  | Readonly<{ state: "Failed"; revision: number; cause: unknown }>
+export interface RuntimeLifecycleSnapshot {
+  readonly state: RuntimeLifecycleState
+  readonly revision: number
+  readonly cause?: unknown
+}
 
 export class RuntimeLifecycleTransitionError extends Error {
   readonly currentState: RuntimeLifecycleState
@@ -78,7 +75,7 @@ export function createRuntimeLifecycle(): {
 
     if (!allowed) throw new RuntimeLifecycleTransitionError(from, target)
 
-    current = Object.freeze({ state: target, revision: current.revision + 1 }) as RuntimeLifecycleSnapshot
+    current = Object.freeze({ state: target, revision: current.revision + 1 })
   }
 
   const view: RuntimeLifecycleView = Object.freeze({ snapshot })
