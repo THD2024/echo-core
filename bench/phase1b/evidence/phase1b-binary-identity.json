@@ -1,0 +1,14 @@
+{
+  "installed_path": "C:\\Users\\\u5fae\u91ba\\.mimocode\\bin\\mimo.exe",
+  "size": 135996928,
+  "mtime": "2026-10-31T13:09:23+0800",
+  "sha256": "86bad66b5451f7e4096a2abcd490404d2ff95c616b9cb9215d9d86bf9a254685",
+  "version_smoke": "local",
+  "agentID_in_model_call_schema": true,
+  "old_backup": "C:\\Users\\\u5fae\u91ba\\.mimocode\\bin\\mimo.exe.pre-phase1b-rebuild",
+  "old_sha256": "801c91d0c518e54b460f9d058e8b6203fdb33aba086657f874556e9010770bdd",
+  "build_source": "D:\\EchoCore\\MiMo-Code\\packages\\cli\\dist\\mimocode-windows-x64\\bin\\mimo.exe",
+  "build_bun_path": "C:\\Temp\\bun\\bun.exe",
+  "root_cause": "bun compile copies process.execPath; Chinese chars in path (user \u5fae\u91ba) caused ENOENT",
+  "captured_at": "2026-10-31T13:13:09+0800"
+}

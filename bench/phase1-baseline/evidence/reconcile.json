@@ -1,0 +1,30 @@
+{
+  "tool": "bench/reconcile.py",
+  "since": 1793416700000,
+  "ran_at": "2026-10-31",
+  "summary_snapshot": {
+    "正常结束": 41,
+    "失败": 1,
+    "未完成": 7,
+    "恢复中": 10,
+    "无法归类": 0,
+    "suspicious_no_gate": 32,
+    "_total_tids": 59,
+    "_db_tasks": 688,
+    "_ledger_errors": 0,
+    "_c1_events": 366
+  },
+  "baseline_tids_status_at_report": {
+    "T8": "in_progress (still open when reconciler ran)",
+    "T9": "in_progress",
+    "T10": "in_progress",
+    "T11": "in_progress",
+    "T12": "in_progress",
+    "T13": "in_progress"
+  },
+  "notes": [
+    "Baseline task tools T8-T13 were not yet marked done when reconcile ran; still in_progress/恢复中.",
+    "No 无法归类 tasks.",
+    "suspicious_no_gate elevated because parallel multi-tid bench waves created many gate-less windows in one session."
+  ]
+}

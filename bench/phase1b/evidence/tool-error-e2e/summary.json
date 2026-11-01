@@ -1,0 +1,137 @@
+{
+  "binary_path": "D:\\EchoCore\\MiMo-Code\\packages\\cli\\dist\\mimocode-windows-x64\\bin\\mimo.exe",
+  "binary_sha256": "dc28dff15cdda164eedc4c935563001231a13ba4179821dc25db2c4408949eaa",
+  "binary_note": "dist build with classify.ts; installed ~/.mimocode/bin/mimo.exe still 86bad66b",
+  "cases": [
+    {
+      "case_id": "C1_unregistered",
+      "exit_code": 0,
+      "tools": [],
+      "errors": [],
+      "duration_s": 14.423
+    },
+    {
+      "case_id": "C2_bad_params",
+      "exit_code": 0,
+      "tools": [
+        {
+          "t": 1793435955969,
+          "ev": "tool",
+          "sid": "ses_ffe5e6ee32709ffeojFdT7LKKa",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "error",
+          "cid": "call_2cd61f1a21fd4dfc997b2bf0"
+        },
+        {
+          "t": 1793435958028,
+          "ev": "tool",
+          "sid": "ses_ffe5e6ee32709ffeojFdT7LKKa",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "error",
+          "cid": "call_3b37018a7f2640ea90f356ce"
+        }
+      ],
+      "errors": [
+        {
+          "t": 1793435955970,
+          "ev": "error",
+          "sid": "ses_ffe5e6ee32709ffeojFdT7LKKa",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "kind": "tool",
+          "error_class": "tool_execution",
+          "error_stage": "execution",
+          "error_name": "Error",
+          "severity": "error",
+          "recoverability": "unknown",
+          "diagnosis_status": "classified",
+          "error_source": "tool:execute",
+          "cid": "call_2cd61f1a21fd4dfc997b2bf0",
+          "name": "Error",
+          "msg": "tool_call error: read"
+        },
+        {
+          "t": 1793435958028,
+          "ev": "error",
+          "sid": "ses_ffe5e6ee32709ffeojFdT7LKKa",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "kind": "tool",
+          "error_class": "tool_parameter",
+          "error_stage": "validation",
+          "error_name": "RecoverableError",
+          "severity": "warning",
+          "recoverability": "recoverable",
+          "diagnosis_status": "classified",
+          "error_source": "tool.ts:wrap",
+          "cid": "call_3b37018a7f2640ea90f356ce",
+          "name": "RecoverableError",
+          "msg": "tool_call error: read"
+        }
+      ],
+      "duration_s": 12.344
+    },
+    {
+      "case_id": "C3_exec_fail",
+      "exit_code": 0,
+      "tools": [
+        {
+          "t": 1793435967145,
+          "ev": "tool",
+          "sid": "ses_ffe5e6ee2f2edffemFp8e9Tt0g",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "error",
+          "cid": "call_bf151db5b21a40628ae311b8"
+        }
+      ],
+      "errors": [
+        {
+          "t": 1793435967145,
+          "ev": "error",
+          "sid": "ses_ffe5e6ee2f2edffemFp8e9Tt0g",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "kind": "tool",
+          "error_class": "tool_execution",
+          "error_stage": "execution",
+          "error_name": "Error",
+          "severity": "error",
+          "recoverability": "unknown",
+          "diagnosis_status": "classified",
+          "error_source": "tool:execute",
+          "cid": "call_bf151db5b21a40628ae311b8",
+          "name": "Error",
+          "msg": "tool_call error: read"
+        }
+      ],
+      "duration_s": 8.267
+    },
+    {
+      "case_id": "C4_normal",
+      "exit_code": 0,
+      "tools": [
+        {
+          "t": 1793435974874,
+          "ev": "tool",
+          "sid": "ses_ffe5e6ee2ce7affemEwARQgPhQ",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "success",
+          "cid": "call_3aa1969426ed4d9190c2d5bb"
+        }
+      ],
+      "errors": [],
+      "duration_s": 6.767
+    }
+  ]
+}

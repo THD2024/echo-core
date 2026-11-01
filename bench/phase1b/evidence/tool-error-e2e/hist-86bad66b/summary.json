@@ -1,0 +1,117 @@
+{
+  "binary_sha256": "86bad66b5451f7e4096a2abcd490404d2ff95c616b9cb9215d9d86bf9a254685",
+  "cases": [
+    {
+      "case_id": "C1_unregistered",
+      "exit_code": 0,
+      "tools": [],
+      "errors": [],
+      "duration_s": 7.79
+    },
+    {
+      "case_id": "C2_bad_params",
+      "exit_code": 0,
+      "tools": [
+        {
+          "t": 1793424513962,
+          "ev": "tool",
+          "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "error",
+          "cid": "call_49f0d6fe0e66469d805c86d2"
+        },
+        {
+          "t": 1793424516306,
+          "ev": "tool",
+          "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "error",
+          "cid": "call_9157d6a1e45c48c7b464ee3c"
+        }
+      ],
+      "errors": [
+        {
+          "t": 1793424513962,
+          "ev": "error",
+          "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "kind": "tool",
+          "error_class": "tool_execution",
+          "cid": "call_49f0d6fe0e66469d805c86d2",
+          "name": "ToolCallError",
+          "msg": "tool_call failed: read"
+        },
+        {
+          "t": 1793424516306,
+          "ev": "error",
+          "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "kind": "tool",
+          "error_class": "tool_execution",
+          "cid": "call_9157d6a1e45c48c7b464ee3c",
+          "name": "ToolCallError",
+          "msg": "tool_call failed: read"
+        }
+      ],
+      "duration_s": 10.444
+    },
+    {
+      "case_id": "C3_exec_fail",
+      "exit_code": 0,
+      "tools": [
+        {
+          "t": 1793424525562,
+          "ev": "tool",
+          "sid": "ses_ffe5e6f91866cffedTUXd28zMw",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "error",
+          "cid": "call_8e02e4873b5f497691e91150"
+        }
+      ],
+      "errors": [
+        {
+          "t": 1793424525562,
+          "ev": "error",
+          "sid": "ses_ffe5e6f91866cffedTUXd28zMw",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "kind": "tool",
+          "error_class": "tool_execution",
+          "cid": "call_8e02e4873b5f497691e91150",
+          "name": "ToolCallError",
+          "msg": "tool_call failed: read"
+        }
+      ],
+      "duration_s": 7.553
+    },
+    {
+      "case_id": "C4_normal",
+      "exit_code": 0,
+      "tools": [
+        {
+          "t": 1793424535793,
+          "ev": "tool",
+          "sid": "ses_ffe5e6f9164fdffeawkQxdy891",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "success",
+          "cid": "call_d6256f7b11224943928f1da3"
+        }
+      ],
+      "errors": [],
+      "duration_s": 9.549
+    }
+  ]
+}

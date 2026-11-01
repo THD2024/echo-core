@@ -1,0 +1,66 @@
+{
+  "binary_identity": {
+    "path": "C:\\Users\\微醺\\.mimocode\\bin\\mimo.exe",
+    "sha256": "86bad66b5451f7e4096a2abcd490404d2ff95c616b9cb9215d9d86bf9a254685",
+    "size_bytes": 135996928,
+    "modified": "Sat Oct 31 13:09:23 2026",
+    "matches_expected": true
+  },
+  "running_processes": [
+    {
+      "Id": 18232,
+      "Path": "C:\\Users\\微醺\\.mimocode\\bin\\mimo.exe",
+      "StartTime": "/Date(1793421573754)/"
+    },
+    {
+      "Id": 27456,
+      "Path": "C:\\Users\\微醺\\.mimocode\\bin\\mimo.exe",
+      "StartTime": "/Date(1793413035591)/"
+    }
+  ],
+  "stats_summary": {
+    "total_events": 50,
+    "tool_events": 17,
+    "error_events": 4
+  },
+  "error_classification": {
+    "total_tool_errors": 4,
+    "by_class": {
+      "tool_execution": 4
+    },
+    "sample_events": {
+      "tool_execution": [
+        {
+          "t": 1793424875712,
+          "tool": "write",
+          "cid": "call_d71712aad01e442fb0e6d8f5",
+          "agent": null,
+          "tid": null
+        },
+        {
+          "t": 1793424924397,
+          "tool": "edit",
+          "cid": "call_ffbbdbe3a51d43cd8f038811",
+          "agent": null,
+          "tid": null
+        },
+        {
+          "t": 1793424942627,
+          "tool": "edit",
+          "cid": "call_7dbc86abe2e64adaa46b096b",
+          "agent": null,
+          "tid": null
+        }
+      ]
+    },
+    "has_tool_execution": true,
+    "has_tool_param": false
+  },
+  "verification_checks": {
+    "binary_matches_expected": true,
+    "process_running_on_new_binary": true,
+    "tool_errors_have_classification": true,
+    "agent_attribution_present": false
+  },
+  "timestamp": "2026-10-31T13:37:32+0800"
+}

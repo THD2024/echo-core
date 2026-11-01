@@ -1,0 +1,110 @@
+﻿diff --git a/packages/cli/src/metrics/event.ts b/packages/cli/src/metrics/event.ts
+index 259dbef..c7781b0 100644
+--- a/packages/cli/src/metrics/event.ts
++++ b/packages/cli/src/metrics/event.ts
+@@ -5,6 +5,10 @@ export const ModelCall = BusEvent.define(
+   "metrics.model_call",
+   z.object({
+     sessionID: z.string(),
++    // Phase1B: optional actor attribution — parallel subagents share sessionID;
++    // without agentID, token metrics cannot be attributed to a specific task.
++    // Main agent: agentID is "main" or undefined (tid stays null by design).
++    agentID: z.string().optional(),
+     finish_reason: z.string(),
+     ttft_ms: z.number().optional(),
+     latency_ms: z.number(),
+@@ -20,6 +24,8 @@ export const ToolCall = BusEvent.define(
+   "metrics.tool_call",
+   z.object({
+     sessionID: z.string(),
++    // Phase1B: same attribution gap as ModelCall — parallel subagents share sessionID.
++    agentID: z.string().optional(),
+     tool_name: z.string(),
+     input_bytes: z.number(),
+     output_bytes: z.number(),
+diff --git a/packages/cli/src/session/processor.ts b/packages/cli/src/session/processor.ts
+index 2ddcb11..b983b3e 100644
+--- a/packages/cli/src/session/processor.ts
++++ b/packages/cli/src/session/processor.ts
+@@ -651,6 +651,7 @@ export const layer: Layer.Layer<
+             yield* bus
+               .publish(Metrics.ToolCall, {
+                 sessionID: ctx.sessionID,
++                agentID: ctx.assistantMessage.agentID,
+                 tool_name: value.toolName,
+                 input_bytes: Metrics.jsonByteLength(value.input),
+                 output_bytes: 0,
+@@ -725,6 +726,7 @@ export const layer: Layer.Layer<
+             yield* bus
+               .publish(Metrics.ModelCall, {
+                 sessionID: ctx.sessionID,
++                agentID: ctx.assistantMessage.agentID,
+                 finish_reason: value.finishReason,
+                 ttft_ms: ctx.firstTokenAt && ctx.stepStartedAt ? ctx.firstTokenAt - ctx.stepStartedAt : undefined,
+                 latency_ms: ctx.stepStartedAt ? Date.now() - ctx.stepStartedAt : 0,
+@@ -1278,6 +1280,7 @@ export const layer: Layer.Layer<
+               yield* bus
+                 .publish(Metrics.ModelCall, {
+                   sessionID: ctx.sessionID,
++                  agentID: ctx.assistantMessage.agentID,
+                   finish_reason: "max-mode-overhead",
+                   latency_ms: 0,
+                   cached_read_tokens: 0,
+diff --git a/packages/cli/src/session/prompt.ts b/packages/cli/src/session/prompt.ts
+index 5aa9227..7444ab7 100644
+--- a/packages/cli/src/session/prompt.ts
++++ b/packages/cli/src/session/prompt.ts
+@@ -1908,6 +1908,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
+                   yield* bus
+                     .publish(Metrics.ToolCall, {
+                       sessionID: ctx.sessionID,
++                      agentID: ctx.actorID,
+                       tool_name: item.id,
+                       input_bytes: Metrics.jsonByteLength(beforeOutput.args),
+                       output_bytes: 0,
+@@ -1957,6 +1958,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
+                 yield* bus
+                   .publish(Metrics.ToolCall, {
+                     sessionID: ctx.sessionID,
++                    agentID: ctx.actorID,
+                     tool_name: item.id,
+                     input_bytes: Metrics.jsonByteLength(beforeOutput.args),
+                     output_bytes: Buffer.byteLength(output.output ?? "", "utf8"),
+@@ -2074,6 +2076,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
+                 yield* bus
+                   .publish(Metrics.ToolCall, {
+                     sessionID: ctx.sessionID,
++                    agentID: ctx.actorID,
+                     tool_name: key,
+                     input_bytes: Metrics.jsonByteLength(mcpBeforeOutput.args),
+                     output_bytes: 0,
+@@ -2161,6 +2164,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
+               yield* bus
+                 .publish(Metrics.ToolCall, {
+                   sessionID: ctx.sessionID,
++                  agentID: ctx.actorID,
+                   tool_name: key,
+                   input_bytes: Metrics.jsonByteLength(args),
+                   output_bytes: Metrics.jsonByteLength({
+diff --git a/packages/sdk/src/v2/gen/types.gen.ts b/packages/sdk/src/v2/gen/types.gen.ts
+index 5dd3d4d..a1898fc 100644
+--- a/packages/sdk/src/v2/gen/types.gen.ts
++++ b/packages/sdk/src/v2/gen/types.gen.ts
+@@ -199,6 +199,8 @@ export type EventMetricsModelCall = {
+   type: "metrics.model_call"
+   properties: {
+     sessionID: string
++    /** Phase1B: actor that issued this call (parallel subagents share sessionID) */
++    agentID?: string
+     finish_reason: string
+     ttft_ms?: number
+     latency_ms: number
+@@ -214,6 +216,8 @@ export type EventMetricsToolCall = {
+   type: "metrics.tool_call"
+   properties: {
+     sessionID: string
++    /** Phase1B: actor that issued this tool call (parallel subagents share sessionID) */
++    agentID?: string
+     tool_name: string
+     input_bytes: number
+     output_bytes: number

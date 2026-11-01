@@ -1,0 +1,42 @@
+{
+  "run_id": "B5-R1",
+  "benchmark": "B5",
+  "mode": "serial",
+  "started_at": "2026-10-31T12:33:12+0800",
+  "finished_at": "2026-10-31T12:33:23+0800",
+  "duration_s": 10.198,
+  "exit_code": 0,
+  "stdout_tail": "**Failure explanation:** The read failed with `File not found: D:\\EchoCore\\echo-core\\bench\\phase1b\\NO_SUCH_FILE.txt`. No file exists at that path — either the filename is wrong, the file was never created, or it has been deleted/moved. No file contents could be retrieved.\n\nB5_DONE\n",
+  "stderr_tail": "\u001b[0m\n> build · mimo-v2.6-flash\n\u001b[0m\n\u001b[0m✗ \u001b[0mread failed\n\u001b[91m\u001b[1mError: \u001b[0mFile not found: D:\\EchoCore\\echo-core\\bench\\phase1b\\NO_SUCH_FILE.txt\n\u001b[0m✗ \u001b[0mread failed\n\u001b[91m\u001b[1mError: \u001b[0mFile not found: D:\\EchoCore\\echo-core\\bench\\phase1b\\NO_SUCH_FILE.txt\n",
+  "verification": {
+    "stdout_contains_expected": true,
+    "human_note": "serial harness verification via terminal token"
+  },
+  "metrics": {
+    "model_calls": 2,
+    "input_tokens": 79358,
+    "cache_tokens": 73728,
+    "output_tokens": 155,
+    "non_cache_input": 5630,
+    "tool_calls": 1,
+    "tool_errors": 1,
+    "tool_by_tid": {
+      "null": 1
+    },
+    "model_by_tid": {
+      "null": 2
+    },
+    "model_by_agent": {},
+    "error_events": 1,
+    "retry_events": 0,
+    "event_types": {
+      "slice_pre": 1,
+      "tool": 1,
+      "error": 1,
+      "model": 2,
+      "slice": 1
+    }
+  },
+  "actual_cost_cny": null,
+  "cost_note": "C1 records tokens only; monetary cost not exposed"
+}

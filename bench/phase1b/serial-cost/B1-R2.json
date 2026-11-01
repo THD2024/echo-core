@@ -1,0 +1,42 @@
+{
+  "run_id": "B1-R2",
+  "benchmark": "B1",
+  "mode": "serial",
+  "started_at": "2026-10-31T12:32:01+0800",
+  "finished_at": "2026-10-31T12:32:09+0800",
+  "duration_s": 7.421,
+  "exit_code": 0,
+  "stdout_tail": "SERIAL_OK\n",
+  "stderr_tail": "\u001b[0m\n> build · mimo-v2.6-flash\n\u001b[0m\n\u001b[0m→ \u001b[0mRead D:\\EchoCore\\echo-core\\bench\\phase1b\\serial_cost.py\n\u001b[0m→ \u001b[0mRead D:\\EchoCore\\echo-core\\bench\\phase1b\\serial_cost.py\n\u001b[0m→ \u001b[0mRead D:\\EchoCore\\echo-core\\bench\\phase1b\\serial_cost.py\n",
+  "verification": {
+    "stdout_contains_expected": true,
+    "human_note": "serial harness verification via terminal token"
+  },
+  "metrics": {
+    "model_calls": 2,
+    "input_tokens": 81291,
+    "cache_tokens": 76480,
+    "output_tokens": 96,
+    "non_cache_input": 4811,
+    "tool_calls": 1,
+    "tool_errors": 0,
+    "tool_by_tid": {
+      "null": 1
+    },
+    "model_by_tid": {
+      "null": 2
+    },
+    "model_by_agent": {},
+    "error_events": 0,
+    "retry_events": 0,
+    "event_types": {
+      "slice_pre": 1,
+      "tool": 1,
+      "model": 2,
+      "rth": 1,
+      "slice": 1
+    }
+  },
+  "actual_cost_cny": null,
+  "cost_note": "C1 records tokens only; monetary cost not exposed"
+}

@@ -1,0 +1,18 @@
+{
+  "run_id": "B6-R2c",
+  "benchmark": "B6",
+  "tid": "T13",
+  "actor": "general-24",
+  "created_ms": 1793417455394,
+  "completed_ms": 1793417643813,
+  "verification_passed": true,
+  "self_report": "success",
+  "result": "success",
+  "workspace": "b6-run3",
+  "notes": "reused multiply pattern for divide; also added divide(7,0)===Infinity boundary",
+  "started_at": 1793417455.394,
+  "finished_at": 1793417643.813,
+  "duration_s": 188.419,
+  "phase": "phase1-baseline",
+  "recorded_at": 1793417666.306144
+}

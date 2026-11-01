@@ -1,0 +1,49 @@
+{
+  "case_id": "C1_forced_repair",
+  "started_at": "2026-10-31T13:36:09+0800",
+  "duration_s": 9.687,
+  "exit_code": 0,
+  "stdout_tail": "I'd be happy to help execute tasks, but there's no specific task provided yet. What would you like me to do? For example:\n\n- Write or modify code\n- Run commands or scripts\n- Debug an issue\n- Create files\n- Analyze something\n\nPlease tell me what you need.\n",
+  "stderr_tail": "\u001b[0m\n> build · mimo-v2.6-flash\n\u001b[0m\n",
+  "window_event_count": 3,
+  "tools": [],
+  "errors": [],
+  "models": [
+    {
+      "t": 1793424978615,
+      "ev": "model",
+      "sid": "ses_ffe5e6f8aabddffeydi1lMgCKB",
+      "tid": null,
+      "agent": "main",
+      "tin": 39156,
+      "tout": 226,
+      "model": "mimo-v2.6-flash"
+    }
+  ],
+  "all_events": [
+    {
+      "t": 1793424971383,
+      "ev": "slice_pre",
+      "sid": "ses_ffe5e6f8aabddffeydi1lMgCKB",
+      "tid": null,
+      "agent": "main"
+    },
+    {
+      "t": 1793424978615,
+      "ev": "model",
+      "sid": "ses_ffe5e6f8aabddffeydi1lMgCKB",
+      "tid": null,
+      "agent": "main",
+      "tin": 39156,
+      "tout": 226,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793424978640,
+      "ev": "slice",
+      "sid": "ses_ffe5e6f8aabddffeydi1lMgCKB",
+      "tid": null,
+      "agent": "main"
+    }
+  ]
+}

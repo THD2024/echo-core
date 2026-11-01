@@ -1,0 +1,18 @@
+{
+  "run_id": "B6-R2a",
+  "benchmark": "B6",
+  "tid": "T13",
+  "actor": "general-22",
+  "created_ms": 1793417455377,
+  "completed_ms": 1793417530202,
+  "verification_passed": true,
+  "self_report": "success",
+  "result": "success",
+  "workspace": "b6-run1",
+  "notes": "reused multiply pattern for divide",
+  "started_at": 1793417455.377,
+  "finished_at": 1793417530.202,
+  "duration_s": 74.825,
+  "phase": "phase1-baseline",
+  "recorded_at": 1793417666.3046105
+}

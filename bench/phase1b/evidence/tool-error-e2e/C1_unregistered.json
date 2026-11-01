@@ -1,0 +1,49 @@
+{
+  "case_id": "C1_unregistered",
+  "started_at": "2026-10-31T16:38:51+0800",
+  "duration_s": 14.423,
+  "exit_code": 0,
+  "stdout_tail": "I cannot call `completely_unknown_tool_zzz9` — it is not a registered tool in my available tool set. I can only invoke tools that are actually defined for this session.\n\nCASE_C1_DONE\n",
+  "stderr_tail": "\u001b[0m\n> build · mimo-v2.6-flash\n\u001b[0m\n",
+  "window_event_count": 3,
+  "tools": [],
+  "errors": [],
+  "models": [
+    {
+      "t": 1793435946091,
+      "ev": "model",
+      "sid": "ses_ffe5e6ee36337ffex1f1uqNOgI",
+      "tid": null,
+      "agent": "main",
+      "tin": 39485,
+      "tout": 338,
+      "model": "mimo-v2.6-flash"
+    }
+  ],
+  "all_events": [
+    {
+      "t": 1793435934736,
+      "ev": "slice_pre",
+      "sid": "ses_ffe5e6ee36337ffex1f1uqNOgI",
+      "tid": null,
+      "agent": "main"
+    },
+    {
+      "t": 1793435946091,
+      "ev": "model",
+      "sid": "ses_ffe5e6ee36337ffex1f1uqNOgI",
+      "tid": null,
+      "agent": "main",
+      "tin": 39485,
+      "tout": 338,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793435946109,
+      "ev": "slice",
+      "sid": "ses_ffe5e6ee36337ffex1f1uqNOgI",
+      "tid": null,
+      "agent": "main"
+    }
+  ]
+}

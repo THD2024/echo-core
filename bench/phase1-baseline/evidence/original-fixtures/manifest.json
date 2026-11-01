@@ -1,0 +1,213 @@
+{
+  "frozen_at": "2026-10-31T11:18:24+0800",
+  "repos": {
+    "repo-b1": [
+      {
+        "path": "config.js",
+        "sha256": "082777c5dd3233c1f6ffb8094050810f9b74e8c43c0d773951719e52881ce2ef",
+        "bytes": 57
+      }
+    ],
+    "repo-b2": [
+      {
+        "path": "log1.json",
+        "sha256": "89b5fb71a2510da77c821ba8e85f41f2b798f0deb96558b76e6857c7693a455b",
+        "bytes": 175
+      },
+      {
+        "path": "log2.json",
+        "sha256": "77ee91e67c774200752480eec1d0010b0a2bde276e458c4ccb1681940a8a5f08",
+        "bytes": 236
+      },
+      {
+        "path": "log3.json",
+        "sha256": "d73c73d316cd6aedda6ad1fa026c9d6d4d3cc9f487c4e85f44f8366ddd5decaf",
+        "bytes": 117
+      },
+      {
+        "path": "log4.json",
+        "sha256": "35d0f90a5dd6c22bf4268ae0212c1edeb10142cf19450e1d833bed429cbb8429",
+        "bytes": 295
+      },
+      {
+        "path": "log5.json",
+        "sha256": "5e9ea009c4cec04e564fef7810ac3461d2482e6d030488615990635844f8258e",
+        "bytes": 176
+      }
+    ],
+    "repo-b3": [
+      {
+        "path": "index.js",
+        "sha256": "99d7f98f4c8da98a6d335dd4b5be4e67eed3b8f6e8b5f22ca30df721cc4eac6b",
+        "bytes": 118
+      },
+      {
+        "path": "README.md",
+        "sha256": "cfadf29332c3d1098d5ea42aa72a4f089fc4c8676d6ce5861c0366e3cfe77c1c",
+        "bytes": 128
+      },
+      {
+        "path": "utils\\math.js",
+        "sha256": "46bb4060d06042a19d772387b90780b338079ddab60b0a5c78463b116ec0e583",
+        "bytes": 105
+      },
+      {
+        "path": "utils\\math.test.js",
+        "sha256": "7fa5678ef59a88a40a221cf4414cfafa743ad7d0db5d75f786fa59e8e8331510",
+        "bytes": 187
+      }
+    ],
+    "repo-b4": [
+      {
+        "path": "module01.js",
+        "sha256": "599ff7bd6fb53554b5df0aa2244b44b2d77a0b44c9844b3cb22c2018c109b31c",
+        "bytes": 69
+      },
+      {
+        "path": "module02.js",
+        "sha256": "db9df3d83a31044ea2d928ac486411bf2e104da38a2ab14eeac06ef8851b5039",
+        "bytes": 69
+      },
+      {
+        "path": "module03.js",
+        "sha256": "ec2d27b4951969e342f52eff4ee524ad23f11fdcf267a61a934287469611b5bb",
+        "bytes": 114
+      },
+      {
+        "path": "module04.js",
+        "sha256": "75dbb42f8720fc40722f953ed7fbae7c103ff33e3960a910192dd0a4f0184180",
+        "bytes": 69
+      },
+      {
+        "path": "module05.js",
+        "sha256": "2222742758693f5fe5bc0348b7cf8500a176ceffd37b6cabb6886f94054622de",
+        "bytes": 69
+      },
+      {
+        "path": "module06.js",
+        "sha256": "a0da2d3c5f133719190fe17994b6d23113cbfd789ecb72ee30a74a011859cae4",
+        "bytes": 69
+      },
+      {
+        "path": "module07.js",
+        "sha256": "cfb03a34666ea8e09e431c0f2eff25eb1f6af3681de61f1fe7fb93b0eedda881",
+        "bytes": 106
+      },
+      {
+        "path": "module08.js",
+        "sha256": "46ebe1fb03606a1b377faf630f3c691f45a3b25f85e1d672d8601ad0ca84dac6",
+        "bytes": 69
+      },
+      {
+        "path": "module09.js",
+        "sha256": "fbdad473419554fe7bad0ccc2575315a7b03785a1c4452719997acb38fc38090",
+        "bytes": 69
+      },
+      {
+        "path": "module10.js",
+        "sha256": "df6b0e4ef141765fde8e805280398e2f2fdfa124393ea556fce3b27495569747",
+        "bytes": 73
+      },
+      {
+        "path": "module11.js",
+        "sha256": "a5d4bfc492a127058597cf4e5b14b7d4db566daec5e09a29a41ca38a62a0ea67",
+        "bytes": 73
+      },
+      {
+        "path": "module12.js",
+        "sha256": "783f8b331ba877646221e1006d8fbb8029542eb40c0bfee0e9b12d5260385a61",
+        "bytes": 103
+      },
+      {
+        "path": "module13.js",
+        "sha256": "9d4edc5e1965b2be40a1a653d8b58dfec0d3a4f94cb676fbab22eb7eb7310ca0",
+        "bytes": 73
+      },
+      {
+        "path": "module14.js",
+        "sha256": "a65e96cb696782119a3b29d10f7cc0db8a54a83fcada76fefbf0fbe83eaf70d9",
+        "bytes": 73
+      },
+      {
+        "path": "module15.js",
+        "sha256": "490fae9691ece4ed91bf3db6ba4e158e5463044326fae54cb384c8b4b99f0631",
+        "bytes": 73
+      },
+      {
+        "path": "module16.js",
+        "sha256": "c04cb9cbc9b6e8e36753fde8fc58f86bbbb74941fac035ffbca8c2b6c6b975e6",
+        "bytes": 73
+      },
+      {
+        "path": "module17.js",
+        "sha256": "b4f8e9c83489869866f7d55a306e407eaa1990d1af0d5bc58b251816f8f36340",
+        "bytes": 73
+      },
+      {
+        "path": "module18.js",
+        "sha256": "70c470b05361dc4933f9a3e5ce20da4328b37e3618542618fb3c652c886afd18",
+        "bytes": 73
+      },
+      {
+        "path": "module19.js",
+        "sha256": "e8b6b2269e483720beb922cd853e47c929e1f0deb8f9c0dbaf4fb44b98a2bf20",
+        "bytes": 106
+      },
+      {
+        "path": "module20.js",
+        "sha256": "93270136b2ab12121c6013538d17c1680ebfb35077c92c05d5bf0fba2981645c",
+        "bytes": 73
+      },
+      {
+        "path": "module21.js",
+        "sha256": "1d982ab3dcd3555809a028b6e96f068ae4a833d1010a426ca834ff393866b2d2",
+        "bytes": 73
+      },
+      {
+        "path": "module22.js",
+        "sha256": "7a35b04fd15b535db13f221d50f311db34eb12c8404eaaad7e15510922ea9cc3",
+        "bytes": 73
+      },
+      {
+        "path": "module23.js",
+        "sha256": "49807ca25ea3bb3c009917016e46f7ecc683e01ae3b5b50db0b9d83b408b71f1",
+        "bytes": 73
+      },
+      {
+        "path": "module24.js",
+        "sha256": "39e8db87a9bfea17325f451b8868f816fc79b46525d2e7b5a57f47931885933c",
+        "bytes": 73
+      },
+      {
+        "path": "module25.js",
+        "sha256": "c16f49384fce384c526e1596bd9c1082894aac4c89fb1bd96a7cda2f08e62df3",
+        "bytes": 113
+      },
+      {
+        "path": "module26.js",
+        "sha256": "03889f18555afd021d718265dfee74d597169e00d5658443d380b990e4b2e2b3",
+        "bytes": 73
+      },
+      {
+        "path": "module27.js",
+        "sha256": "cc4ec8b7b688db8ab10a9eb504ac4985ceffb56dd656e55f6e08ae152a7509b7",
+        "bytes": 73
+      },
+      {
+        "path": "module28.js",
+        "sha256": "7edf25faa3b4218f7ef08c12da4ebf7cb75e9ffdc380f31b652e258723faffb6",
+        "bytes": 73
+      },
+      {
+        "path": "module29.js",
+        "sha256": "97af6cb52bf7ce15ce457296bb8af8eeb917d8b79841b73aaadf0158ebf8c923",
+        "bytes": 73
+      },
+      {
+        "path": "module30.js",
+        "sha256": "53a595eb143a2090d6446528e153b9ca07e4f23308d36ebb89dbb4c5373d29e8",
+        "bytes": 73
+      }
+    ]
+  }
+}

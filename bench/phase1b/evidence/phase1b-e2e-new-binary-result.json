@@ -1,0 +1,546 @@
+{
+  "baseline_lines": 11285,
+  "e2e_sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+  "window_events": 31,
+  "slice_pre": [
+    {
+      "t": 1793423628782,
+      "ev": "slice_pre",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main"
+    },
+    {
+      "t": 1793423645381,
+      "ev": "slice_pre",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T1",
+      "agent": "explore-1"
+    },
+    {
+      "t": 1793423645383,
+      "ev": "slice_pre",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T2",
+      "agent": "explore-2"
+    }
+  ],
+  "slices": [
+    {
+      "t": 1793423650890,
+      "ev": "slice",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T2",
+      "agent": "explore-2",
+      "outcome": "completed"
+    },
+    {
+      "t": 1793423651909,
+      "ev": "slice",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T1",
+      "agent": "explore-1",
+      "outcome": "completed"
+    },
+    {
+      "t": 1793423659810,
+      "ev": "slice",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main",
+      "outcome": "completed"
+    }
+  ],
+  "tasks": [
+    {
+      "t": 1793423639063,
+      "ev": "task",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T1",
+      "st": "open",
+      "kind": "created"
+    },
+    {
+      "t": 1793423639073,
+      "ev": "task",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T2",
+      "st": "open",
+      "kind": "created"
+    },
+    {
+      "t": 1793423645250,
+      "ev": "task",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T1",
+      "st": "in_progress",
+      "kind": "started"
+    },
+    {
+      "t": 1793423645263,
+      "ev": "task",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T2",
+      "st": "in_progress",
+      "kind": "started"
+    },
+    {
+      "t": 1793423655114,
+      "ev": "task",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T1",
+      "st": "done",
+      "kind": "done"
+    },
+    {
+      "t": 1793423655122,
+      "ev": "task",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T2",
+      "st": "done",
+      "kind": "done"
+    }
+  ],
+  "model_count": 9,
+  "tool_count": 10,
+  "error_count": 0,
+  "models_with_agent": 9,
+  "tools_with_agent": 10,
+  "models_with_tid": 4,
+  "tools_with_tid": 2,
+  "model_by_tid_agent": {
+    "None|main": {
+      "n": 5,
+      "tin_sum": 200747,
+      "tin_list": [
+        39386,
+        39822,
+        40094,
+        40658,
+        40787
+      ]
+    },
+    "T1|explore-1": {
+      "n": 2,
+      "tin_sum": 10684,
+      "tin_list": [
+        5175,
+        5509
+      ]
+    },
+    "T2|explore-2": {
+      "n": 2,
+      "tin_sum": 10742,
+      "tin_list": [
+        5168,
+        5574
+      ]
+    }
+  },
+  "tool_by_tid_agent": {
+    "None|main": 8,
+    "T1|explore-1": 1,
+    "T2|explore-2": 1
+  },
+  "cross_contamination": null,
+  "models_detail": [
+    {
+      "tid": null,
+      "agent": "main",
+      "tin": 39386,
+      "tout": 235,
+      "has_agent": true,
+      "has_tid": false
+    },
+    {
+      "tid": null,
+      "agent": "main",
+      "tin": 39822,
+      "tout": 215,
+      "has_agent": true,
+      "has_tid": false
+    },
+    {
+      "tid": "T1",
+      "agent": "explore-1",
+      "tin": 5175,
+      "tout": 67,
+      "has_agent": true,
+      "has_tid": true
+    },
+    {
+      "tid": "T2",
+      "agent": "explore-2",
+      "tin": 5168,
+      "tout": 79,
+      "has_agent": true,
+      "has_tid": true
+    },
+    {
+      "tid": "T2",
+      "agent": "explore-2",
+      "tin": 5574,
+      "tout": 87,
+      "has_agent": true,
+      "has_tid": true
+    },
+    {
+      "tid": "T1",
+      "agent": "explore-1",
+      "tin": 5509,
+      "tout": 191,
+      "has_agent": true,
+      "has_tid": true
+    },
+    {
+      "tid": null,
+      "agent": "main",
+      "tin": 40094,
+      "tout": 89,
+      "has_agent": true,
+      "has_tid": false
+    },
+    {
+      "tid": null,
+      "agent": "main",
+      "tin": 40658,
+      "tout": 112,
+      "has_agent": true,
+      "has_tid": false
+    },
+    {
+      "tid": null,
+      "agent": "main",
+      "tin": 40787,
+      "tout": 119,
+      "has_agent": true,
+      "has_tid": false
+    }
+  ],
+  "tools_detail": [
+    {
+      "tid": null,
+      "agent": "main",
+      "tool": "task",
+      "st": "success",
+      "has_agent": true,
+      "has_tid": false
+    },
+    {
+      "tid": null,
+      "agent": "main",
+      "tool": "task",
+      "st": "success",
+      "has_agent": true,
+      "has_tid": false
+    },
+    {
+      "tid": null,
+      "agent": "main",
+      "tool": "actor",
+      "st": "success",
+      "has_agent": true,
+      "has_tid": false
+    },
+    {
+      "tid": null,
+      "agent": "main",
+      "tool": "actor",
+      "st": "success",
+      "has_agent": true,
+      "has_tid": false
+    },
+    {
+      "tid": "T1",
+      "agent": "explore-1",
+      "tool": "read",
+      "st": "success",
+      "has_agent": true,
+      "has_tid": true
+    },
+    {
+      "tid": "T2",
+      "agent": "explore-2",
+      "tool": "bash",
+      "st": "success",
+      "has_agent": true,
+      "has_tid": true
+    },
+    {
+      "tid": null,
+      "agent": "main",
+      "tool": "actor",
+      "st": "success",
+      "has_agent": true,
+      "has_tid": false
+    },
+    {
+      "tid": null,
+      "agent": "main",
+      "tool": "actor",
+      "st": "success",
+      "has_agent": true,
+      "has_tid": false
+    },
+    {
+      "tid": null,
+      "agent": "main",
+      "tool": "task",
+      "st": "success",
+      "has_agent": true,
+      "has_tid": false
+    },
+    {
+      "tid": null,
+      "agent": "main",
+      "tool": "task",
+      "st": "success",
+      "has_agent": true,
+      "has_tid": false
+    }
+  ],
+  "errors": [],
+  "all_models": [
+    {
+      "t": 1793423639099,
+      "ev": "model",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main",
+      "tin": 39386,
+      "tout": 235,
+      "cache": 0,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793423645288,
+      "ev": "model",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main",
+      "tin": 39822,
+      "tout": 215,
+      "cache": 39360,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793423647177,
+      "ev": "model",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T1",
+      "agent": "explore-1",
+      "tin": 5175,
+      "tout": 67,
+      "cache": 3072,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793423647921,
+      "ev": "model",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T2",
+      "agent": "explore-2",
+      "tin": 5168,
+      "tout": 79,
+      "cache": 3072,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793423650879,
+      "ev": "model",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T2",
+      "agent": "explore-2",
+      "tin": 5574,
+      "tout": 87,
+      "cache": 5120,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793423651900,
+      "ev": "model",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T1",
+      "agent": "explore-1",
+      "tin": 5509,
+      "tout": 191,
+      "cache": 5120,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793423651930,
+      "ev": "model",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main",
+      "tin": 40094,
+      "tout": 89,
+      "cache": 39808,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793423655129,
+      "ev": "model",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main",
+      "tin": 40658,
+      "tout": 112,
+      "cache": 40064,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793423659788,
+      "ev": "model",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main",
+      "tin": 40787,
+      "tout": 119,
+      "cache": 40640,
+      "model": "mimo-v2.6-flash"
+    }
+  ],
+  "all_tools": [
+    {
+      "t": 1793423639065,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main",
+      "tool": "task",
+      "st": "success",
+      "cid": "call_3720ae695f6343439b9610a3"
+    },
+    {
+      "t": 1793423639074,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main",
+      "tool": "task",
+      "st": "success",
+      "cid": "call_f08d5f69235f4bfd96621bf5"
+    },
+    {
+      "t": 1793423645253,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main",
+      "tool": "actor",
+      "st": "success",
+      "cid": "call_87831ff967c24ac3b8954044"
+    },
+    {
+      "t": 1793423645281,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main",
+      "tool": "actor",
+      "st": "success",
+      "cid": "call_e7156ae8a3724ec78f71d431"
+    },
+    {
+      "t": 1793423647169,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T1",
+      "agent": "explore-1",
+      "tool": "read",
+      "st": "success",
+      "cid": "call_698f8f7cb28f4f38bb1858be"
+    },
+    {
+      "t": 1793423647914,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "tid": "T2",
+      "agent": "explore-2",
+      "tool": "bash",
+      "st": "success",
+      "cid": "call_71b391430de0497784e1bf06"
+    },
+    {
+      "t": 1793423651917,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main",
+      "tool": "actor",
+      "st": "success",
+      "cid": "call_05bb1afda2f240d39ffb42e7"
+    },
+    {
+      "t": 1793423651924,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main",
+      "tool": "actor",
+      "st": "success",
+      "cid": "call_c4dfd4d697464e82bd34c2e5"
+    },
+    {
+      "t": 1793423655115,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main",
+      "tool": "task",
+      "st": "success",
+      "cid": "call_fe7b247bbb3143ac80e53d44"
+    },
+    {
+      "t": 1793423655124,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f9f294effeVsTrLsv07F",
+      "agent": "main",
+      "tool": "task",
+      "st": "success",
+      "cid": "call_4b0952a796d141fb935d881e"
+    }
+  ],
+  "sub_agents": [
+    "explore-1",
+    "explore-2"
+  ],
+  "tids_seen": [
+    "T1",
+    "T2"
+  ],
+  "verdict": {
+    "agent_present_on_subagent_models": true,
+    "distinct_tids": [
+      "T1",
+      "T2"
+    ],
+    "distinct_sub_agents": [
+      "explore-1",
+      "explore-2"
+    ],
+    "cross_contamination": null,
+    "main_scale_misattributed_models": [],
+    "explore_scale_models": [
+      {
+        "tid": "T1",
+        "agent": "explore-1",
+        "tin": 5175,
+        "tout": 67
+      },
+      {
+        "tid": "T2",
+        "agent": "explore-2",
+        "tin": 5168,
+        "tout": 79
+      },
+      {
+        "tid": "T2",
+        "agent": "explore-2",
+        "tin": 5574,
+        "tout": 87
+      },
+      {
+        "tid": "T1",
+        "agent": "explore-1",
+        "tin": 5509,
+        "tout": 191
+      }
+    ]
+  },
+  "acceptance": {
+    "subagent_models_have_agent_and_tid": true,
+    "explore_tools_present_with_tid": true,
+    "no_cross_contamination": true,
+    "no_main_misattr": true,
+    "slice_pre_dual": true
+  },
+  "pass": true
+}

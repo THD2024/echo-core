@@ -1,0 +1,17 @@
+{
+  "run_id": "B6-R1c",
+  "benchmark": "B6",
+  "tid": "T13",
+  "actor": "general-21",
+  "created_ms": 1793417339115,
+  "completed_ms": 1793417417875,
+  "verification_passed": true,
+  "self_report": "success",
+  "result": "success",
+  "workspace": "b6-run3",
+  "started_at": 1793417339.115,
+  "finished_at": 1793417417.875,
+  "duration_s": 78.76,
+  "phase": "phase1-baseline",
+  "recorded_at": 1793417485.84376
+}

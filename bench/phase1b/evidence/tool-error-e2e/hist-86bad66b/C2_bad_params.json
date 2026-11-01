@@ -1,0 +1,183 @@
+{
+  "case_id": "C2_bad_params",
+  "started_at": "2026-10-31T13:28:28+0800",
+  "duration_s": 10.444,
+  "exit_code": 0,
+  "stdout_tail": "CASE_C2_DONE\n",
+  "stderr_tail": "\u001b[0m\n> build · mimo-v2.6-flash\n\u001b[0m\n\u001b[0m✗ \u001b[0mread failed\n\u001b[91m\u001b[1mError: \u001b[0mFile not found: C:\\Users\\微醺\\12345\n\u001b[0m✗ \u001b[0mread failed\n\u001b[91m\u001b[1mError: \u001b[0mFile not found: C:\\Users\\微醺\\12345\n\u001b[0m✗ \u001b[0mread failed\n\u001b[91m\u001b[1mError: \u001b[0mInvalid arguments for the read tool:\n✖ Invalid input: expected string, received undefined\n  → at file_path\n\u001b[0m✗ \u001b[0mread failed\n\u001b[91m\u001b[1mError: \u001b[0mInvalid arguments for the read tool:\n✖ Invalid input: expected string, received undefined\n  → at file_path\n",
+  "window_event_count": 9,
+  "tools": [
+    {
+      "t": 1793424513962,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "st": "error",
+      "cid": "call_49f0d6fe0e66469d805c86d2"
+    },
+    {
+      "t": 1793424516306,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "st": "error",
+      "cid": "call_9157d6a1e45c48c7b464ee3c"
+    }
+  ],
+  "errors": [
+    {
+      "t": 1793424513962,
+      "ev": "error",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "kind": "tool",
+      "error_class": "tool_execution",
+      "cid": "call_49f0d6fe0e66469d805c86d2",
+      "name": "ToolCallError",
+      "msg": "tool_call failed: read"
+    },
+    {
+      "t": 1793424516306,
+      "ev": "error",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "kind": "tool",
+      "error_class": "tool_execution",
+      "cid": "call_9157d6a1e45c48c7b464ee3c",
+      "name": "ToolCallError",
+      "msg": "tool_call failed: read"
+    }
+  ],
+  "models": [
+    {
+      "t": 1793424513967,
+      "ev": "model",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main",
+      "tin": 39196,
+      "tout": 61,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793424516310,
+      "ev": "model",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main",
+      "tin": 39280,
+      "tout": 49,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793424518431,
+      "ev": "model",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main",
+      "tin": 39357,
+      "tout": 28,
+      "model": "mimo-v2.6-flash"
+    }
+  ],
+  "all_events": [
+    {
+      "t": 1793424510771,
+      "ev": "slice_pre",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main"
+    },
+    {
+      "t": 1793424513962,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "st": "error",
+      "cid": "call_49f0d6fe0e66469d805c86d2"
+    },
+    {
+      "t": 1793424513962,
+      "ev": "error",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "kind": "tool",
+      "error_class": "tool_execution",
+      "cid": "call_49f0d6fe0e66469d805c86d2",
+      "name": "ToolCallError",
+      "msg": "tool_call failed: read"
+    },
+    {
+      "t": 1793424513967,
+      "ev": "model",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main",
+      "tin": 39196,
+      "tout": 61,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793424516306,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "st": "error",
+      "cid": "call_9157d6a1e45c48c7b464ee3c"
+    },
+    {
+      "t": 1793424516306,
+      "ev": "error",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "kind": "tool",
+      "error_class": "tool_execution",
+      "cid": "call_9157d6a1e45c48c7b464ee3c",
+      "name": "ToolCallError",
+      "msg": "tool_call failed: read"
+    },
+    {
+      "t": 1793424516310,
+      "ev": "model",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main",
+      "tin": 39280,
+      "tout": 49,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793424518431,
+      "ev": "model",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main",
+      "tin": 39357,
+      "tout": 28,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793424518443,
+      "ev": "slice",
+      "sid": "ses_ffe5e6f91b32dffeiaFuTY2rYW",
+      "tid": null,
+      "agent": "main"
+    }
+  ]
+}

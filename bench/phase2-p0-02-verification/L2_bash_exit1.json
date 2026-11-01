@@ -1,0 +1,131 @@
+{
+  "case_id": "L2_bash_exit1",
+  "binary_path": "C:\\Users\\微醺\\.mimocode\\bin\\mimo.exe",
+  "binary_sha256": "bb4c2e12b7bf7651d8ba553ef73fb076edc0550502128c04ae0bd37e2acf8ad7",
+  "started_at": "2026-10-31T19:59:05+0800",
+  "duration_s": 10.371,
+  "exit_code": 0,
+  "stdout_tail": "CASE_L2_FAIL_DONE\n",
+  "stderr_tail": "\u001b[0m\n> build · mimo-v2.6-flash\n\u001b[0m\n\u001b[0m$ \u001b[0mexit 1\n(no output)\n\u001b[0m\n\u001b[0m$ \u001b[0mexit 1\n(no output)\n\u001b[0m\n\u001b[0m$ \u001b[0mexit 1\n(no output)\n\u001b[0m\n",
+  "window_event_count": 7,
+  "tools": [
+    {
+      "t": 1793447952054,
+      "ev": "tool",
+      "sid": "ses_ffe5e6e2c1297ffeWvKg0mdyGY",
+      "tid": null,
+      "agent": "main",
+      "tool": "bash",
+      "st": "error",
+      "cid": "call_96de226e506d44f490c29e83"
+    }
+  ],
+  "errors": [
+    {
+      "t": 1793447952054,
+      "ev": "error",
+      "sid": "ses_ffe5e6e2c1297ffeWvKg0mdyGY",
+      "tid": null,
+      "agent": "main",
+      "tool": "bash",
+      "kind": "tool",
+      "error_class": "unknown",
+      "error_stage": "execution",
+      "error_name": "Error",
+      "severity": "error",
+      "recoverability": "unknown",
+      "diagnosis_status": "classified",
+      "error_source": "tool:execute",
+      "cid": "call_96de226e506d44f490c29e83",
+      "name": "Error",
+      "msg": "tool_call error: bash"
+    }
+  ],
+  "models": [
+    {
+      "t": 1793447952067,
+      "ev": "model",
+      "sid": "ses_ffe5e6e2c1297ffeWvKg0mdyGY",
+      "tid": null,
+      "agent": "main",
+      "tin": 39171,
+      "tout": 65,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793447955856,
+      "ev": "model",
+      "sid": "ses_ffe5e6e2c1297ffeWvKg0mdyGY",
+      "tid": null,
+      "agent": "main",
+      "tin": 39246,
+      "tout": 42,
+      "model": "mimo-v2.6-flash"
+    }
+  ],
+  "all_events": [
+    {
+      "t": 1793447948193,
+      "ev": "slice_pre",
+      "sid": "ses_ffe5e6e2c1297ffeWvKg0mdyGY",
+      "tid": null,
+      "agent": "main"
+    },
+    {
+      "t": 1793447952054,
+      "ev": "tool",
+      "sid": "ses_ffe5e6e2c1297ffeWvKg0mdyGY",
+      "tid": null,
+      "agent": "main",
+      "tool": "bash",
+      "st": "error",
+      "cid": "call_96de226e506d44f490c29e83"
+    },
+    {
+      "t": 1793447952054,
+      "ev": "error",
+      "sid": "ses_ffe5e6e2c1297ffeWvKg0mdyGY",
+      "tid": null,
+      "agent": "main",
+      "tool": "bash",
+      "kind": "tool",
+      "error_class": "unknown",
+      "error_stage": "execution",
+      "error_name": "Error",
+      "severity": "error",
+      "recoverability": "unknown",
+      "diagnosis_status": "classified",
+      "error_source": "tool:execute",
+      "cid": "call_96de226e506d44f490c29e83",
+      "name": "Error",
+      "msg": "tool_call error: bash"
+    },
+    {
+      "t": 1793447952067,
+      "ev": "model",
+      "sid": "ses_ffe5e6e2c1297ffeWvKg0mdyGY",
+      "tid": null,
+      "agent": "main",
+      "tin": 39171,
+      "tout": 65,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793447955856,
+      "ev": "model",
+      "sid": "ses_ffe5e6e2c1297ffeWvKg0mdyGY",
+      "tid": null,
+      "agent": "main",
+      "tin": 39246,
+      "tout": 42,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793447955868,
+      "ev": "slice",
+      "sid": "ses_ffe5e6e2c1297ffeWvKg0mdyGY",
+      "tid": null,
+      "agent": "main"
+    }
+  ]
+}

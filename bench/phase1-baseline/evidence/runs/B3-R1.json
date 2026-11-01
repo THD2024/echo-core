@@ -1,0 +1,17 @@
+{
+  "run_id": "B3-R1",
+  "benchmark": "B3",
+  "tid": "T10",
+  "actor": "general-8",
+  "created_ms": 1793416988287,
+  "completed_ms": 1793417093350,
+  "verification_passed": true,
+  "self_report": "success",
+  "result": "success",
+  "workspace": "b3-run1",
+  "started_at": 1793416988.287,
+  "finished_at": 1793417093.35,
+  "duration_s": 105.063,
+  "phase": "phase1-baseline",
+  "recorded_at": 1793417485.835855
+}

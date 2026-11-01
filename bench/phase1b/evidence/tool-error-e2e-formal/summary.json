@@ -1,0 +1,104 @@
+{
+  "binary_path": "C:\\Users\\微醺\\.mimocode\\bin\\mimo.exe",
+  "binary_sha256": "dc28dff15cdda164eedc4c935563001231a13ba4179821dc25db2c4408949eaa",
+  "binary_note": "formal install ~/.mimocode/bin/mimo.exe (Phase1B-1a); dist evidence kept in tool-error-e2e\\",
+  "cases": [
+    {
+      "case_id": "C4_normal",
+      "exit_code": 0,
+      "tools": [
+        {
+          "t": 1793438454772,
+          "ev": "tool",
+          "sid": "ses_ffe5e6ebd14acffeJKTCbScp5H",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "success",
+          "cid": "call_4ebe3c89a3d54861b9e5852d"
+        }
+      ],
+      "errors": [],
+      "duration_s": 23.177,
+      "error": null
+    },
+    {
+      "case_id": "C2_bad_params",
+      "exit_code": 0,
+      "tools": [
+        {
+          "t": 1793438473651,
+          "ev": "tool",
+          "sid": "ses_ffe5e6ebcb5c7ffeOHCkpT1VxX",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "error",
+          "cid": "call_239e3db263444dc68bb5904a"
+        },
+        {
+          "t": 1793438477517,
+          "ev": "tool",
+          "sid": "ses_ffe5e6ebcb5c7ffeOHCkpT1VxX",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "success",
+          "cid": "call_bdd195d9dbd04d6e9c4c7f3d"
+        },
+        {
+          "t": 1793438479986,
+          "ev": "tool",
+          "sid": "ses_ffe5e6ebcb5c7ffeOHCkpT1VxX",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "error",
+          "cid": "call_24af4bf72f9c45bfab5d7b6d"
+        }
+      ],
+      "errors": [
+        {
+          "t": 1793438473652,
+          "ev": "error",
+          "sid": "ses_ffe5e6ebcb5c7ffeOHCkpT1VxX",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "kind": "tool",
+          "error_class": "tool_execution",
+          "error_stage": "execution",
+          "error_name": "Error",
+          "severity": "error",
+          "recoverability": "unknown",
+          "diagnosis_status": "classified",
+          "error_source": "tool:execute",
+          "cid": "call_239e3db263444dc68bb5904a",
+          "name": "Error",
+          "msg": "tool_call error: read"
+        },
+        {
+          "t": 1793438479986,
+          "ev": "error",
+          "sid": "ses_ffe5e6ebcb5c7ffeOHCkpT1VxX",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "kind": "tool",
+          "error_class": "tool_parameter",
+          "error_stage": "validation",
+          "error_name": "RecoverableError",
+          "severity": "warning",
+          "recoverability": "recoverable",
+          "diagnosis_status": "classified",
+          "error_source": "tool.ts:wrap",
+          "cid": "call_24af4bf72f9c45bfab5d7b6d",
+          "name": "RecoverableError",
+          "msg": "tool_call error: read"
+        }
+      ],
+      "duration_s": 17.394,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "binary_path": "C:\\Users\\微醺\\.mimocode\\bin\\mimo.exe",
+  "binary_sha256": "bb4c2e12b7bf7651d8ba553ef73fb076edc0550502128c04ae0bd37e2acf8ad7",
+  "binary_note": "rebuilt bb4c2e12 from a5d7813 (L2 fix); old dc28dff1 backed up",
+  "fix_commit": "a5d7813",
+  "cases": [
+    {
+      "case_id": "C4_normal",
+      "exit_code": 0,
+      "tools": [
+        {
+          "t": 1793447919459,
+          "ev": "tool",
+          "sid": "ses_ffe5e6e2c9888ffeEm8SxN9tVJ",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "success",
+          "cid": "call_29adcbce4209493c9564131c"
+        }
+      ],
+      "errors": [],
+      "duration_s": 12.216,
+      "error": null
+    },
+    {
+      "case_id": "C2_bad_params",
+      "exit_code": 0,
+      "tools": [
+        {
+          "t": 1793447929777,
+          "ev": "tool",
+          "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "error",
+          "cid": "call_4998f7de8b2c4e95b7915095"
+        },
+        {
+          "t": 1793447933467,
+          "ev": "tool",
+          "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "st": "error",
+          "cid": "call_0dfaef4dd7154099bd761abd"
+        }
+      ],
+      "errors": [
+        {
+          "t": 1793447929777,
+          "ev": "error",
+          "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "kind": "tool",
+          "error_class": "tool_execution",
+          "error_stage": "execution",
+          "error_name": "Error",
+          "severity": "error",
+          "recoverability": "unknown",
+          "diagnosis_status": "classified",
+          "error_source": "tool:execute",
+          "cid": "call_4998f7de8b2c4e95b7915095",
+          "name": "Error",
+          "msg": "tool_call error: read"
+        },
+        {
+          "t": 1793447933467,
+          "ev": "error",
+          "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+          "tid": null,
+          "agent": "main",
+          "tool": "read",
+          "kind": "tool",
+          "error_class": "tool_parameter",
+          "error_stage": "validation",
+          "error_name": "RecoverableError",
+          "severity": "warning",
+          "recoverability": "recoverable",
+          "diagnosis_status": "classified",
+          "error_source": "tool.ts:wrap",
+          "cid": "call_0dfaef4dd7154099bd761abd",
+          "name": "RecoverableError",
+          "msg": "tool_call error: read"
+        }
+      ],
+      "duration_s": 10.36,
+      "error": null
+    },
+    {
+      "case_id": "L2_bash_exit0",
+      "exit_code": 0,
+      "tools": [
+        {
+          "t": 1793447941938,
+          "ev": "tool",
+          "sid": "ses_ffe5e6e2c37fcffeo9VdDSG5i9",
+          "tid": null,
+          "agent": "main",
+          "tool": "bash",
+          "st": "success",
+          "cid": "call_c205f88fd3bf45caa0aa78ee"
+        }
+      ],
+      "errors": [],
+      "duration_s": 8.465,
+      "error": null
+    },
+    {
+      "case_id": "L2_bash_exit1",
+      "exit_code": 0,
+      "tools": [
+        {
+          "t": 1793447952054,
+          "ev": "tool",
+          "sid": "ses_ffe5e6e2c1297ffeWvKg0mdyGY",
+          "tid": null,
+          "agent": "main",
+          "tool": "bash",
+          "st": "error",
+          "cid": "call_96de226e506d44f490c29e83"
+        }
+      ],
+      "errors": [
+        {
+          "t": 1793447952054,
+          "ev": "error",
+          "sid": "ses_ffe5e6e2c1297ffeWvKg0mdyGY",
+          "tid": null,
+          "agent": "main",
+          "tool": "bash",
+          "kind": "tool",
+          "error_class": "unknown",
+          "error_stage": "execution",
+          "error_name": "Error",
+          "severity": "error",
+          "recoverability": "unknown",
+          "diagnosis_status": "classified",
+          "error_source": "tool:execute",
+          "cid": "call_96de226e506d44f490c29e83",
+          "name": "Error",
+          "msg": "tool_call error: bash"
+        }
+      ],
+      "duration_s": 10.371,
+      "error": null
+    }
+  ]
+}

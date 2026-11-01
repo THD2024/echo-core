@@ -1,0 +1,84 @@
+{
+  "mode": "serial",
+  "n": 12,
+  "by_benchmark": {
+    "B1": {
+      "runs": [
+        "B1-R1",
+        "B1-R2",
+        "B1-R3"
+      ],
+      "verify_pass": 3,
+      "duration_s_mean": 7.295,
+      "input_mean": 81285.7,
+      "cache_mean": 67818.7,
+      "non_cache_mean": 13467,
+      "output_mean": 76,
+      "cache_ratio_pct": 83.4,
+      "tool_calls_total": 3,
+      "error_events_total": 0,
+      "actual_cost_cny": null
+    },
+    "B2": {
+      "runs": [
+        "B2-R1",
+        "B2-R2",
+        "B2-R3"
+      ],
+      "verify_pass": 3,
+      "duration_s_mean": 11.509,
+      "input_mean": 79614.7,
+      "cache_mean": 64192,
+      "non_cache_mean": 15422.7,
+      "output_mean": 182.3,
+      "cache_ratio_pct": 80.6,
+      "tool_calls_total": 3,
+      "error_events_total": 0,
+      "actual_cost_cny": null
+    },
+    "B4": {
+      "runs": [
+        "B4-R1",
+        "B4-R2",
+        "B4-R3"
+      ],
+      "verify_pass": 3,
+      "duration_s_mean": 7.109,
+      "input_mean": 39615.7,
+      "cache_mean": 38656,
+      "non_cache_mean": 959.7,
+      "output_mean": 135.3,
+      "cache_ratio_pct": 97.6,
+      "tool_calls_total": 0,
+      "error_events_total": 0,
+      "actual_cost_cny": null
+    },
+    "B5": {
+      "runs": [
+        "B5-R1",
+        "B5-R2",
+        "B5-R3"
+      ],
+      "verify_pass": 3,
+      "duration_s_mean": 8.964,
+      "input_mean": 79356.7,
+      "cache_mean": 75562.7,
+      "non_cache_mean": 3794,
+      "output_mean": 147.7,
+      "cache_ratio_pct": 95.2,
+      "tool_calls_total": 3,
+      "error_events_total": 3,
+      "actual_cost_cny": null
+    }
+  },
+  "totals": {
+    "input_sum": 839618,
+    "cache_sum": 738688,
+    "non_cache_sum": 100930,
+    "output_sum": 1624,
+    "cache_ratio_pct": 88.0,
+    "duration_mean_s": 8.719,
+    "actual_cost_cny": null,
+    "cost_note": "C1 records tokens only; monetary cost not exposed by provider response in ledger"
+  }
+}

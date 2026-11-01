@@ -1,0 +1,129 @@
+{
+  "case_id": "C3_exec_fail",
+  "started_at": "2026-10-31T16:39:20+0800",
+  "duration_s": 8.267,
+  "exit_code": 0,
+  "stdout_tail": "CASE_C3_DONE\n",
+  "stderr_tail": "\u001b[0m\n> build · mimo-v2.6-flash\n\u001b[0m\n\u001b[0m✗ \u001b[0mread failed\n\u001b[91m\u001b[1mError: \u001b[0mFile not found: D:\\EchoCore\\echo-core\\bench\\phase1b\\NO_SUCH_TOOLERR_FILE.txt\n\u001b[0m✗ \u001b[0mread failed\n\u001b[91m\u001b[1mError: \u001b[0mFile not found: D:\\EchoCore\\echo-core\\bench\\phase1b\\NO_SUCH_TOOLERR_FILE.txt\n",
+  "window_event_count": 6,
+  "tools": [
+    {
+      "t": 1793435967145,
+      "ev": "tool",
+      "sid": "ses_ffe5e6ee2f2edffemFp8e9Tt0g",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "st": "error",
+      "cid": "call_bf151db5b21a40628ae311b8"
+    }
+  ],
+  "errors": [
+    {
+      "t": 1793435967145,
+      "ev": "error",
+      "sid": "ses_ffe5e6ee2f2edffemFp8e9Tt0g",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "kind": "tool",
+      "error_class": "tool_execution",
+      "error_stage": "execution",
+      "error_name": "Error",
+      "severity": "error",
+      "recoverability": "unknown",
+      "diagnosis_status": "classified",
+      "error_source": "tool:execute",
+      "cid": "call_bf151db5b21a40628ae311b8",
+      "name": "Error",
+      "msg": "tool_call error: read"
+    }
+  ],
+  "models": [
+    {
+      "t": 1793435967151,
+      "ev": "model",
+      "sid": "ses_ffe5e6ee2f2edffemFp8e9Tt0g",
+      "tid": null,
+      "agent": "main",
+      "tin": 39481,
+      "tout": 66,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793435968719,
+      "ev": "model",
+      "sid": "ses_ffe5e6ee2f2edffemFp8e9Tt0g",
+      "tid": null,
+      "agent": "main",
+      "tin": 39579,
+      "tout": 24,
+      "model": "mimo-v2.6-flash"
+    }
+  ],
+  "all_events": [
+    {
+      "t": 1793435963088,
+      "ev": "slice_pre",
+      "sid": "ses_ffe5e6ee2f2edffemFp8e9Tt0g",
+      "tid": null,
+      "agent": "main"
+    },
+    {
+      "t": 1793435967145,
+      "ev": "tool",
+      "sid": "ses_ffe5e6ee2f2edffemFp8e9Tt0g",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "st": "error",
+      "cid": "call_bf151db5b21a40628ae311b8"
+    },
+    {
+      "t": 1793435967145,
+      "ev": "error",
+      "sid": "ses_ffe5e6ee2f2edffemFp8e9Tt0g",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "kind": "tool",
+      "error_class": "tool_execution",
+      "error_stage": "execution",
+      "error_name": "Error",
+      "severity": "error",
+      "recoverability": "unknown",
+      "diagnosis_status": "classified",
+      "error_source": "tool:execute",
+      "cid": "call_bf151db5b21a40628ae311b8",
+      "name": "Error",
+      "msg": "tool_call error: read"
+    },
+    {
+      "t": 1793435967151,
+      "ev": "model",
+      "sid": "ses_ffe5e6ee2f2edffemFp8e9Tt0g",
+      "tid": null,
+      "agent": "main",
+      "tin": 39481,
+      "tout": 66,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793435968719,
+      "ev": "model",
+      "sid": "ses_ffe5e6ee2f2edffemFp8e9Tt0g",
+      "tid": null,
+      "agent": "main",
+      "tin": 39579,
+      "tout": 24,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793435968735,
+      "ev": "slice",
+      "sid": "ses_ffe5e6ee2f2edffemFp8e9Tt0g",
+      "tid": null,
+      "agent": "main"
+    }
+  ]
+}

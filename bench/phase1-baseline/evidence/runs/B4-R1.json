@@ -1,0 +1,18 @@
+{
+  "run_id": "B4-R1",
+  "benchmark": "B4",
+  "tid": "T11",
+  "actor": "general-11",
+  "created_ms": 1793416988312,
+  "completed_ms": 1793417121376,
+  "verification_passed": true,
+  "self_report": "success",
+  "result": "success",
+  "workspace": "b4-run1",
+  "notes": "verifier initially flagged module01/30 range prose as extras; content correct after heading-only check",
+  "started_at": 1793416988.312,
+  "finished_at": 1793417121.376,
+  "duration_s": 133.064,
+  "phase": "phase1-baseline",
+  "recorded_at": 1793417485.8380637
+}

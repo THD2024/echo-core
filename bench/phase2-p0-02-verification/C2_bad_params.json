@@ -1,0 +1,209 @@
+{
+  "case_id": "C2_bad_params",
+  "binary_path": "C:\\Users\\微醺\\.mimocode\\bin\\mimo.exe",
+  "binary_sha256": "bb4c2e12b7bf7651d8ba553ef73fb076edc0550502128c04ae0bd37e2acf8ad7",
+  "started_at": "2026-10-31T19:58:44+0800",
+  "duration_s": 10.36,
+  "exit_code": 0,
+  "stdout_tail": "Calling the read tool with an invalid argument as requested.\nTrying again with required fields omitted to force a schema violation.\nCASE_C2_DONE\n",
+  "stderr_tail": "\u001b[0m\n> build · mimo-v2.6-flash\n\u001b[0m\n\u001b[0m✗ \u001b[0mread failed\n\u001b[91m\u001b[1mError: \u001b[0mFile not found: C:\\Users\\微醺\\12345\n\u001b[0m✗ \u001b[0mread failed\n\u001b[91m\u001b[1mError: \u001b[0mFile not found: C:\\Users\\微醺\\12345\n\u001b[0m✗ \u001b[0mread failed\n\u001b[91m\u001b[1mError: \u001b[0mInvalid arguments for the read tool:\n✖ Invalid input: expected string, received undefined\n  → at file_path\n\u001b[0m✗ \u001b[0mread failed\n\u001b[91m\u001b[1mError: \u001b[0mInvalid arguments for the read tool:\n✖ Invalid input: expected string, received undefined\n  → at file_path\n",
+  "window_event_count": 10,
+  "tools": [
+    {
+      "t": 1793447929777,
+      "ev": "tool",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "st": "error",
+      "cid": "call_4998f7de8b2c4e95b7915095"
+    },
+    {
+      "t": 1793447933467,
+      "ev": "tool",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "st": "error",
+      "cid": "call_0dfaef4dd7154099bd761abd"
+    }
+  ],
+  "errors": [
+    {
+      "t": 1793447929777,
+      "ev": "error",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "kind": "tool",
+      "error_class": "tool_execution",
+      "error_stage": "execution",
+      "error_name": "Error",
+      "severity": "error",
+      "recoverability": "unknown",
+      "diagnosis_status": "classified",
+      "error_source": "tool:execute",
+      "cid": "call_4998f7de8b2c4e95b7915095",
+      "name": "Error",
+      "msg": "tool_call error: read"
+    },
+    {
+      "t": 1793447933467,
+      "ev": "error",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "kind": "tool",
+      "error_class": "tool_parameter",
+      "error_stage": "validation",
+      "error_name": "RecoverableError",
+      "severity": "warning",
+      "recoverability": "recoverable",
+      "diagnosis_status": "classified",
+      "error_source": "tool.ts:wrap",
+      "cid": "call_0dfaef4dd7154099bd761abd",
+      "name": "RecoverableError",
+      "msg": "tool_call error: read"
+    }
+  ],
+  "models": [
+    {
+      "t": 1793447929781,
+      "ev": "model",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main",
+      "tin": 39196,
+      "tout": 78,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793447933469,
+      "ev": "model",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main",
+      "tin": 39297,
+      "tout": 87,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793447934816,
+      "ev": "model",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main",
+      "tin": 39413,
+      "tout": 26,
+      "model": "mimo-v2.6-flash"
+    }
+  ],
+  "all_events": [
+    {
+      "t": 1793447927179,
+      "ev": "slice_pre",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main"
+    },
+    {
+      "t": 1793447929777,
+      "ev": "tool",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "st": "error",
+      "cid": "call_4998f7de8b2c4e95b7915095"
+    },
+    {
+      "t": 1793447929777,
+      "ev": "error",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "kind": "tool",
+      "error_class": "tool_execution",
+      "error_stage": "execution",
+      "error_name": "Error",
+      "severity": "error",
+      "recoverability": "unknown",
+      "diagnosis_status": "classified",
+      "error_source": "tool:execute",
+      "cid": "call_4998f7de8b2c4e95b7915095",
+      "name": "Error",
+      "msg": "tool_call error: read"
+    },
+    {
+      "t": 1793447929781,
+      "ev": "model",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main",
+      "tin": 39196,
+      "tout": 78,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793447933467,
+      "ev": "tool",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "st": "error",
+      "cid": "call_0dfaef4dd7154099bd761abd"
+    },
+    {
+      "t": 1793447933467,
+      "ev": "error",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "kind": "tool",
+      "error_class": "tool_parameter",
+      "error_stage": "validation",
+      "error_name": "RecoverableError",
+      "severity": "warning",
+      "recoverability": "recoverable",
+      "diagnosis_status": "classified",
+      "error_source": "tool.ts:wrap",
+      "cid": "call_0dfaef4dd7154099bd761abd",
+      "name": "RecoverableError",
+      "msg": "tool_call error: read"
+    },
+    {
+      "t": 1793447933469,
+      "ev": "model",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main",
+      "tin": 39297,
+      "tout": 87,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793447934816,
+      "ev": "model",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main",
+      "tin": 39413,
+      "tout": 26,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793447934834,
+      "ev": "slice",
+      "sid": "ses_ffe5e6e2c64abffe4XODg4Co3w",
+      "tid": null,
+      "agent": "main"
+    }
+  ]
+}

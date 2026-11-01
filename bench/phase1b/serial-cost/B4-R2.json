@@ -1,0 +1,38 @@
+{
+  "run_id": "B4-R2",
+  "benchmark": "B4",
+  "mode": "serial",
+  "started_at": "2026-10-31T12:32:58+0800",
+  "finished_at": "2026-10-31T12:33:06+0800",
+  "duration_s": 7.454,
+  "exit_code": 0,
+  "stdout_tail": "1. **Search** — tools like Glob and Grep for finding files and searching content across the codebase.\n2. **File** — tools like Read, Write, and Edit for reading, creating, and modifying files.\n3. **Shell** — the Bash tool for running terminal commands, scripts, and package managers.\n\nB4_DONE\n",
+  "stderr_tail": "\u001b[0m\n> build · mimo-v2.6-flash\n\u001b[0m\n",
+  "verification": {
+    "stdout_contains_expected": true,
+    "human_note": "serial harness verification via terminal token"
+  },
+  "metrics": {
+    "model_calls": 1,
+    "input_tokens": 39615,
+    "cache_tokens": 39552,
+    "output_tokens": 112,
+    "non_cache_input": 63,
+    "tool_calls": 0,
+    "tool_errors": 0,
+    "tool_by_tid": {},
+    "model_by_tid": {
+      "null": 1
+    },
+    "model_by_agent": {},
+    "error_events": 0,
+    "retry_events": 0,
+    "event_types": {
+      "slice_pre": 1,
+      "model": 1,
+      "slice": 1
+    }
+  },
+  "actual_cost_cny": null,
+  "cost_note": "C1 records tokens only; monetary cost not exposed"
+}

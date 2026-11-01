@@ -1,0 +1,286 @@
+{
+  "generated_at": "2026-10-31T12:55:04+0800",
+  "baseline_lines": 11002,
+  "dual_tid": {
+    "window_events": 88,
+    "main_session": {
+      "models": 14,
+      "tools": 26,
+      "models_with_agent": 0,
+      "tools_with_agent": 0,
+      "models_with_tid": 6,
+      "tools_with_tid": 6,
+      "model_by_tid": {
+        "null": 8,
+        "T1.2": 2,
+        "T1.1": 4
+      },
+      "tool_by_tid": {
+        "null": 20,
+        "T1.2": 1,
+        "T1.1": 5
+      },
+      "model_by_agent": {
+        "null": 14
+      },
+      "tool_by_agent": {
+        "null": 26
+      }
+    },
+    "slice_pre": [
+      {
+        "t": 1793422005962,
+        "sid": "ses_ffe5e6fbe6849ffeiQ9eX5CWjn",
+        "tid": "T1.1",
+        "agent": "explore-3"
+      },
+      {
+        "t": 1793422005987,
+        "sid": "ses_ffe5e6fbe6849ffeiQ9eX5CWjn",
+        "tid": "T1.2",
+        "agent": "explore-4"
+      }
+    ],
+    "slice_end": [
+      {
+        "t": 1793421952267,
+        "ev": "slice",
+        "sid": "ses_ffe5e6fbad2f0ffemO377058Qx",
+        "tid": null,
+        "agent": "checkpoint-writer-1"
+      },
+      {
+        "t": 1793422007540,
+        "ev": "slice",
+        "sid": "ses_ffe5e6fbad2f0ffemO377058Qx",
+        "tid": null,
+        "agent": "checkpoint-writer-1"
+      },
+      {
+        "t": 1793422013541,
+        "ev": "slice",
+        "sid": "ses_ffe5e6fbe6849ffeiQ9eX5CWjn",
+        "tid": "T1.2",
+        "agent": "explore-4"
+      },
+      {
+        "t": 1793422027849,
+        "ev": "slice",
+        "sid": "ses_ffe5e6fbad2f0ffemO377058Qx",
+        "tid": null,
+        "agent": "checkpoint-writer-1"
+      },
+      {
+        "t": 1793422040749,
+        "ev": "slice",
+        "sid": "ses_ffe5e6fbe6849ffeiQ9eX5CWjn",
+        "tid": "T1.1",
+        "agent": "explore-3"
+      },
+      {
+        "t": 1793422068115,
+        "ev": "slice",
+        "sid": "ses_ffe5e6fb71678ffeiGWu9ACrp6",
+        "tid": null,
+        "agent": "main"
+      },
+      {
+        "t": 1793422116708,
+        "ev": "slice",
+        "sid": "ses_ffe5e6fb652c3ffe0ovL6JLYWH",
+        "tid": null,
+        "agent": "main"
+      }
+    ],
+    "cross_contamination": null,
+    "agent_null_on_model_tool": {
+      "models": 23,
+      "tools": 30,
+      "total_models": 23,
+      "total_tools": 30
+    },
+    "errors": [
+      {
+        "t": 1793421944278,
+        "sid": "ses_ffe5e6fbad2f0ffemO377058Qx",
+        "tid": null,
+        "agent": null,
+        "kind": "tool",
+        "error_class": "tool_execution",
+        "tool": "write",
+        "cid": "call_d5254508a0f7401b87211391"
+      },
+      {
+        "t": 1793421987702,
+        "sid": "ses_ffe5e6fbad2f0ffemO377058Qx",
+        "tid": null,
+        "agent": null,
+        "kind": "tool",
+        "error_class": "tool_execution",
+        "tool": "write",
+        "cid": "call_a5d2b5473ec543768e16a497"
+      },
+      {
+        "t": 1793422017307,
+        "sid": "ses_ffe5e6fbad2f0ffemO377058Qx",
+        "tid": null,
+        "agent": null,
+        "kind": "tool",
+        "error_class": "tool_execution",
+        "tool": "read",
+        "cid": "call_45ca34a40fe3494b965d48f4"
+      },
+      {
+        "t": 1793422114295,
+        "sid": "ses_ffe5e6fb652c3ffe0ovL6JLYWH",
+        "tid": null,
+        "agent": null,
+        "kind": "tool",
+        "error_class": "tool_execution",
+        "tool": "read",
+        "cid": "call_0575ef9460ff4bd8994f237e"
+      },
+      {
+        "t": 1793422236178,
+        "sid": "ses_ffe5e6fbe6849ffeiQ9eX5CWjn",
+        "tid": null,
+        "agent": null,
+        "kind": "tool",
+        "error_class": "tool_execution",
+        "tool": "bash",
+        "cid": "call_1acd673f31114cd6afa0b7a5"
+      },
+      {
+        "t": 1793422320290,
+        "sid": "ses_ffe5e6fbe6849ffeiQ9eX5CWjn",
+        "tid": null,
+        "agent": null,
+        "kind": "tool",
+        "error_class": "tool_execution",
+        "tool": "read",
+        "cid": "call_6462ce4187c7479eaab20b3d"
+      }
+    ],
+    "dual_tid_probe": {
+      "subagent_scale_models": [
+        {
+          "t": 1793422008314,
+          "tid": "T1.2",
+          "agent": null,
+          "tin": 5477,
+          "tout": 97
+        },
+        {
+          "t": 1793422013533,
+          "tid": "T1.2",
+          "agent": null,
+          "tin": 5626,
+          "tout": 105
+        },
+        {
+          "t": 1793422027929,
+          "tid": "T1.1",
+          "agent": null,
+          "tin": 5488,
+          "tout": 71
+        },
+        {
+          "t": 1793422040739,
+          "tid": "T1.1",
+          "agent": null,
+          "tin": 5941,
+          "tout": 473
+        }
+      ],
+      "suspected_main_misattributed_to_subagent_tid": [
+        {
+          "t": 1793422013569,
+          "tid": "T1.1",
+          "agent": null,
+          "tin": 82858,
+          "tout": 132
+        },
+        {
+          "t": 1793422022587,
+          "tid": "T1.1",
+          "agent": null,
+          "tin": 83301,
+          "tout": 267
+        }
+      ]
+    },
+    "binary_check": {
+      "mimo_exe_mtime": "2026-10-26T08:45:30+0800",
+      "core_agentid_schema_in_binary": false,
+      "note": "mimo.exe bytes lack agentID?: string / agentID: z.string().optional() from Core patch; process restart did not load Core source changes"
+    }
+  },
+  "controlled_fault_tool_execution": {
+    "kind": "missing_file_tool_execution",
+    "started_at": "2026-10-31T12:54:40+0800",
+    "duration_s": 8.386,
+    "exit_code": 0,
+    "stdout_has_FAULT_TOOL_DONE": true,
+    "stdout_tail": "Read failed: the file `D:\\EchoCore\\echo-core\\bench\\phase1b\\NO_SUCH_PHASE1B_RETEST.txt` does not exist (path not found).\n\nFAULT_TOOL_DONE\n",
+    "stderr_tail": "\u001b[0m\n> build · mimo-v2.6-flash\n\u001b[0m\n\u001b[0m✗ \u001b[0mread failed\n\u001b[91m\u001b[1mError: \u001b[0mFile not found: D:\\EchoCore\\echo-core\\bench\\phase1b\\NO_SUCH_PHASE1B_RETEST.txt\n\u001b[0m✗ \u001b[0mread failed\n\u001b[91m\u001b[1mError: \u001b[0mFile not found: D:\\EchoCore\\echo-core\\bench\\phase1b\\NO_SUCH_PHASE1B_RETEST.txt\n",
+    "tool_error_events": [
+      {
+        "t": 1793422486408,
+        "tid": null,
+        "agent": null,
+        "tool": "read",
+        "st": "error",
+        "cid": "call_5c83c7c5941a4fdbbdb42699"
+      }
+    ],
+    "error_events": [
+      {
+        "t": 1793422486408,
+        "tid": null,
+        "agent": null,
+        "kind": "tool",
+        "error_class": "tool_execution",
+        "tool": "read",
+        "name": "ToolCallError",
+        "cid": "call_5c83c7c5941a4fdbbdb42699"
+      }
+    ],
+    "pass_ev_error": true,
+    "pass_error_class": true,
+    "pass_kind_tool": true
+  },
+  "controlled_fault_tool_param": {
+    "kind": "invalid_tool_name_attempt",
+    "duration_s": 15.943,
+    "exit_code": 0,
+    "stdout_tail": ".\n**Error reported:** `mcp_tool_use` rejected the call with:\n\n> \"totally_fake_tool_abc123\" is not an available deferred MCP tool for this request. Use mcp_tool_search to find the exact tool name.\n\nThe tool name does not match any deferred MCP tool available in this session, so the call never reached a real implementation — no arguments were even validated beyond the name lookup.\n\nFAULT_PARAM_DONE\n",
+    "stderr_tail": "tool_abc123\" is not an available deferred MCP tool for this request. Use mcp_tool_search to find the exact tool name.\n\u001b[0m✗ \u001b[0mmcp_tool_use failed\n\u001b[91m\u001b[1mError: \u001b[0m\"totally_fake_tool_abc123\" is not an available deferred MCP tool for this request. Use mcp_tool_search to find the exact tool name.\n",
+    "tool_error_events": [
+      {
+        "t": 1793422500237,
+        "tid": null,
+        "agent": null,
+        "tool": "totally_fake_tool_abc123",
+        "st": "error"
+      }
+    ],
+    "error_events": [
+      {
+        "t": 1793422500237,
+        "kind": "tool",
+        "error_class": "tool_execution",
+        "tool": "totally_fake_tool_abc123"
+      }
+    ],
+    "fired_metrics_tool_call_error": true,
+    "note": "model may refuse to call non-existent tools; tool_param only guaranteed if tool_name=invalid is published"
+  },
+  "verdict": {
+    "agent_field_present_on_live_model_tool": false,
+    "core_agentid_loaded_in_running_binary": false,
+    "parallel_agent_discrimination_possible": false,
+    "tid_via_peekTid_stack_fallback_only": true,
+    "ev_error_and_error_class_landed": true,
+    "tool_param_live_fired": true
+  }
+}

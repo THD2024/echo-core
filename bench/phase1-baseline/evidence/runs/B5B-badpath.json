@@ -1,0 +1,18 @@
+{
+  "run_id": "B5B-badpath",
+  "benchmark": "B5",
+  "tid": "T12",
+  "actor": "general-15",
+  "created_ms": 1793417036664,
+  "completed_ms": 1793417121920,
+  "verification_passed": false,
+  "self_report": "failed",
+  "result": "null",
+  "workspace": "b5b-run1",
+  "notes": "INVALID RUN: workspace path error in harness; excluded from success-rate stats, kept as raw sample",
+  "started_at": 1793417036.664,
+  "finished_at": 1793417121.92,
+  "duration_s": 85.256,
+  "phase": "phase1-baseline",
+  "recorded_at": 1793417485.8408747
+}

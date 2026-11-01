@@ -1,0 +1,232 @@
+{
+  "benchmark": "phase1-baseline",
+  "phase": "Phase1",
+  "generated_at": "2026-10-31T11:36:32+0800",
+  "environment": {
+    "mimocode_cli": "0.1.16",
+    "mimocode_pe_productversion": "1.3.14",
+    "model": "mimo-v2.6-flash",
+    "c1_enabled": true,
+    "echo_git_commit": "see ENVIRONMENT-SNAPSHOT.md",
+    "note": "two version口径并存，见ENVIRONMENT-SNAPSHOT"
+  },
+  "totals": {
+    "valid_runs": 21,
+    "invalid_harness_runs": 2,
+    "required_min_runs": 18,
+    "success": 21,
+    "partial": 0,
+    "failed": 0,
+    "verification_passed": 21,
+    "verification_rate": 1.0,
+    "self_vs_verify_mismatch": 0
+  },
+  "by_benchmark": {
+    "B1": {
+      "runs": 3,
+      "run_ids": [
+        "B1-R1",
+        "B1-R2",
+        "B1-R3"
+      ],
+      "success": 3,
+      "verification_passed": 3,
+      "success_rate": 1.0,
+      "verify_rate": 1.0,
+      "duration_s": {
+        "min": 91.99,
+        "max": 105.605,
+        "mean": 98.8,
+        "median": 98.8
+      },
+      "durations": {
+        "B1-R1": 105.605,
+        "B1-R2": 91.99,
+        "B1-R3": null
+      },
+      "tool_calls_by_tid": null
+    },
+    "B2": {
+      "runs": 3,
+      "run_ids": [
+        "B2-R1",
+        "B2-R2",
+        "B2-R3"
+      ],
+      "success": 3,
+      "verification_passed": 3,
+      "success_rate": 1.0,
+      "verify_rate": 1.0,
+      "duration_s": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "median": null
+      },
+      "durations": {
+        "B2-R1": null,
+        "B2-R2": null,
+        "B2-R3": null
+      },
+      "tool_calls_by_tid": null
+    },
+    "B3": {
+      "runs": 3,
+      "run_ids": [
+        "B3-R1",
+        "B3-R2",
+        "B3-R3"
+      ],
+      "success": 3,
+      "verification_passed": 3,
+      "success_rate": 1.0,
+      "verify_rate": 1.0,
+      "duration_s": {
+        "min": 105.063,
+        "max": 117.854,
+        "mean": 112.34,
+        "median": 114.1
+      },
+      "durations": {
+        "B3-R1": 105.063,
+        "B3-R2": 114.096,
+        "B3-R3": 117.854
+      },
+      "tool_calls_by_tid": null
+    },
+    "B4": {
+      "runs": 3,
+      "run_ids": [
+        "B4-R1",
+        "B4-R2",
+        "B4-R3"
+      ],
+      "success": 3,
+      "verification_passed": 3,
+      "success_rate": 1.0,
+      "verify_rate": 1.0,
+      "duration_s": {
+        "min": 133.064,
+        "max": 133.064,
+        "mean": 133.06,
+        "median": 133.06
+      },
+      "durations": {
+        "B4-R1": 133.064,
+        "B4-R2": null,
+        "B4-R3": null
+      },
+      "tool_calls_by_tid": null
+    },
+    "B5": {
+      "runs": 3,
+      "run_ids": [
+        "B5A-R1",
+        "B5B-R1",
+        "B5C-R1"
+      ],
+      "success": 3,
+      "verification_passed": 3,
+      "success_rate": 1.0,
+      "verify_rate": 1.0,
+      "duration_s": {
+        "min": 90.187,
+        "max": 106.528,
+        "mean": 100.72,
+        "median": 105.45
+      },
+      "durations": {
+        "B5A-R1": 90.187,
+        "B5B-R1": 106.528,
+        "B5C-R1": 105.449
+      },
+      "tool_calls_by_tid": null
+    },
+    "B6": {
+      "runs": 6,
+      "run_ids": [
+        "B6-R1a",
+        "B6-R1b",
+        "B6-R1c",
+        "B6-R2a",
+        "B6-R2b",
+        "B6-R2c"
+      ],
+      "success": 6,
+      "verification_passed": 6,
+      "success_rate": 1.0,
+      "verify_rate": 1.0,
+      "duration_s": {
+        "min": 52.906,
+        "max": 190.674,
+        "mean": 114.15,
+        "median": 89.04
+      },
+      "durations": {
+        "B6-R1a": 52.906,
+        "B6-R1b": 99.314,
+        "B6-R1c": 78.76,
+        "B6-R2a": 74.825,
+        "B6-R2b": 190.674,
+        "B6-R2c": 188.419
+      },
+      "tool_calls_by_tid": null
+    }
+  },
+  "c1_observability": {
+    "window_ms": [
+      1793416700000,
+      1793417720000
+    ],
+    "tool_events": 268,
+    "tool_success": 241,
+    "tool_error_st": 21,
+    "tool_cancelled": 1,
+    "dedicated_ev_error": 0,
+    "dedicated_ev_retry": 0,
+    "slice_pre": 35,
+    "slice_post_as_slice_event": 35,
+    "model_events": 158,
+    "input_tokens_total": 10256672,
+    "output_tokens_total": 81285,
+    "cache_tokens": 9326528,
+    "model": "mimo-v2.6-flash",
+    "tool_calls_by_tid": {
+      "T13": 75,
+      "T12": 64,
+      "null": 62,
+      "T9": 30,
+      "T11": 22,
+      "T8": 7,
+      "T10": 3
+    },
+    "notes": [
+      "ev:error dedicated events = 0; failures surface only as ev:tool st=error",
+      "no ev:retry observed (no auto-retry mechanism; consistent with design)",
+      "in/out fields are byte sizes not content hashes — cannot use for duplicate detection",
+      "model events lack tid (main agent null); concurrent subagents share model stream — per-run token attribution not reliable under parallel waves",
+      "slice pairs 35/35 (slice_pre + slice) — post represented as ev:slice with outcome"
+    ]
+  },
+  "reconciler": {
+    "tool": "bench/reconcile.py",
+    "since": 1793416700000,
+    "buckets_note": "reconciler uses global DB; baseline tids T8-T13 still in_progress at report time",
+    "suspicious_no_gate_count": 32,
+    "unknown_tasks": 0,
+    "ledger_errors": 0
+  },
+  "known_issues": [
+    "PowerShell non-terminating errors may appear as tool success (known from C1; not fixed this round)",
+    "Harness workspace path naming mismatch for B5B/B5C first attempts (invalid samples retained)",
+    "B4 verifier initially over-flagged range prose module01-module30; heading-only check used",
+    "duplicate_calls_approx metric invalid when based on byte-size only; marked null",
+    "No dedicated error/retry event stream beyond tool st=error"
+  ],
+  "primary_bottlenecks_hypothesis": [
+    "Token/context cost: ~10.2M input tokens across concurrent waves (cache 9.3M) — context re-injection dominates cost",
+    "Observability gap: zero ev:error/ev:retry dedicated events; errors only on tool st field",
+    "Per-run token attribution impossible under parallel multi-actor execution (model tid=null)",
+    "Reconciler suspicious_no_gate high during multi-tid parallel bench window"
+  ]
+}

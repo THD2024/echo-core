@@ -1,0 +1,627 @@
+{"t": 1793416703363, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "write", "st": "success", "cid": "call_6acb767485a5419ead5395d9", "in": 8624, "out": 24}
+{"t": 1793416703484, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "write", "st": "success", "cid": "call_6a6ff9c960654fe2a2018697", "in": 2509, "out": 24}
+{"t": 1793416704247, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_3f4682f3493f4a50b2a11611", "in": 152, "out": 420}
+{"t": 1793416704252, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 116205, "ttft": 108, "tin": 57084, "tout": 4360, "cache": 49728, "model": "mimo-v2.6-flash"}
+{"t": 1793416704286, "ev": "rth", "files": 4}
+{"t": 1793416717834, "ev": "tool", "sid": "ses_ffe5e7012d408ffekFoD3pj6K9", "tid": null, "tool": "write", "st": "error", "cid": "call_438a7d1af53745239051375f", "in": 2509, "out": 0}
+{"t": 1793416717837, "ev": "model", "sid": "ses_ffe5e7012d408ffekFoD3pj6K9", "lat": 20553, "ttft": 112, "tin": 322586, "tout": 1009, "cache": 322048, "model": "mimo-v2.6-flash"}
+{"t": 1793416722470, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "st": "open", "kind": "created"}
+{"t": 1793416722471, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "task", "st": "success", "cid": "call_e60aafbc33094f8a9937ebd9", "in": 64, "out": 37}
+{"t": 1793416722475, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "st": "open", "kind": "created"}
+{"t": 1793416722476, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "task", "st": "success", "cid": "call_c08f61e652c94d8a8c6e92eb", "in": 68, "out": 41}
+{"t": 1793416722481, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "st": "open", "kind": "created"}
+{"t": 1793416722481, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "task", "st": "success", "cid": "call_b0ef684b148649de8761664e", "in": 68, "out": 42}
+{"t": 1793416722486, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "st": "open", "kind": "created"}
+{"t": 1793416722487, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "task", "st": "success", "cid": "call_2d968a21e7174e91a03bd495", "in": 68, "out": 42}
+{"t": 1793416722491, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "st": "open", "kind": "created"}
+{"t": 1793416722491, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "task", "st": "success", "cid": "call_f2984ac42b6c4e45a398cbf1", "in": 74, "out": 48}
+{"t": 1793416722495, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "st": "open", "kind": "created"}
+{"t": 1793416722496, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "task", "st": "success", "cid": "call_a7d5275879c745b488e400ff", "in": 75, "out": 49}
+{"t": 1793416722501, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "st": "in_progress", "kind": "started"}
+{"t": 1793416722501, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "task", "st": "success", "cid": "call_926e434c49ec4902b7b73d82", "in": 42, "out": 21}
+{"t": 1793416722506, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 16731, "ttft": 46, "tin": 61653, "tout": 775, "cache": 57024, "model": "mimo-v2.6-flash"}
+{"t": 1793416722543, "ev": "rth", "files": 4}
+{"t": 1793416726732, "ev": "tool", "sid": "ses_ffe5e7012d408ffekFoD3pj6K9", "tid": null, "tool": "glob", "st": "error", "cid": "call_69315748ef94485d9c9573d2", "in": 129, "out": 0}
+{"t": 1793416726736, "ev": "tool", "sid": "ses_ffe5e7012d408ffekFoD3pj6K9", "tid": null, "tool": "grep", "st": "error", "cid": "call_0b3c12f03bf24f85b6acacf5", "in": 122, "out": 0}
+{"t": 1793416726739, "ev": "model", "sid": "ses_ffe5e7012d408ffekFoD3pj6K9", "lat": 5544, "ttft": 64, "tin": 323649, "tout": 243, "cache": 322560, "model": "mimo-v2.6-flash"}
+{"t": 1793416739356, "ev": "model", "sid": "ses_ffe5e7012d408ffekFoD3pj6K9", "lat": 5952, "ttft": 78, "tin": 343498, "tout": 181, "cache": 323584, "model": "mimo-v2.6-flash"}
+{"t": 1793416739376, "ev": "slice", "sid": "ses_ffe5e7012d408ffekFoD3pj6K9", "tid": null, "agent": "checkpoint-writer-1", "outcome": "completed", "err": "", "aid": "msg_g001a18ff788ee001hNjhprwz5", "msgs": 21, "tools": 17, "txt": 10, "empty": 4, "txt_len": 343, "dur": 44618}
+{"t": 1793416742289, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "st": "in_progress", "kind": "started"}
+{"t": 1793416742291, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_de2a4f6e9f154d78b2fda731", "in": 784, "out": 113}
+{"t": 1793416742299, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "st": "in_progress", "kind": "started"}
+{"t": 1793416742301, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_2274b892210c4af2b5fdad53", "in": 784, "out": 113}
+{"t": 1793416742308, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "st": "in_progress", "kind": "started"}
+{"t": 1793416742310, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_897952c6c4ec498a9fbd2320", "in": 784, "out": 113}
+{"t": 1793416742326, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "st": "in_progress", "kind": "started"}
+{"t": 1793416742328, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_cf9f307f1bdf430099192bb4", "in": 876, "out": 113}
+{"t": 1793416742333, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 18389, "ttft": 3, "tin": 62546, "tout": 1083, "cache": 61632, "model": "mimo-v2.6-flash"}
+{"t": 1793416742368, "ev": "rth", "files": 4}
+{"t": 1793416742444, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "agent": "general-2"}
+{"t": 1793416742489, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "agent": "general-3"}
+{"t": 1793416742528, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "agent": "general-4"}
+{"t": 1793416742568, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "agent": "general-5"}
+{"t": 1793416749285, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "read", "st": "success", "cid": "call_8a5b141286de4a4e8a6e58b4", "in": 95, "out": 218}
+{"t": 1793416749299, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 3435, "ttft": 51, "tin": 31412, "tout": 69, "cache": 24576, "model": "mimo-v2.6-flash"}
+{"t": 1793416749326, "ev": "rth", "files": 1}
+{"t": 1793416757735, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "st": "in_progress", "kind": "started"}
+{"t": 1793416757737, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "actor", "st": "success", "cid": "call_ec225e35045f42a39635d1ea", "in": 876, "out": 113}
+{"t": 1793416757743, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "st": "in_progress", "kind": "started"}
+{"t": 1793416757745, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "actor", "st": "success", "cid": "call_9871d44aacd045838da29095", "in": 876, "out": 113}
+{"t": 1793416757797, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "agent": "general-6"}
+{"t": 1793416757817, "ev": "transform", "msgs": 1, "b": 373, "a": 373, "bt": 1180, "bd": 0, "at": 1180, "ad": 0, "trimmed": 0, "pass2": false, "errs": 0, "over_hard": false}
+{"t": 1793416757838, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "agent": "general-7"}
+{"t": 1793416759288, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "read", "st": "success", "cid": "call_7010074096c246c6a4277b94", "in": 95, "out": 218}
+{"t": 1793416759292, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 13405, "ttft": 163, "tin": 31412, "tout": 79, "cache": 24576, "model": "mimo-v2.6-flash"}
+{"t": 1793416759316, "ev": "rth", "files": 1}
+{"t": 1793416759724, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "read", "st": "success", "cid": "call_6d3632937db24ff8a8953e4c", "in": 95, "out": 218}
+{"t": 1793416759729, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 12912, "ttft": 65, "tin": 31412, "tout": 73, "cache": 24576, "model": "mimo-v2.6-flash"}
+{"t": 1793416759751, "ev": "rth", "files": 1}
+{"t": 1793416759864, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "read", "st": "success", "cid": "call_bb62457584a24ec3a0e6a147", "in": 95, "out": 339}
+{"t": 1793416760025, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "read", "st": "success", "cid": "call_8f9ac704119b4bb69694ef06", "in": 95, "out": 403}
+{"t": 1793416760059, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "bash", "st": "success", "cid": "call_abc7b1d94e6a45028beb1ec3", "in": 222, "out": 35}
+{"t": 1793416760065, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 16823, "ttft": 377, "tin": 63740, "tout": 769, "cache": 62528, "model": "mimo-v2.6-flash"}
+{"t": 1793416760094, "ev": "rth", "files": 4}
+{"t": 1793416760360, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "read", "st": "success", "cid": "call_a3e502b3bd704ca0943794d8", "in": 95, "out": 278}
+{"t": 1793416760900, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "read", "st": "success", "cid": "call_82744e1a751943a3a4a0300e", "in": 95, "out": 465}
+{"t": 1793416761024, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "read", "st": "success", "cid": "call_7bcd151808904ec0946d9f19", "in": 95, "out": 340}
+{"t": 1793416761030, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 14857, "ttft": 73, "tin": 31458, "tout": 233, "cache": 24576, "model": "mimo-v2.6-flash"}
+{"t": 1793416761057, "ev": "rth", "files": 5}
+{"t": 1793416761193, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "edit", "st": "success", "cid": "call_4215b1cac85f409ab3c7fda7", "in": 171, "out": 26}
+{"t": 1793416761199, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 11149, "ttft": 79, "tin": 31608, "tout": 82, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793416761226, "ev": "rth", "files": 1}
+{"t": 1793416761573, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "bash", "st": "success", "cid": "call_9773ff25147a4a5b85fa6954", "in": 146, "out": 935}
+{"t": 1793416761578, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 2603, "ttft": 69, "tin": 31458, "tout": 75, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793416812769, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "edit", "st": "success", "cid": "call_72599a71da004e73b842db01", "in": 171, "out": 26}
+{"t": 1793416812775, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 52304, "ttft": 63, "tin": 31618, "tout": 83, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793416812803, "ev": "rth", "files": 1}
+{"t": 1793416813377, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "edit", "st": "success", "cid": "call_3811c5d35205466bbf324e69", "in": 171, "out": 26}
+{"t": 1793416813382, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 52914, "ttft": 65, "tin": 31612, "tout": 90, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793416813407, "ev": "rth", "files": 1}
+{"t": 1793416813602, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "glob", "st": "success", "cid": "call_13b0e449dd8d4a89bfe90a12", "in": 101, "out": 364}
+{"t": 1793416813741, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "read", "st": "success", "cid": "call_696d6820cbc34ad48176da9b", "in": 95, "out": 339}
+{"t": 1793416813746, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 54744, "ttft": 277, "tin": 31458, "tout": 237, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793416813769, "ev": "rth", "files": 1}
+{"t": 1793416814028, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "write", "st": "success", "cid": "call_9fb0d4ab374b4d1287fcf7d4", "in": 341, "out": 24}
+{"t": 1793416814034, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 51853, "ttft": 120, "tin": 32729, "tout": 182, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793416814057, "ev": "rth", "files": 5}
+{"t": 1793416814177, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "read", "st": "success", "cid": "call_a19ebe7631124cfda2d6ca41", "in": 95, "out": 339}
+{"t": 1793416814198, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "bash", "st": "success", "cid": "call_72030016cb3c4f7bb3a6c4d8", "in": 229, "out": 12}
+{"t": 1793416814204, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 51592, "ttft": 17, "tin": 31701, "tout": 86, "cache": 31552, "model": "mimo-v2.6-flash"}
+{"t": 1793416814226, "ev": "rth", "files": 1}
+{"t": 1793416814335, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "read", "st": "success", "cid": "call_ccf67fbcd847406c95d4d4c3", "in": 95, "out": 403}
+{"t": 1793416814509, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "read", "st": "success", "cid": "call_edff0948b1104fd48ca39899", "in": 95, "out": 278}
+{"t": 1793416814674, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "read", "st": "success", "cid": "call_f7cc2799f4ca4614b3dbf4d0", "in": 95, "out": 465}
+{"t": 1793416814820, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "read", "st": "success", "cid": "call_1af11a6990c44acbb43d311f", "in": 95, "out": 340}
+{"t": 1793416814825, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 51631, "ttft": 124, "tin": 31741, "tout": 208, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793416814850, "ev": "rth", "files": 5}
+{"t": 1793416814973, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "write", "st": "success", "cid": "call_1a3aeb2fc16b430784a76997", "in": 1755, "out": 24}
+{"t": 1793416815386, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "bash", "st": "success", "cid": "call_56455094d66d452aa9d61eba", "in": 183, "out": 11}
+{"t": 1793416815393, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 1924, "ttft": 78, "tin": 31711, "tout": 78, "cache": 31552, "model": "mimo-v2.6-flash"}
+{"t": 1793416815415, "ev": "rth", "files": 1}
+{"t": 1793416817719, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 1582, "ttft": 67, "tin": 31799, "tout": 143, "cache": 12288, "model": "mimo-v2.6-flash"}
+{"t": 1793416817729, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "agent": "general-3", "outcome": "completed", "err": "", "aid": "msg_g001a18ff8de8e001naB3XDvIE", "msgs": 4, "tools": 3, "txt": 1, "empty": 1, "txt_len": 358, "dur": 75240}
+{"t": 1793416817766, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "agent": "general-3"}
+{"t": 1793416817784, "ev": "rth", "files": 1}
+{"t": 1793416819034, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 2729, "ttft": 187, "tin": 31799, "tout": 134, "cache": 31680, "model": "mimo-v2.6-flash"}
+{"t": 1793416819044, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "agent": "general-2", "outcome": "completed", "err": "", "aid": "msg_g001a18ff8e333001mwwlkuaNZ", "msgs": 4, "tools": 3, "txt": 1, "empty": 1, "txt_len": 343, "dur": 76599}
+{"t": 1793416819075, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "agent": "general-2"}
+{"t": 1793416819095, "ev": "rth", "files": 1}
+{"t": 1793416820300, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 5329, "ttft": 104, "tin": 32923, "tout": 249, "cache": 32704, "model": "mimo-v2.6-flash"}
+{"t": 1793416820309, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "agent": "general-5", "outcome": "completed", "err": "", "aid": "msg_g001a18ff8dde5001ZwDUMEHF2", "msgs": 3, "tools": 2, "txt": 2, "empty": 1, "txt_len": 555, "dur": 77741}
+{"t": 1793416820334, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "agent": "general-5"}
+{"t": 1793416820352, "ev": "rth", "files": 5}
+{"t": 1793416829827, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "write", "st": "success", "cid": "call_c093c3b88127452db094d77e", "in": 1742, "out": 24}
+{"t": 1793416829832, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 11370, "ttft": 71, "tin": 32167, "tout": 580, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793416829857, "ev": "rth", "files": 1}
+{"t": 1793416834248, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 3650, "ttft": 116, "tin": 32759, "tout": 209, "cache": 32128, "model": "mimo-v2.6-flash"}
+{"t": 1793416834261, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "agent": "general-3", "outcome": "completed", "err": "", "aid": "msg_g001a18ff91b9d001wzyn4KL17", "msgs": 6, "tools": 4, "txt": 2, "empty": 2, "txt_len": 372, "dur": 16495}
+{"t": 1793416834300, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "actor", "st": "success", "cid": "call_67d14e8ba6d24ca082f81d5b", "in": 74, "out": 445}
+{"t": 1793416834306, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 73362, "ttft": 71, "tin": 64604, "tout": 584, "cache": 63680, "model": "mimo-v2.6-flash"}
+{"t": 1793416834338, "ev": "rth", "files": 4}
+{"t": 1793416837296, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "write", "st": "success", "cid": "call_0d67663885144968a4199a85", "in": 2562, "out": 24}
+{"t": 1793416837301, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 14945, "ttft": 6, "tin": 33397, "tout": 869, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793416837327, "ev": "rth", "files": 5}
+{"t": 1793416842080, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 1304, "ttft": 92, "tin": 34278, "tout": 40, "cache": 33344, "model": "mimo-v2.6-flash"}
+{"t": 1793416842090, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "agent": "general-5", "outcome": "completed", "err": "", "aid": "msg_g001a18ff938ca001UxCJBHDog", "msgs": 5, "tools": 3, "txt": 3, "empty": 2, "txt_len": 84, "dur": 21757}
+{"t": 1793416842788, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "tool": "write", "st": "success", "cid": "call_95e979baadf7432da21f3a49", "in": 306, "out": 24}
+{"t": 1793416842794, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 27212, "ttft": 95, "tin": 32987, "tout": 146, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793416842820, "ev": "rth", "files": 5}
+{"t": 1793416842914, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "tool": "read", "st": "success", "cid": "call_d878e9d7a33a4957bf868da5", "in": 95, "out": 403}
+{"t": 1793416842952, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "tool": "bash", "st": "success", "cid": "call_27b9172ed1de470b828ef0a1", "in": 218, "out": 8}
+{"t": 1793416842957, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 28889, "ttft": 50, "tin": 31713, "tout": 120, "cache": 31552, "model": "mimo-v2.6-flash"}
+{"t": 1793416842980, "ev": "rth", "files": 1}
+{"t": 1793416843047, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "tool": "read", "st": "success", "cid": "call_bf76812c9fe44e6a830b17af", "in": 95, "out": 278}
+{"t": 1793416843176, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "tool": "read", "st": "success", "cid": "call_b44d4993539144d6a87bf322", "in": 95, "out": 465}
+{"t": 1793416843322, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "tool": "read", "st": "success", "cid": "call_18f703b7dd6d4d05bc09427c", "in": 95, "out": 340}
+{"t": 1793416843327, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 28366, "ttft": 82, "tin": 32054, "tout": 189, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793416843352, "ev": "rth", "files": 5}
+{"t": 1793416843445, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "tool": "write", "st": "success", "cid": "call_25d20ce993a0436f8276545f", "in": 1644, "out": 24}
+{"t": 1793416843450, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 23660, "ttft": 103, "tin": 32158, "tout": 538, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793416843472, "ev": "rth", "files": 1}
+{"t": 1793416846357, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 2323, "ttft": 61, "tin": 31844, "tout": 135, "cache": 31680, "model": "mimo-v2.6-flash"}
+{"t": 1793416846367, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "agent": "general-4", "outcome": "completed", "err": "", "aid": "msg_g001a18ff94edf001B98Fl0BiZ", "msgs": 4, "tools": 3, "txt": 1, "empty": 1, "txt_len": 342, "dur": 103839}
+{"t": 1793416847859, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 2851, "ttft": 3, "tin": 32708, "tout": 148, "cache": 32128, "model": "mimo-v2.6-flash"}
+{"t": 1793416847869, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T8", "agent": "general-2", "outcome": "completed", "err": "", "aid": "msg_g001a18ff950cc001jyLW9RyaP", "msgs": 6, "tools": 4, "txt": 2, "empty": 2, "txt_len": 257, "dur": 28794}
+{"t": 1793416847962, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 3923, "ttft": 134, "tin": 33144, "tout": 211, "cache": 32960, "model": "mimo-v2.6-flash"}
+{"t": 1793416847971, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "agent": "general-7", "outcome": "completed", "err": "", "aid": "msg_g001a18ff94e3e0010iqHjCSL3", "msgs": 4, "tools": 3, "txt": 1, "empty": 1, "txt_len": 437, "dur": 90133}
+{"t": 1793416853502, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "tool": "write", "st": "success", "cid": "call_e58ec57528904e1fa0c4ec71", "in": 294, "out": 24}
+{"t": 1793416853507, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 8781, "ttft": 100, "tin": 33058, "tout": 198, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793416853531, "ev": "rth", "files": 5}
+{"t": 1793416860650, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 4377, "ttft": 65, "tin": 33268, "tout": 209, "cache": 33024, "model": "mimo-v2.6-flash"}
+{"t": 1793416860660, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T9", "agent": "general-6", "outcome": "completed", "err": "", "aid": "msg_g001a18ff97816001vq2xijb5H", "msgs": 4, "tools": 3, "txt": 4, "empty": 0, "txt_len": 543, "dur": 102863}
+{"t": 1793416867430, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_a884243143bb43c1ba1cefe9", "in": 201, "out": 127}
+{"t": 1793416867436, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_62d55f0fad7b46488951096c", "in": 74, "out": 878}
+{"t": 1793416867441, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_2099ea1d1b4d4644b2ff0070", "in": 73, "out": 905}
+{"t": 1793416867448, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 4955, "ttft": 90, "tin": 65538, "tout": 210, "cache": 50368, "model": "mimo-v2.6-flash"}
+{"t": 1793416867481, "ev": "rth", "files": 4}
+{"t": 1793416895442, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_33b33bd62ebb426f9e0a49a4", "in": 796, "out": 3428}
+{"t": 1793416895446, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "error", "cid": "call_296ed21fc7444233acda576e", "in": 886, "out": 0}
+{"t": 1793416895448, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "error", "cid": "call_037c2d57cd024da5bf63fc49", "in": 886, "out": 0}
+{"t": 1793416895450, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "error", "cid": "call_51302cdabab94972ad475b2b", "in": 886, "out": 0}
+{"t": 1793416895451, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "error", "cid": "call_2c2e3f3d16244f06b154d367", "in": 836, "out": 0}
+{"t": 1793416895455, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 26321, "ttft": 68, "tin": 67610, "tout": 1451, "cache": 57344, "model": "mimo-v2.6-flash"}
+{"t": 1793416895493, "ev": "rth", "files": 4}
+{"t": 1793416949823, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "edit", "st": "success", "cid": "call_e84ea9b35a374e29b7e023d1", "in": 900, "out": 26}
+{"t": 1793416950295, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_ba16baeaa9634f86a164e5f5", "in": 507, "out": 1287}
+{"t": 1793416950302, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 53855, "ttft": 83, "tin": 70171, "tout": 475, "cache": 67584, "model": "mimo-v2.6-flash"}
+{"t": 1793416950377, "ev": "slice_pre", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "agent": "checkpoint-writer-1"}
+{"t": 1793416950444, "ev": "rth", "files": 4}
+{"t": 1793416973695, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "read", "st": "error", "cid": "call_35d4bbf6b8244e18850ef3db", "in": 123, "out": 0}
+{"t": 1793416973700, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "read", "st": "error", "cid": "call_bf949caf51af4f5fab536f64", "in": 95, "out": 0}
+{"t": 1793416973704, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "read", "st": "error", "cid": "call_08fb98c1c66f4b2cb67a24f3", "in": 118, "out": 0}
+{"t": 1793416973709, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "read", "st": "error", "cid": "call_9eaf699c29a24aae8f8bbefc", "in": 132, "out": 0}
+{"t": 1793416973713, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "read", "st": "error", "cid": "call_c43903e8da724bd4873f2570", "in": 132, "out": 0}
+{"t": 1793416973717, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "task", "st": "success", "cid": "call_e032b459c5ef405e9dae8144", "in": 55, "out": 9}
+{"t": 1793416973720, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "read", "st": "error", "cid": "call_47ee191497c74aaf9d6a23f5", "in": 132, "out": 0}
+{"t": 1793416973724, "ev": "model", "sid": "ses_ffe5e70050dafffeluwIif8M23", "lat": 7398, "ttft": 105, "tin": 197778, "tout": 390, "cache": 49728, "model": "mimo-v2.6-flash"}
+{"t": 1793416988281, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_002ebaab50db4fa3b03d098e", "in": 2074, "out": 96}
+{"t": 1793416988288, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "st": "in_progress", "kind": "started"}
+{"t": 1793416988290, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_c92edd350184423fb667d082", "in": 886, "out": 113}
+{"t": 1793416988297, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "st": "in_progress", "kind": "started"}
+{"t": 1793416988299, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_bd90e31a00754f2383d1d2a2", "in": 886, "out": 113}
+{"t": 1793416988304, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "st": "in_progress", "kind": "started"}
+{"t": 1793416988308, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_1120a58d2d5b4f75b6fab8e1", "in": 886, "out": 114}
+{"t": 1793416988313, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "st": "in_progress", "kind": "started"}
+{"t": 1793416988317, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_3ad2be6e630b4a6ca8ed7eb0", "in": 836, "out": 114}
+{"t": 1793416988323, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 35411, "ttft": 67, "tin": 71114, "tout": 1886, "cache": 70144, "model": "mimo-v2.6-flash"}
+{"t": 1793416988358, "ev": "rth", "files": 4}
+{"t": 1793416988441, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "agent": "general-8"}
+{"t": 1793416988478, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "agent": "general-9"}
+{"t": 1793416988518, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "agent": "general-10"}
+{"t": 1793416988559, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "agent": "general-11"}
+{"t": 1793416993293, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "task", "st": "success", "cid": "call_50952b6df7744ad884ca4731", "in": 102, "out": 9}
+{"t": 1793416993298, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "task", "st": "success", "cid": "call_bde3dfd281084251a585cda1", "in": 71, "out": 9}
+{"t": 1793416993302, "ev": "model", "sid": "ses_ffe5e70050dafffeluwIif8M23", "lat": 8952, "ttft": 80, "tin": 256990, "tout": 365, "cache": 197760, "model": "mimo-v2.6-flash"}
+{"t": 1793416994125, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "bash", "st": "success", "cid": "call_ccb7ef78cc2d4780b97a1171", "in": 183, "out": 646}
+{"t": 1793416997710, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "bash", "st": "success", "cid": "call_d88a7b02467348f5bc20d692", "in": 158, "out": 1267}
+{"t": 1793416997717, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 7850, "ttft": 68, "tin": 31443, "tout": 87, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793416997793, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "read", "st": "success", "cid": "call_15017b1632cf4b378acc97b0", "in": 100, "out": 273}
+{"t": 1793416998020, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "read", "st": "success", "cid": "call_a078028c1542400696b9f1f8", "in": 105, "out": 363}
+{"t": 1793416998119, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "read", "st": "success", "cid": "call_b8478aa976904438a6ab7be5", "in": 94, "out": 281}
+{"t": 1793416998238, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "read", "st": "success", "cid": "call_b0e515d519734a81b90d2c06", "in": 95, "out": 301}
+{"t": 1793416998243, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 7650, "ttft": 91, "tin": 31443, "tout": 191, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793416998270, "ev": "rth", "files": 4}
+{"t": 1793416998384, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "grep", "st": "success", "cid": "call_488de043934c40c683351702", "in": 96, "out": 639}
+{"t": 1793416998389, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 5836, "ttft": 58, "tin": 31434, "tout": 129, "cache": 24576, "model": "mimo-v2.6-flash"}
+{"t": 1793416998454, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "read", "st": "success", "cid": "call_d041bf92d1f84deca9b7f0b8", "in": 100, "out": 273}
+{"t": 1793416998568, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "read", "st": "success", "cid": "call_648e5d9f30164a91877190c2", "in": 105, "out": 363}
+{"t": 1793416998677, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "read", "st": "success", "cid": "call_03f0414a71ba4a8eace3343b", "in": 94, "out": 281}
+{"t": 1793416998756, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "read", "st": "success", "cid": "call_db16e42649394fb497d9b608", "in": 95, "out": 301}
+{"t": 1793416998761, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 8859, "ttft": 75, "tin": 31443, "tout": 207, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793416998788, "ev": "rth", "files": 4}
+{"t": 1793416998788, "ev": "transform", "msgs": 2, "b": 899, "a": 940, "bt": 2849, "bd": 0, "at": 2981, "ad": 0, "trimmed": 0, "pass2": false, "errs": 0, "over_hard": false}
+{"t": 1793417020130, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "st": "in_progress", "kind": "started"}
+{"t": 1793417020132, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "actor", "st": "success", "cid": "call_63c7c3131673487e9b443841", "in": 836, "out": 114}
+{"t": 1793417020139, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "st": "in_progress", "kind": "started"}
+{"t": 1793417020142, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "actor", "st": "success", "cid": "call_2769b19261b54178b49265a3", "in": 836, "out": 114}
+{"t": 1793417020193, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "agent": "general-12"}
+{"t": 1793417020238, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "agent": "general-13"}
+{"t": 1793417020489, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "bash", "st": "success", "cid": "call_a7efae44f1064b56a8a9572c", "in": 1318, "out": 854}
+{"t": 1793417020495, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 18825, "ttft": 2, "tin": 73158, "tout": 1017, "cache": 71104, "model": "mimo-v2.6-flash"}
+{"t": 1793417020524, "ev": "rth", "files": 4}
+{"t": 1793417036655, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "st": "in_progress", "kind": "started"}
+{"t": 1793417036658, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "actor", "st": "success", "cid": "call_6c9306c9280847c6af130204", "in": 755, "out": 114}
+{"t": 1793417036665, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "st": "in_progress", "kind": "started"}
+{"t": 1793417036668, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "actor", "st": "success", "cid": "call_de6daf49f65143e9bc601958", "in": 667, "out": 114}
+{"t": 1793417036674, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "st": "in_progress", "kind": "started"}
+{"t": 1793417036676, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "actor", "st": "success", "cid": "call_a5c436b51e9943cc8342995a", "in": 680, "out": 114}
+{"t": 1793417036732, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "agent": "general-14"}
+{"t": 1793417036774, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "agent": "general-15"}
+{"t": 1793417036816, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "agent": "general-16"}
+{"t": 1793417037432, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "read", "st": "success", "cid": "call_25863cdde76a45449dd33e81", "in": 100, "out": 273}
+{"t": 1793417037568, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "read", "st": "success", "cid": "call_818130e58a0a4d22a0a033d0", "in": 105, "out": 363}
+{"t": 1793417037944, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "read", "st": "success", "cid": "call_b5e11e50125145259163e96d", "in": 94, "out": 281}
+{"t": 1793417038096, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "read", "st": "success", "cid": "call_7251e560f9304cadb2c0f60e", "in": 95, "out": 301}
+{"t": 1793417038101, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 38416, "ttft": 89, "tin": 31776, "tout": 166, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793417038127, "ev": "rth", "files": 4}
+{"t": 1793417038216, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "read", "st": "success", "cid": "call_330c373747a34a3f86c4f5b4", "in": 97, "out": 283}
+{"t": 1793417038660, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "read", "st": "success", "cid": "call_789fba5af81c4571ab02c5ee", "in": 97, "out": 275}
+{"t": 1793417038813, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "read", "st": "success", "cid": "call_d9044c4791674c98b079dc71", "in": 97, "out": 272}
+{"t": 1793417039037, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "read", "st": "success", "cid": "call_1b1e7d9148ac4e1482fdb37d", "in": 97, "out": 275}
+{"t": 1793417039208, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "read", "st": "success", "cid": "call_ab7ca0404cc5445cb6609985", "in": 97, "out": 282}
+{"t": 1793417039213, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 37775, "ttft": 1, "tin": 32070, "tout": 249, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417039241, "ev": "rth", "files": 5}
+{"t": 1793417039382, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "edit", "st": "success", "cid": "call_7cb908368f7946079b42d5d3", "in": 397, "out": 26}
+{"t": 1793417039537, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "edit", "st": "success", "cid": "call_74e2574165bc49b298345e45", "in": 397, "out": 26}
+{"t": 1793417039732, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "grep", "st": "success", "cid": "call_fa3a36c2d6a54f0abb30d7dd", "in": 113, "out": 639}
+{"t": 1793417039737, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 11938, "ttft": 77, "tin": 31434, "tout": 90, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417039891, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "glob", "st": "success", "cid": "call_c7e06fb85c6b4a769dba9f21", "in": 96, "out": 2249}
+{"t": 1793417039897, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 11227, "ttft": 72, "tin": 31434, "tout": 80, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417040030, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "edit", "st": "success", "cid": "call_9a1cbf57ad834546ac5c9dc4", "in": 595, "out": 26}
+{"t": 1793417040178, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "edit", "st": "success", "cid": "call_7d2028b1fbde4488bc0e0808", "in": 595, "out": 26}
+{"t": 1793417040349, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "edit", "st": "success", "cid": "call_5934ec4e43ee4a70b030a695", "in": 410, "out": 26}
+{"t": 1793417040482, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "edit", "st": "success", "cid": "call_e35748b36dca49aca09819e5", "in": 410, "out": 26}
+{"t": 1793417040637, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "edit", "st": "success", "cid": "call_41bbb534840e4622a89400ea", "in": 283, "out": 26}
+{"t": 1793417040642, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 39213, "ttft": 2, "tin": 32145, "tout": 649, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793417040666, "ev": "rth", "files": 4}
+{"t": 1793417040783, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "edit", "st": "success", "cid": "call_7fc8580408544763a4edf774", "in": 283, "out": 26}
+{"t": 1793417040788, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 37981, "ttft": 6, "tin": 32161, "tout": 655, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793417040813, "ev": "rth", "files": 4}
+{"t": 1793417042537, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "bash", "st": "success", "cid": "call_552b185d32fc44608e6a4be3", "in": 146, "out": 452}
+{"t": 1793417042543, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 2740, "ttft": 11, "tin": 31381, "tout": 129, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417044436, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "bash", "st": "success", "cid": "call_3d5ba1b4f75f4fcfb17c9c19", "in": 157, "out": 553}
+{"t": 1793417044443, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 1084, "ttft": 64, "tin": 31622, "tout": 77, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417055455, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "grep", "st": "success", "cid": "call_50158a5de31d4fd3844ae866", "in": 113, "out": 639}
+{"t": 1793417055462, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 14443, "ttft": 61, "tin": 32330, "tout": 88, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793417055508, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "bash", "st": "success", "cid": "call_c31730d83c2245ffa9d48c16", "in": 169, "out": 818}
+{"t": 1793417055511, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "glob", "st": "error", "cid": "call_e1afe6b7bb0f4d91aabbc146", "in": 105, "out": 0}
+{"t": 1793417055514, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 16830, "ttft": 154, "tin": 31394, "tout": 201, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417055765, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "write", "st": "success", "cid": "call_5de1b67834414a86a6b02c43", "in": 732, "out": 24}
+{"t": 1793417055771, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 15442, "ttft": 96, "tin": 32899, "tout": 307, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417055796, "ev": "rth", "files": 5}
+{"t": 1793417055858, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "write", "st": "success", "cid": "call_28729bbe1d8e4cbcbcb720b6", "in": 618, "out": 24}
+{"t": 1793417055864, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 14484, "ttft": 60, "tin": 31743, "tout": 250, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793417055931, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "bash", "st": "success", "cid": "call_f7c0cd23b7d94aa9877c6b5f", "in": 246, "out": 75}
+{"t": 1793417055936, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 14115, "ttft": 108, "tin": 32829, "tout": 107, "cache": 32128, "model": "mimo-v2.6-flash"}
+{"t": 1793417055958, "ev": "rth", "files": 4}
+{"t": 1793417055996, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "glob", "st": "error", "cid": "call_8bea213b3e1a4d57b02a22a4", "in": 105, "out": 0}
+{"t": 1793417056014, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "bash", "st": "success", "cid": "call_b96a50c809c74b2c9e8081da", "in": 270, "out": 68}
+{"t": 1793417056019, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 14164, "ttft": 77, "tin": 32851, "tout": 104, "cache": 32128, "model": "mimo-v2.6-flash"}
+{"t": 1793417056040, "ev": "rth", "files": 4}
+{"t": 1793417056119, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "grep", "st": "success", "cid": "call_282494191927452d994dab8f", "in": 104, "out": 14}
+{"t": 1793417056125, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 17072, "ttft": 72, "tin": 31375, "tout": 252, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417056216, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "edit", "st": "success", "cid": "call_f8b255f946c6438684a3aa8a", "in": 397, "out": 26}
+{"t": 1793417056324, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "edit", "st": "success", "cid": "call_08e51cfb024f4ab69b74f5fa", "in": 595, "out": 26}
+{"t": 1793417056428, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "edit", "st": "success", "cid": "call_66363f81c9924e778e2103d4", "in": 410, "out": 26}
+{"t": 1793417056866, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "edit", "st": "success", "cid": "call_ae288cc259834389a42b0b92", "in": 283, "out": 26}
+{"t": 1793417056870, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 17151, "ttft": 66, "tin": 32453, "tout": 651, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793417056896, "ev": "rth", "files": 4}
+{"t": 1793417062003, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 5016, "ttft": 49, "tin": 33000, "tout": 325, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417062015, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "agent": "general-8", "outcome": "completed", "err": "", "aid": "msg_g001a18ffc8f24001I5ai6LoKd", "msgs": 4, "tools": 3, "txt": 2, "empty": 1, "txt_len": 634, "dur": 73574}
+{"t": 1793417062060, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "agent": "general-8"}
+{"t": 1793417062080, "ev": "rth", "files": 4}
+{"t": 1793417075225, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "tool": "bash", "st": "success", "cid": "call_a741efee99144bcb9e54a159", "in": 285, "out": 466}
+{"t": 1793417075231, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 2362, "ttft": 103, "tin": 33218, "tout": 104, "cache": 32896, "model": "mimo-v2.6-flash"}
+{"t": 1793417075257, "ev": "rth", "files": 5}
+{"t": 1793417075431, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "tool": "bash", "st": "success", "cid": "call_befce19fb7a841cba6fb5d98", "in": 288, "out": 5639}
+{"t": 1793417075437, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 2446, "ttft": 99, "tin": 31847, "tout": 114, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417076036, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 3176, "ttft": 93, "tin": 32005, "tout": 144, "cache": 31680, "model": "mimo-v2.6-flash"}
+{"t": 1793417076047, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "agent": "general-13", "outcome": "completed", "err": "", "aid": "msg_g001a18ffc8e8c001dvcXICPPS", "msgs": 3, "tools": 2, "txt": 2, "empty": 1, "txt_len": 345, "dur": 55809}
+{"t": 1793417076088, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "agent": "general-13"}
+{"t": 1793417077146, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "bash", "st": "success", "cid": "call_20fcb984695c4c388e2aeffd", "in": 237, "out": 19}
+{"t": 1793417079339, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 4632, "ttft": 3, "tin": 32981, "tout": 265, "cache": 32768, "model": "mimo-v2.6-flash"}
+{"t": 1793417079351, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "agent": "general-9", "outcome": "completed", "err": "", "aid": "msg_g001a18ffc8ed2001q5vJUDrwq", "msgs": 4, "tools": 3, "txt": 4, "empty": 0, "txt_len": 747, "dur": 90873}
+{"t": 1793417079392, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "agent": "general-9"}
+{"t": 1793417079415, "ev": "rth", "files": 4}
+{"t": 1793417081769, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "tool": "bash", "st": "success", "cid": "call_aadae075e3f543bb85f3ce92", "in": 265, "out": 459}
+{"t": 1793417081774, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 4238, "ttft": 78, "tin": 33198, "tout": 168, "cache": 31808, "model": "mimo-v2.6-flash"}
+{"t": 1793417083192, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 5969, "ttft": 65, "tin": 33500, "tout": 339, "cache": 33152, "model": "mimo-v2.6-flash"}
+{"t": 1793417083203, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "agent": "general-11", "outcome": "completed", "err": "", "aid": "msg_g001a18ffcda34001WSDg6oh2E", "msgs": 5, "tools": 4, "txt": 3, "empty": 1, "txt_len": 732, "dur": 94643}
+{"t": 1793417083240, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "agent": "general-11"}
+{"t": 1793417083259, "ev": "rth", "files": 5}
+{"t": 1793417090068, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "write", "st": "success", "cid": "call_51a8af3d10f544cb8b5f9817", "in": 2399, "out": 24}
+{"t": 1793417090074, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 15875, "ttft": 151, "tin": 33552, "tout": 759, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793417090099, "ev": "rth", "files": 4}
+{"t": 1793417092221, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "write", "st": "success", "cid": "call_ef12ef7d3f464eb386b1ea9c", "in": 2356, "out": 24}
+{"t": 1793417092226, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 14543, "ttft": 16, "tin": 32376, "tout": 784, "cache": 32000, "model": "mimo-v2.6-flash"}
+{"t": 1793417093314, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 2355, "ttft": 114, "tin": 34323, "tout": 106, "cache": 33536, "model": "mimo-v2.6-flash"}
+{"t": 1793417093325, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "agent": "general-8", "outcome": "completed", "err": "", "aid": "msg_g001a18ffd142f001Yh0IhgpSz", "msgs": 6, "tools": 4, "txt": 3, "empty": 2, "txt_len": 134, "dur": 31265}
+{"t": 1793417093364, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "actor", "st": "success", "cid": "call_76bd357b14df4c8bb40d4110", "in": 74, "out": 1332}
+{"t": 1793417093370, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 71768, "ttft": 95, "tin": 74599, "tout": 785, "cache": 73152, "model": "mimo-v2.6-flash"}
+{"t": 1793417093401, "ev": "rth", "files": 4}
+{"t": 1793417097180, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 13025, "ttft": 5, "tin": 33451, "tout": 498, "cache": 33152, "model": "mimo-v2.6-flash"}
+{"t": 1793417097194, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "agent": "general-15", "outcome": "completed", "err": "", "aid": "msg_g001a18ffcf3c10013VCfvKr4S", "msgs": 5, "tools": 4, "txt": 1, "empty": 1, "txt_len": 747, "dur": 60419}
+{"t": 1793417097238, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "agent": "general-15"}
+{"t": 1793417097457, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 1237, "ttft": 94, "tin": 33172, "tout": 36, "cache": 32320, "model": "mimo-v2.6-flash"}
+{"t": 1793417097468, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "agent": "general-13", "outcome": "completed", "err": "", "aid": "msg_g001a18ffd1c96001sfSoqUwx6", "msgs": 5, "tools": 3, "txt": 3, "empty": 2, "txt_len": 115, "dur": 21380}
+{"t": 1793417098534, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "glob", "st": "success", "cid": "call_ce7b08f147d34d2494dbecb9", "in": 105, "out": 73}
+{"t": 1793417098541, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 25788, "ttft": 68, "tin": 31877, "tout": 68, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417098748, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "read", "st": "success", "cid": "call_ab2279e6f95e442681e43424", "in": 107, "out": 283}
+{"t": 1793417098753, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 25895, "ttft": 174, "tin": 32637, "tout": 103, "cache": 32320, "model": "mimo-v2.6-flash"}
+{"t": 1793417098775, "ev": "rth", "files": 1}
+{"t": 1793417098887, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "glob", "st": "success", "cid": "call_7d6f2eb42d7a4b079eb7cf96", "in": 48, "out": 646}
+{"t": 1793417098892, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 24806, "ttft": 97, "tin": 31671, "tout": 142, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417098973, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "write", "st": "success", "cid": "call_9a68a7d5e8df4263a5337bcb", "in": 2622, "out": 24}
+{"t": 1793417098979, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 18615, "ttft": 2, "tin": 33473, "tout": 752, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793417099001, "ev": "rth", "files": 4}
+{"t": 1793417099019, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "bash", "st": "success", "cid": "call_4d23ee1cdc9946249f8c6e5e", "in": 282, "out": 75}
+{"t": 1793417099024, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 24940, "ttft": 67, "tin": 33139, "tout": 117, "cache": 32448, "model": "mimo-v2.6-flash"}
+{"t": 1793417099052, "ev": "rth", "files": 4}
+{"t": 1793417099911, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "bash", "st": "success", "cid": "call_c9342642645e4d5caf2a65bb", "in": 201, "out": 279}
+{"t": 1793417102355, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 2128, "ttft": 60, "tin": 34237, "tout": 110, "cache": 33408, "model": "mimo-v2.6-flash"}
+{"t": 1793417102366, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "agent": "general-9", "outcome": "completed", "err": "", "aid": "msg_g001a18ffd36f5001HgmqFwne7", "msgs": 6, "tools": 4, "txt": 5, "empty": 1, "txt_len": 326, "dur": 22974}
+{"t": 1793417102403, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "actor", "st": "success", "cid": "call_8b80ef3cb4ba4fa3a41ee8a1", "in": 74, "out": 1244}
+{"t": 1793417106118, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 5924, "ttft": 79, "tin": 33304, "tout": 207, "cache": 33088, "model": "mimo-v2.6-flash"}
+{"t": 1793417106127, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T10", "agent": "general-10", "outcome": "completed", "err": "", "aid": "msg_g001a18ffd3726001ksyrVJUIi", "msgs": 5, "tools": 4, "txt": 4, "empty": 1, "txt_len": 462, "dur": 117609}
+{"t": 1793417106169, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "actor", "st": "success", "cid": "call_411e57016dfe46a1b319a2ce", "in": 75, "out": 1137}
+{"t": 1793417106174, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 9574, "ttft": 60, "tin": 76303, "tout": 190, "cache": 37120, "model": "mimo-v2.6-flash"}
+{"t": 1793417114420, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "bash", "st": "success", "cid": "call_0c42031ca79941f0b763ae8b", "in": 166, "out": 206}
+{"t": 1793417114425, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 14790, "ttft": 88, "tin": 32051, "tout": 455, "cache": 31616, "model": "mimo-v2.6-flash"}
+{"t": 1793417114450, "ev": "transform", "msgs": 4, "b": 856, "a": 856, "bt": 2685, "bd": 0, "at": 2685, "ad": 0, "trimmed": 0, "pass2": false, "errs": 0, "over_hard": false}
+{"t": 1793417117462, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "write", "st": "error", "cid": "call_aa3880fcafe54a9e9407b286", "in": 13691, "out": 0}
+{"t": 1793417117464, "ev": "model", "sid": "ses_ffe5e70050dafffeluwIif8M23", "lat": 117112, "ttft": 95, "tin": 257372, "tout": 5046, "cache": 256960, "model": "mimo-v2.6-flash"}
+{"t": 1793417117973, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "write", "st": "success", "cid": "call_c097098549b14c5e9bb77fcb", "in": 2904, "out": 24}
+{"t": 1793417117979, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 19792, "ttft": 74, "tin": 34176, "tout": 877, "cache": 33408, "model": "mimo-v2.6-flash"}
+{"t": 1793417118491, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "bash", "st": "success", "cid": "call_6e13b8aac273414aab631755", "in": 495, "out": 1523}
+{"t": 1793417121163, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "read", "st": "success", "cid": "call_9e26e2841fbf488f9deb8c99", "in": 96, "out": 219}
+{"t": 1793417121168, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 21833, "ttft": 72, "tin": 31977, "tout": 51, "cache": 31872, "model": "mimo-v2.6-flash"}
+{"t": 1793417121191, "ev": "rth", "files": 1}
+{"t": 1793417121364, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "write", "st": "success", "cid": "call_5e301ad5a92e44b481d39ac6", "in": 2997, "out": 24}
+{"t": 1793417121370, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 36581, "ttft": 61, "tin": 34066, "tout": 976, "cache": 32064, "model": "mimo-v2.6-flash"}
+{"t": 1793417121393, "ev": "rth", "files": 5}
+{"t": 1793417121489, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "write", "st": "success", "cid": "call_79ad51c7b9ec48999fa36f89", "in": 463, "out": 24}
+{"t": 1793417121494, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 21930, "ttft": 55, "tin": 32891, "tout": 193, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417121516, "ev": "rth", "files": 1}
+{"t": 1793417121883, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 3019, "ttft": 211, "tin": 35065, "tout": 125, "cache": 34112, "model": "mimo-v2.6-flash"}
+{"t": 1793417121894, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "agent": "general-15", "outcome": "completed", "err": "", "aid": "msg_g001a18ffd8130001xIPFQDUFL", "msgs": 7, "tools": 5, "txt": 2, "empty": 2, "txt_len": 353, "dur": 24656}
+{"t": 1793417121933, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "tool": "actor", "st": "success", "cid": "call_5639c2d9588b4c9399106ed0", "in": 75, "out": 455}
+{"t": 1793417126156, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 3668, "ttft": 32, "tin": 35054, "tout": 141, "cache": 34048, "model": "mimo-v2.6-flash"}
+{"t": 1793417126167, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "agent": "general-11", "outcome": "completed", "err": "", "aid": "msg_g001a18ffd8e6d001YJBia4gE8", "msgs": 7, "tools": 5, "txt": 4, "empty": 2, "txt_len": 337, "dur": 42927}
+{"t": 1793417126204, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "actor", "st": "success", "cid": "call_9c22025ced9f4a998b159c4d", "in": 75, "out": 455}
+{"t": 1793417126813, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 4543, "ttft": 58, "tin": 32156, "tout": 244, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417126822, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "agent": "general-14", "outcome": "completed", "err": "", "aid": "msg_g001a18ffd8da3001h3gm6HtJ1", "msgs": 4, "tools": 3, "txt": 1, "empty": 1, "txt_len": 602, "dur": 90091}
+{"t": 1793417126852, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "actor", "st": "success", "cid": "call_03fbf5faac8a4b59a5be0ea8", "in": 75, "out": 1301}
+{"t": 1793417126864, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "actor", "st": "success", "cid": "call_1b2299d566cc4425b6110936", "in": 75, "out": 1715}
+{"t": 1793417127990, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 5582, "ttft": 116, "tin": 33096, "tout": 306, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793417128000, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T11", "agent": "general-12", "outcome": "completed", "err": "", "aid": "msg_g001a18ffd8ee8001E0ynN4Acu", "msgs": 5, "tools": 4, "txt": 2, "empty": 1, "txt_len": 666, "dur": 107807}
+{"t": 1793417128032, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "actor", "st": "success", "cid": "call_e8532cd758f14f5590e2f04a", "in": 75, "out": 451}
+{"t": 1793417128036, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 19493, "ttft": 79, "tin": 78166, "tout": 454, "cache": 65536, "model": "mimo-v2.6-flash"}
+{"t": 1793417129459, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 13460, "ttft": 150, "tin": 32612, "tout": 446, "cache": 32000, "model": "mimo-v2.6-flash"}
+{"t": 1793417129469, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "agent": "general-16", "outcome": "completed", "err": "", "aid": "msg_g001a18ffd734e001yHkDHt485", "msgs": 4, "tools": 3, "txt": 3, "empty": 1, "txt_len": 782, "dur": 92653}
+{"t": 1793417145624, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_6faaddbe529c4b14941a2ea4", "in": 583, "out": 2159}
+{"t": 1793417145633, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "st": "in_progress", "kind": "started"}
+{"t": 1793417145636, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_48048bd12f164ea99de3f349", "in": 701, "out": 114}
+{"t": 1793417145643, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_a59fcccd777042e18f0a2fad", "in": 75, "out": 1610}
+{"t": 1793417145650, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 16344, "ttft": 49, "tin": 81929, "tout": 883, "cache": 73728, "model": "mimo-v2.6-flash"}
+{"t": 1793417145745, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "agent": "general-17"}
+{"t": 1793417188497, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "glob", "st": "success", "cid": "call_900ec13a99274864aad00dfa", "in": 97, "out": 73}
+{"t": 1793417188505, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 42010, "ttft": 150, "tin": 31389, "tout": 99, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417188626, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "read", "st": "success", "cid": "call_9ec01ad8009a427d98598754", "in": 94, "out": 855}
+{"t": 1793417188634, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "st": "in_progress", "kind": "started"}
+{"t": 1793417188636, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "actor", "st": "success", "cid": "call_58de033d30484ba3b0a24eb8", "in": 707, "out": 114}
+{"t": 1793417188664, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "agent": "general-18"}
+{"t": 1793417211359, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "write", "st": "error", "cid": "call_d9aff253251147fbb5231294", "in": 13691, "out": 0}
+{"t": 1793417211362, "ev": "model", "sid": "ses_ffe5e70050dafffeluwIif8M23", "lat": 89772, "ttft": 66, "tin": 272223, "tout": 4714, "cache": 257344, "model": "mimo-v2.6-flash"}
+{"t": 1793417246716, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "glob", "st": "success", "cid": "call_0571ab4326904fa0ac851d89", "in": 97, "out": 73}
+{"t": 1793417246826, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "grep", "st": "success", "cid": "call_c4b60335f1974ea4988ed6c3", "in": 104, "out": 169}
+{"t": 1793417246833, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 56417, "ttft": 127, "tin": 31380, "tout": 153, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417246938, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "glob", "st": "success", "cid": "call_e6b7cace50f14a828953ad1d", "in": 108, "out": 14}
+{"t": 1793417246943, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 53644, "ttft": 65, "tin": 31520, "tout": 70, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417252126, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 4259, "ttft": 79, "tin": 31600, "tout": 197, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417252137, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "agent": "general-17", "outcome": "completed", "err": "", "aid": "msg_g001a18fff78f2001T0rqfH5KH", "msgs": 3, "tools": 2, "txt": 2, "empty": 1, "txt_len": 479, "dur": 106393}
+{"t": 1793417252173, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "actor", "st": "success", "cid": "call_9a1b5b3f8fa54376873ec30f", "in": 75, "out": 1157}
+{"t": 1793417252178, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 103912, "ttft": 156, "tin": 84382, "tout": 485, "cache": 78144, "model": "mimo-v2.6-flash"}
+{"t": 1793417252210, "ev": "rth", "files": 1}
+{"t": 1793417285645, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "read", "st": "success", "cid": "call_d83cfd8840c94445a966e533", "in": 96, "out": 219}
+{"t": 1793417285649, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "mcp_tool_search", "st": "success", "cid": "call_3ea63df4a1d341249bec6bd6", "in": 24, "out": 420}
+{"t": 1793417285655, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 37865, "ttft": 13, "tin": 31626, "tout": 75, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417285679, "ev": "rth", "files": 1}
+{"t": 1793417285783, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "edit", "st": "success", "cid": "call_832e68b99cd24cd79b0d3ac7", "in": 1161, "out": 26}
+{"t": 1793417286175, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "bash", "st": "success", "cid": "call_d45639d1705c47f8a19b700c", "in": 407, "out": 1082}
+{"t": 1793417286183, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "st": "in_progress", "kind": "started"}
+{"t": 1793417286185, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "tool": "actor", "st": "success", "cid": "call_1721207812124e7f98eef1c0", "in": 698, "out": 114}
+{"t": 1793417286191, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 32841, "ttft": 95, "tin": 85902, "tout": 1083, "cache": 84352, "model": "mimo-v2.6-flash"}
+{"t": 1793417286222, "ev": "rth", "files": 1}
+{"t": 1793417286271, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "agent": "general-19"}
+{"t": 1793417292813, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_419cd3bb7a1d4584976c6068", "in": 100, "out": 273}
+{"t": 1793417292949, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_70e15f2a5fc345aab279cd9f", "in": 105, "out": 363}
+{"t": 1793417293079, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_06fd98c7bec047ea89efe844", "in": 94, "out": 281}
+{"t": 1793417293183, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_7b038d00a90a48cd8239fec0", "in": 95, "out": 301}
+{"t": 1793417293189, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 5943, "ttft": 104, "tin": 31389, "tout": 172, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417293228, "ev": "rth", "files": 4}
+{"t": 1793417294047, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 7111, "ttft": 71, "tin": 31956, "tout": 337, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417294057, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T12", "agent": "general-18", "outcome": "completed", "err": "", "aid": "msg_g001a19000102b001EUb7wcRGE", "msgs": 3, "tools": 2, "txt": 1, "empty": 1, "txt_len": 676, "dur": 105393}
+{"t": 1793417297995, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "invalid", "st": "error", "cid": "call_5332f1d0d0834261ad9f6dc6", "in": 283, "out": 0}
+{"t": 1793417297998, "ev": "model", "sid": "ses_ffe5e70050dafffeluwIif8M23", "lat": 82715, "ttft": 72, "tin": 286742, "tout": 4497, "cache": 272192, "model": "mimo-v2.6-flash"}
+{"t": 1793417300561, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "actor", "st": "success", "cid": "call_eaca5357d0a247e180bc0c6b", "in": 75, "out": 1471}
+{"t": 1793417304700, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_caba797c3b204a0f9a1e8754", "in": 397, "out": 26}
+{"t": 1793417304826, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_0f171ba0434b4dbfa03d4515", "in": 595, "out": 26}
+{"t": 1793417304951, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_a52e51e33bac4d32afb35edd", "in": 410, "out": 26}
+{"t": 1793417305081, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_ecba7c3997b84fe5b5967613", "in": 283, "out": 26}
+{"t": 1793417305086, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 11157, "ttft": 59, "tin": 32072, "tout": 644, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417305114, "ev": "rth", "files": 4}
+{"t": 1793417312897, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "bash", "st": "success", "cid": "call_2378d9e715fe436c86fbd120", "in": 177, "out": 48}
+{"t": 1793417312903, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 7002, "ttft": 85, "tin": 32751, "tout": 83, "cache": 32064, "model": "mimo-v2.6-flash"}
+{"t": 1793417312928, "ev": "rth", "files": 4}
+{"t": 1793417317886, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 4268, "ttft": 80, "tin": 32870, "tout": 211, "cache": 32704, "model": "mimo-v2.6-flash"}
+{"t": 1793417317899, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "agent": "general-19", "outcome": "completed", "err": "", "aid": "msg_g001a190007a9c001pZncYOKQz", "msgs": 4, "tools": 3, "txt": 3, "empty": 1, "txt_len": 502, "dur": 31628}
+{"t": 1793417317940, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "agent": "general-19"}
+{"t": 1793417317963, "ev": "rth", "files": 4}
+{"t": 1793417324313, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "edit", "st": "error", "cid": "call_7ba9d6c5cc26463b89445dd0", "in": 1403, "out": 0}
+{"t": 1793417324315, "ev": "model", "sid": "ses_ffe5e70050dafffeluwIif8M23", "lat": 17934, "ttft": 86, "tin": 291404, "tout": 724, "cache": 286720, "model": "mimo-v2.6-flash"}
+{"t": 1793417337514, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "write", "st": "success", "cid": "call_9c6776d258544ce9af2401fb", "in": 1812, "out": 24}
+{"t": 1793417337520, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 18257, "ttft": 108, "tin": 33308, "tout": 686, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417337545, "ev": "rth", "files": 4}
+{"t": 1793417339051, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 787, "ttft": 64, "tin": 34006, "tout": 31, "cache": 33280, "model": "mimo-v2.6-flash"}
+{"t": 1793417339064, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "agent": "general-19", "outcome": "completed", "err": "", "aid": "msg_g001a19000dac5001kJ5r5tL7j", "msgs": 6, "tools": 4, "txt": 4, "empty": 2, "txt_len": 67, "dur": 21123}
+{"t": 1793417339101, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_f0055a4812ee4eb592b01914", "in": 75, "out": 1133}
+{"t": 1793417339107, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "st": "in_progress", "kind": "started"}
+{"t": 1793417339110, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_b897020e431d49e8868f36bb", "in": 700, "out": 114}
+{"t": 1793417339123, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "st": "in_progress", "kind": "started"}
+{"t": 1793417339126, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_af03fb52d93b49e3a15ebc13", "in": 700, "out": 114}
+{"t": 1793417339132, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 52003, "ttft": 93, "tin": 87325, "tout": 734, "cache": 85888, "model": "mimo-v2.6-flash"}
+{"t": 1793417339168, "ev": "rth", "files": 1}
+{"t": 1793417339230, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "agent": "general-20"}
+{"t": 1793417339266, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "agent": "general-21"}
+{"t": 1793417343391, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_1e2ddbf16e6a44459c5fea66", "in": 84, "out": 158}
+{"t": 1793417343395, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 3175, "ttft": 66, "tin": 31390, "tout": 46, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417343420, "ev": "rth", "files": 1}
+{"t": 1793417343785, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_65fa3f5df32c4d278af6d48c", "in": 84, "out": 158}
+{"t": 1793417344657, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "glob", "st": "success", "cid": "call_bdee718876b841c2a19a6763", "in": 96, "out": 303}
+{"t": 1793417344661, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 4463, "ttft": 46, "tin": 31390, "tout": 231, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417344686, "ev": "rth", "files": 1}
+{"t": 1793417346362, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "bash", "st": "success", "cid": "call_cf51b64f21c4464286ec28c8", "in": 406, "out": 431}
+{"t": 1793417363053, "ev": "model", "sid": "ses_ffe5e70050dafffeluwIif8M23", "lat": 6376, "ttft": 107, "tin": 301933, "tout": 442, "cache": 49152, "model": "mimo-v2.6-flash"}
+{"t": 1793417375998, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "glob", "st": "error", "cid": "call_7943107566b8493391e783f3", "in": 117, "out": 0}
+{"t": 1793417376001, "ev": "model", "sid": "ses_ffe5e70050dafffeluwIif8M23", "lat": 9456, "ttft": 74, "tin": 302413, "tout": 375, "cache": 291392, "model": "mimo-v2.6-flash"}
+{"t": 1793417381803, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_5f2d24c9643649d9bc737f8e", "in": 91, "out": 159}
+{"t": 1793417381918, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_b817c83a8fde4712bb4f64c5", "in": 94, "out": 281}
+{"t": 1793417382042, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_0d0b3bdfa2b0418486f5017b", "in": 95, "out": 301}
+{"t": 1793417382047, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 37438, "ttft": 85, "tin": 31544, "tout": 122, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417382075, "ev": "rth", "files": 4}
+{"t": 1793417382171, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_fe3c03c268c946af81914e51", "in": 100, "out": 273}
+{"t": 1793417382304, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_ff387e8ee876435fac80628b", "in": 105, "out": 363}
+{"t": 1793417382421, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_3396e8d6505f4b979a759752", "in": 94, "out": 281}
+{"t": 1793417382544, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_0da1a60eaa1a4dfdb5c12515", "in": 95, "out": 301}
+{"t": 1793417382549, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 36990, "ttft": 138, "tin": 31837, "tout": 203, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417382575, "ev": "rth", "files": 5}
+{"t": 1793417393376, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_62474e04530e46c1bcc6ba1a", "in": 100, "out": 273}
+{"t": 1793417393505, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_2f918c583b3244a2a95c543c", "in": 105, "out": 363}
+{"t": 1793417393510, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 6066, "ttft": 70, "tin": 31950, "tout": 94, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793417393534, "ev": "rth", "files": 6}
+{"t": 1793417393644, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_d02b07e11a824a6888953a97", "in": 397, "out": 26}
+{"t": 1793417393778, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_f170805e544f4926a8f92936", "in": 663, "out": 26}
+{"t": 1793417393897, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_de22049f53114a77851d134e", "in": 410, "out": 26}
+{"t": 1793417394029, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_c9885379d0294960986cd5b0", "in": 283, "out": 26}
+{"t": 1793417394034, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 9492, "ttft": 55, "tin": 32508, "tout": 676, "cache": 3072, "model": "mimo-v2.6-flash"}
+{"t": 1793417394059, "ev": "rth", "files": 5}
+{"t": 1793417413799, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_d4277dcc981d4b71b079c861", "in": 397, "out": 26}
+{"t": 1793417413930, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_9d64e8bbbd854ebdb0106283", "in": 527, "out": 26}
+{"t": 1793417413965, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "bash", "st": "success", "cid": "call_2d7fe69dfe484edba7d74b5e", "in": 199, "out": 48}
+{"t": 1793417413972, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 18965, "ttft": 76, "tin": 33219, "tout": 88, "cache": 32448, "model": "mimo-v2.6-flash"}
+{"t": 1793417414003, "ev": "rth", "files": 5}
+{"t": 1793417414058, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_de100e33259947b6aa83d3e8", "in": 250, "out": 26}
+{"t": 1793417414179, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_ed45ab88a0de40b6a4628260", "in": 221, "out": 26}
+{"t": 1793417414184, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 19949, "ttft": 210, "tin": 32291, "tout": 646, "cache": 31424, "model": "mimo-v2.6-flash"}
+{"t": 1793417414210, "ev": "rth", "files": 6}
+{"t": 1793417417838, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 3096, "ttft": 88, "tin": 33343, "tout": 218, "cache": 33216, "model": "mimo-v2.6-flash"}
+{"t": 1793417417850, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "agent": "general-21", "outcome": "completed", "err": "", "aid": "msg_g001a19002056d001KceWRrJBH", "msgs": 5, "tools": 4, "txt": 3, "empty": 1, "txt_len": 565, "dur": 78584}
+{"t": 1793417417887, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "actor", "st": "success", "cid": "call_51be0f1579a44929af8384da", "in": 75, "out": 452}
+{"t": 1793417417893, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "actor", "st": "success", "cid": "call_8cc8cfc7ceaa49a6918af135", "in": 75, "out": 1110}
+{"t": 1793417417899, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 77579, "ttft": 112, "tin": 89619, "tout": 296, "cache": 84352, "model": "mimo-v2.6-flash"}
+{"t": 1793417417931, "ev": "rth", "files": 1}
+{"t": 1793417431563, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "bash", "st": "success", "cid": "call_eb185eb014374053b5e9b18b", "in": 202, "out": 48}
+{"t": 1793417431568, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 14491, "ttft": 135, "tin": 32972, "tout": 124, "cache": 32256, "model": "mimo-v2.6-flash"}
+{"t": 1793417431593, "ev": "rth", "files": 6}
+{"t": 1793417438380, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 6085, "ttft": 103, "tin": 33132, "tout": 292, "cache": 32960, "model": "mimo-v2.6-flash"}
+{"t": 1793417438394, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "agent": "general-20", "outcome": "completed", "err": "", "aid": "msg_g001a190024a24001q4JxmsChX", "msgs": 6, "tools": 5, "txt": 2, "empty": 1, "txt_len": 893, "dur": 99164}
+{"t": 1793417438434, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_adff910412ec498fb59aad99", "in": 75, "out": 1448}
+{"t": 1793417438839, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_5ed129a65fad45ef878cc778", "in": 200, "out": 279}
+{"t": 1793417438844, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 19664, "ttft": 105, "tin": 90798, "tout": 170, "cache": 84352, "model": "mimo-v2.6-flash"}
+{"t": 1793417438878, "ev": "rth", "files": 1}
+{"t": 1793417438879, "ev": "transform", "msgs": 42, "b": 41443, "a": 41470, "bt": 132078, "bd": 0, "at": 132164, "ad": 0, "trimmed": 0, "pass2": false, "errs": 0, "over_hard": false}
+{"t": 1793417449332, "ev": "model", "sid": "ses_ffe5e70050dafffeluwIif8M23", "lat": 69901, "ttft": 144, "tin": 312593, "tout": 3838, "cache": 302400, "model": "mimo-v2.6-flash"}
+{"t": 1793417449348, "ev": "slice", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "agent": "checkpoint-writer-1", "outcome": "completed", "err": "", "aid": "msg_g001a190017117001cqgfPFrNg", "msgs": 9, "tools": 8, "txt": 4, "empty": 1, "txt_len": 8254, "dur": 498970}
+{"t": 1793417449378, "ev": "slice_pre", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "agent": "checkpoint-writer-1"}
+{"t": 1793417455371, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_bf5473f83f094643921d3f27", "in": 200, "out": 279}
+{"t": 1793417455378, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "st": "in_progress", "kind": "started"}
+{"t": 1793417455381, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_64039c24d27a47d6a7372cb4", "in": 783, "out": 114}
+{"t": 1793417455387, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "st": "in_progress", "kind": "started"}
+{"t": 1793417455389, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_35a49ad6b583424ba1f57370", "in": 785, "out": 114}
+{"t": 1793417455395, "ev": "task", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "st": "in_progress", "kind": "started"}
+{"t": 1793417455398, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_2f68dc2d3bb94a26bfe946d2", "in": 785, "out": 114}
+{"t": 1793417455404, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 15304, "ttft": 70, "tin": 91917, "tout": 876, "cache": 90112, "model": "mimo-v2.6-flash"}
+{"t": 1793417455436, "ev": "rth", "files": 1}
+{"t": 1793417455509, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "agent": "general-22"}
+{"t": 1793417455546, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "agent": "general-23"}
+{"t": 1793417455585, "ev": "slice_pre", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "agent": "general-24"}
+{"t": 1793417458346, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "bash", "st": "success", "cid": "call_94ac2449b5c643f1b9c86e98", "in": 138, "out": 693}
+{"t": 1793417458352, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 1689, "ttft": 56, "tin": 31410, "tout": 70, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417458834, "ev": "verify", "k": "ps1_preflight", "act": "cancel", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "ms": 1, "path": "D:\\EchoCore\\echo-core\\bench\\phase1-baseline\\workspaces\\b6-run2\\|", "why": "missing"}
+{"t": 1793417458835, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "bash", "st": "cancelled", "cid": "call_10e57048546f41f8a773b3fe", "in": 196, "out": 0}
+{"t": 1793417458840, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 1716, "ttft": 102, "tin": 31411, "tout": 93, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417463001, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "bash", "st": "success", "cid": "call_a116d61e70a44154a4e4beee", "in": 143, "out": 578}
+{"t": 1793417463006, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 1345, "ttft": 66, "tin": 31618, "tout": 66, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417468730, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "glob", "st": "success", "cid": "call_745983dcda884d5f975a1478", "in": 96, "out": 303}
+{"t": 1793417468736, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 11602, "ttft": 90, "tin": 31411, "tout": 59, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417469151, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "glob", "st": "success", "cid": "call_019b18d826c14e03a9b75f4e", "in": 96, "out": 303}
+{"t": 1793417469157, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 7385, "ttft": 121, "tin": 31593, "tout": 66, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417469276, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_747a9d737a4f4f7e9a00284c", "in": 100, "out": 328}
+{"t": 1793417469407, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_c209bb1bf40146f8bcdab110", "in": 105, "out": 445}
+{"t": 1793417469559, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_532e7df0a50d4bd18c6ed35d", "in": 94, "out": 329}
+{"t": 1793417469672, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_3bb0892dcdc14598a9dd2229", "in": 95, "out": 339}
+{"t": 1793417469677, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 5925, "ttft": 105, "tin": 31800, "tout": 168, "cache": 28672, "model": "mimo-v2.6-flash"}
+{"t": 1793417469701, "ev": "rth", "files": 4}
+{"t": 1793417485893, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "bash", "st": "success", "cid": "call_d6c15a27102847b691911cd0", "in": 4430, "out": 242}
+{"t": 1793417505017, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_5460e3d5d4a741b88b5310e6", "in": 100, "out": 328}
+{"t": 1793417505148, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_58b5c14890564cae87adf621", "in": 105, "out": 515}
+{"t": 1793417505274, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_4f7a61574bf44ad68347998a", "in": 94, "out": 329}
+{"t": 1793417505408, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_4243b93f01994fe78c90899f", "in": 95, "out": 339}
+{"t": 1793417505414, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 35011, "ttft": 3, "tin": 31581, "tout": 171, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417505444, "ev": "rth", "files": 4}
+{"t": 1793417505550, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_70ab151fff134b6e8949986a", "in": 100, "out": 328}
+{"t": 1793417505682, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_2a8ac37838bd4612a321ff95", "in": 105, "out": 445}
+{"t": 1793417505809, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_adb0e10e2c96476795382859", "in": 94, "out": 329}
+{"t": 1793417505941, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "read", "st": "success", "cid": "call_d4bb8deb020245a8820997d6", "in": 95, "out": 339}
+{"t": 1793417505946, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 35601, "ttft": 74, "tin": 31770, "tout": 170, "cache": 31552, "model": "mimo-v2.6-flash"}
+{"t": 1793417505972, "ev": "rth", "files": 4}
+{"t": 1793417506086, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_90d69592d1e949d68d0c9cfe", "in": 347, "out": 26}
+{"t": 1793417506216, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_7340b855e3b248f295ff46a2", "in": 243, "out": 26}
+{"t": 1793417506674, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_02e1bbe9830d439f884a9c30", "in": 339, "out": 26}
+{"t": 1793417506808, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_a5391288bfca41aa843768d2", "in": 260, "out": 26}
+{"t": 1793417506943, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_3e3455ed62114456be9d7189", "in": 229, "out": 26}
+{"t": 1793417506947, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 36006, "ttft": 5, "tin": 32561, "tout": 550, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417506974, "ev": "rth", "files": 4}
+{"t": 1793417515090, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "bash", "st": "success", "cid": "call_0cf365d654bf457f9c4d330a", "in": 335, "out": 59}
+{"t": 1793417515096, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 3918, "ttft": 51, "tin": 33154, "tout": 131, "cache": 32512, "model": "mimo-v2.6-flash"}
+{"t": 1793417515121, "ev": "rth", "files": 4}
+{"t": 1793417530162, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 9666, "ttft": 94, "tin": 33330, "tout": 361, "cache": 33088, "model": "mimo-v2.6-flash"}
+{"t": 1793417530175, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "agent": "general-22", "outcome": "completed", "err": "", "aid": "msg_g001a19003906c001o1tHafOmx", "msgs": 6, "tools": 5, "txt": 1, "empty": 1, "txt_len": 784, "dur": 74666}
+{"t": 1793417530215, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "actor", "st": "success", "cid": "call_40bc8c275b0e4e119b10e738", "in": 75, "out": 1581}
+{"t": 1793417530221, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 73694, "ttft": 138, "tin": 92985, "tout": 1627, "cache": 91904, "model": "mimo-v2.6-flash"}
+{"t": 1793417530254, "ev": "rth", "files": 1}
+{"t": 1793417539044, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "write", "st": "error", "cid": "call_ab8d60311b424ecda7b64a60", "in": 14741, "out": 0}
+{"t": 1793417539047, "ev": "model", "sid": "ses_ffe5e70050dafffeluwIif8M23", "lat": 80739, "ttft": 2, "tin": 316721, "tout": 4673, "cache": 312576, "model": "mimo-v2.6-flash"}
+{"t": 1793417544089, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_5f62269c7e664d208896da28", "in": 347, "out": 26}
+{"t": 1793417544209, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_db3a4fe437aa43dbad0d7d8e", "in": 347, "out": 26}
+{"t": 1793417544343, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_0fffa1a3592243c3907b8470", "in": 243, "out": 26}
+{"t": 1793417544470, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_32ac5d0464264da18694be59", "in": 679, "out": 26}
+{"t": 1793417544597, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_7c08fb41303a4e69a69f5e6a", "in": 481, "out": 26}
+{"t": 1793417544721, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_87e3d7bb83db451386494bed", "in": 258, "out": 26}
+{"t": 1793417544847, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_1ddd77c69343420498ec5e2e", "in": 260, "out": 26}
+{"t": 1793417544970, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_cf2a6d18a0c5445a81003984", "in": 229, "out": 26}
+{"t": 1793417544975, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 38153, "ttft": 97, "tin": 32533, "tout": 640, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417545004, "ev": "rth", "files": 4}
+{"t": 1793417545103, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "edit", "st": "success", "cid": "call_e1484d2962684b80a43dfee5", "in": 229, "out": 26}
+{"t": 1793417545107, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 38682, "ttft": 107, "tin": 32373, "tout": 601, "cache": 31360, "model": "mimo-v2.6-flash"}
+{"t": 1793417545134, "ev": "rth", "files": 4}
+{"t": 1793417546505, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "bash", "st": "success", "cid": "call_8aa4f8513f5a4d7aa80c2e12", "in": 198, "out": 272}
+{"t": 1793417620446, "ev": "model", "sid": "ses_ffe5e70050dafffeluwIif8M23", "lat": 76478, "ttft": 78, "tin": 331199, "tout": 4646, "cache": 316672, "model": "mimo-v2.6-flash"}
+{"t": 1793417620463, "ev": "slice", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "agent": "checkpoint-writer-1", "outcome": "completed", "err": "", "aid": "msg_g001a19003edfe0013foxcsakp", "msgs": 11, "tools": 9, "txt": 6, "empty": 2, "txt_len": 11947, "dur": 171084}
+{"t": 1793417620494, "ev": "slice_pre", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "agent": "checkpoint-writer-1"}
+{"t": 1793417634236, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "bash", "st": "success", "cid": "call_c7558bbf84c646fe9e5de787", "in": 182, "out": 58}
+{"t": 1793417634242, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 88241, "ttft": 91, "tin": 33208, "tout": 94, "cache": 32512, "model": "mimo-v2.6-flash"}
+{"t": 1793417634270, "ev": "rth", "files": 4}
+{"t": 1793417634369, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "bash", "st": "success", "cid": "call_5fa7b53d42de49dda747c0fb", "in": 183, "out": 59}
+{"t": 1793417634374, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 88352, "ttft": 67, "tin": 33016, "tout": 103, "cache": 32320, "model": "mimo-v2.6-flash"}
+{"t": 1793417634397, "ev": "rth", "files": 4}
+{"t": 1793417643773, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 7512, "ttft": 77, "tin": 33164, "tout": 314, "cache": 32960, "model": "mimo-v2.6-flash"}
+{"t": 1793417643786, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "agent": "general-24", "outcome": "completed", "err": "", "aid": "msg_g001a190056258001uD7t6KRzy", "msgs": 5, "tools": 4, "txt": 2, "empty": 1, "txt_len": 701, "dur": 188200}
+{"t": 1793417643842, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "actor", "st": "success", "cid": "call_ff9f70ba038b4696800db480", "in": 75, "out": 446}
+{"t": 1793417643849, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "tool": "actor", "st": "success", "cid": "call_432af71aa336471ea2a225cc", "in": 75, "out": 1526}
+{"t": 1793417643855, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 101593, "ttft": 60, "tin": 95684, "tout": 227, "cache": 90112, "model": "mimo-v2.6-flash"}
+{"t": 1793417643889, "ev": "rth", "files": 1}
+{"t": 1793417646025, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 9721, "ttft": 64, "tin": 33346, "tout": 459, "cache": 33152, "model": "mimo-v2.6-flash"}
+{"t": 1793417646036, "ev": "slice", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": "T13", "agent": "general-23", "outcome": "completed", "err": "", "aid": "msg_g001a1900561d8001l70RfaKU6", "msgs": 6, "tools": 5, "txt": 3, "empty": 1, "txt_len": 1066, "dur": 190490}
+{"t": 1793417649083, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_c1c0779a5b7043f795518c4d", "in": 198, "out": 272}
+{"t": 1793417649089, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "actor", "st": "success", "cid": "call_5858e930d8d044658710e5f3", "in": 75, "out": 1912}
+{"t": 1793417649096, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 3571, "ttft": 94, "tin": 97039, "tout": 175, "cache": 90112, "model": "mimo-v2.6-flash"}
+{"t": 1793417649124, "ev": "rth", "files": 1}
+{"t": 1793417666357, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_927d411c6bcb48719411512d", "in": 1407, "out": 322}
+{"t": 1793417666364, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 7795, "ttft": 51, "tin": 98476, "tout": 616, "cache": 90112, "model": "mimo-v2.6-flash"}
+{"t": 1793417666397, "ev": "rth", "files": 1}
+{"t": 1793417686928, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_e84e3d1385ac489eb4af3e11", "in": 1973, "out": 3154}
+{"t": 1793417687336, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_52fb59b35aec43c7b21dc7e4", "in": 369, "out": 556}
+{"t": 1793417687342, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 19902, "ttft": 81, "tin": 99221, "tout": 828, "cache": 98432, "model": "mimo-v2.6-flash"}
+{"t": 1793417687379, "ev": "rth", "files": 1}
+{"t": 1793417710041, "ev": "tool", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "tool": "write", "st": "error", "cid": "call_b7a23b31158144fca79f15e4", "in": 14898, "out": 0}
+{"t": 1793417710043, "ev": "model", "sid": "ses_ffe5e70050dafffeluwIif8M23", "lat": 86818, "ttft": 106, "tin": 336135, "tout": 4703, "cache": 331136, "model": "mimo-v2.6-flash"}
+{"t": 1793417716180, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_237b031ffb8a4084a9d85ffd", "in": 288, "out": 13771}
+{"t": 1793417716511, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_480c012674df47f2bf5a8c40", "in": 2256, "out": 994}
+{"t": 1793417716518, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 18663, "ttft": 111, "tin": 101571, "tout": 905, "cache": 99200, "model": "mimo-v2.6-flash"}
+{"t": 1793417716554, "ev": "rth", "files": 1}
+{"t": 1793417722718, "ev": "model", "sid": "ses_ffe5e70050dafffeluwIif8M23", "lat": 7803, "ttft": 99, "tin": 350643, "tout": 267, "cache": 336128, "model": "mimo-v2.6-flash"}
+{"t": 1793417722737, "ev": "slice", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "agent": "checkpoint-writer-1", "outcome": "completed", "err": "", "aid": "msg_g001a1900689f5001k9j0rv58p", "msgs": 13, "tools": 10, "txt": 8, "empty": 3, "txt_len": 469, "dur": 102243}
+{"t": 1793417722770, "ev": "slice_pre", "sid": "ses_ffe5e70050dafffeluwIif8M23", "tid": null, "agent": "checkpoint-writer-1"}
+{"t": 1793417732041, "ev": "tool", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "tid": null, "tool": "bash", "st": "success", "cid": "call_e1bb9de49b5545c19754385a", "in": 1187, "out": 1397}
+{"t": 1793417732047, "ev": "model", "sid": "ses_ffe5e70294ba1ffezuPmgky7Ua", "lat": 13269, "ttft": 143, "tin": 107621, "tout": 669, "cache": 101568, "model": "mimo-v2.6-flash"}

@@ -1,0 +1,42 @@
+{
+  "run_id": "B2-R1",
+  "benchmark": "B2",
+  "mode": "serial",
+  "started_at": "2026-10-31T12:32:17+0800",
+  "finished_at": "2026-10-31T12:32:29+0800",
+  "duration_s": 12.274,
+  "exit_code": 0,
+  "stdout_tail": "Reading the task file now.\nIn `D:\\EchoCore\\echo-core\\bench\\repo-b2\\`, count the records in each of the five JSON files (`log1.json`–`log5.json`), write a Markdown table in `report.md` listing each filename with its count (3, 4, 2, 5, 3 respectively), append a total-records row (17), and keep model calls ≤ 10 — B2_DONE.\n",
+  "stderr_tail": "\u001b[0m\n> build · mimo-v2.6-flash\n\u001b[0m\n\u001b[0m→ \u001b[0mRead D:\\EchoCore\\echo-core\\bench\\tasks\\b2.md\n\u001b[0m→ \u001b[0mRead D:\\EchoCore\\echo-core\\bench\\tasks\\b2.md\n\u001b[0m→ \u001b[0mRead D:\\EchoCore\\echo-core\\bench\\tasks\\b2.md\n",
+  "verification": {
+    "stdout_contains_expected": true,
+    "human_note": "serial harness verification via terminal token"
+  },
+  "metrics": {
+    "model_calls": 2,
+    "input_tokens": 79633,
+    "cache_tokens": 39616,
+    "output_tokens": 190,
+    "non_cache_input": 40017,
+    "tool_calls": 1,
+    "tool_errors": 0,
+    "tool_by_tid": {
+      "null": 1
+    },
+    "model_by_tid": {
+      "null": 2
+    },
+    "model_by_agent": {},
+    "error_events": 0,
+    "retry_events": 0,
+    "event_types": {
+      "slice_pre": 1,
+      "tool": 1,
+      "model": 2,
+      "rth": 1,
+      "slice": 1
+    }
+  },
+  "actual_cost_cny": null,
+  "cost_note": "C1 records tokens only; monetary cost not exposed"
+}

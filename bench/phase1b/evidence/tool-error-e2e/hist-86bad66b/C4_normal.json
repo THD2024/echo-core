@@ -1,0 +1,90 @@
+{
+  "case_id": "C4_normal",
+  "started_at": "2026-10-31T13:28:48+0800",
+  "duration_s": 9.549,
+  "exit_code": 0,
+  "stdout_tail": "Reading the requested file.\nCASE_C4_DONE\n",
+  "stderr_tail": "\u001b[0m\n> build · mimo-v2.6-flash\n\u001b[0m\n\u001b[0m→ \u001b[0mRead D:\\EchoCore\\echo-core\\bench\\phase1b\\serial_cost.py\u001b[90m [limit=5]\u001b[0m\n\u001b[0m→ \u001b[0mRead D:\\EchoCore\\echo-core\\bench\\phase1b\\serial_cost.py\u001b[90m [limit=5]\u001b[0m\n\u001b[0m→ \u001b[0mRead D:\\EchoCore\\echo-core\\bench\\phase1b\\serial_cost.py\u001b[90m [limit=5]\u001b[0m\n",
+  "window_event_count": 6,
+  "tools": [
+    {
+      "t": 1793424535793,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f9164fdffeawkQxdy891",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "st": "success",
+      "cid": "call_d6256f7b11224943928f1da3"
+    }
+  ],
+  "errors": [],
+  "models": [
+    {
+      "t": 1793424535805,
+      "ev": "model",
+      "sid": "ses_ffe5e6f9164fdffeawkQxdy891",
+      "tid": null,
+      "agent": "main",
+      "tin": 39187,
+      "tout": 70,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793424537534,
+      "ev": "model",
+      "sid": "ses_ffe5e6f9164fdffeawkQxdy891",
+      "tid": null,
+      "agent": "main",
+      "tin": 39415,
+      "tout": 37,
+      "model": "mimo-v2.6-flash"
+    }
+  ],
+  "all_events": [
+    {
+      "t": 1793424530798,
+      "ev": "slice_pre",
+      "sid": "ses_ffe5e6f9164fdffeawkQxdy891",
+      "tid": null,
+      "agent": "main"
+    },
+    {
+      "t": 1793424535793,
+      "ev": "tool",
+      "sid": "ses_ffe5e6f9164fdffeawkQxdy891",
+      "tid": null,
+      "agent": "main",
+      "tool": "read",
+      "st": "success",
+      "cid": "call_d6256f7b11224943928f1da3"
+    },
+    {
+      "t": 1793424535805,
+      "ev": "model",
+      "sid": "ses_ffe5e6f9164fdffeawkQxdy891",
+      "tid": null,
+      "agent": "main",
+      "tin": 39187,
+      "tout": 70,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793424537534,
+      "ev": "model",
+      "sid": "ses_ffe5e6f9164fdffeawkQxdy891",
+      "tid": null,
+      "agent": "main",
+      "tin": 39415,
+      "tout": 37,
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "t": 1793424537556,
+      "ev": "slice",
+      "sid": "ses_ffe5e6f9164fdffeawkQxdy891",
+      "tid": null,
+      "agent": "main"
+    }
+  ]
+}

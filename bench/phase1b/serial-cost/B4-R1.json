@@ -1,0 +1,38 @@
+{
+  "run_id": "B4-R1",
+  "benchmark": "B4",
+  "mode": "serial",
+  "started_at": "2026-10-31T12:32:51+0800",
+  "finished_at": "2026-10-31T12:32:58+0800",
+  "duration_s": 7.093,
+  "exit_code": 0,
+  "stdout_tail": "Based on the tool surface available in this session, MiMoCode exposes these three categories:\n\n1. **Search** — `glob` (find files by pattern) and `grep` (search file contents by regex)\n2. **File** — `read`, `write`, and `edit` for reading, creating, and modifying files on disk\n3. **Shell** — `bash` for executing terminal commands (git, npm, docker, etc.) in a persistent session\n\nB4_DONE\n",
+  "stderr_tail": "\u001b[0m\n> build · mimo-v2.6-flash\n\u001b[0m\n",
+  "verification": {
+    "stdout_contains_expected": true,
+    "human_note": "serial harness verification via terminal token"
+  },
+  "metrics": {
+    "model_calls": 1,
+    "input_tokens": 39616,
+    "cache_tokens": 36864,
+    "output_tokens": 145,
+    "non_cache_input": 2752,
+    "tool_calls": 0,
+    "tool_errors": 0,
+    "tool_by_tid": {},
+    "model_by_tid": {
+      "null": 1
+    },
+    "model_by_agent": {},
+    "error_events": 0,
+    "retry_events": 0,
+    "event_types": {
+      "slice_pre": 1,
+      "model": 1,
+      "slice": 1
+    }
+  },
+  "actual_cost_cny": null,
+  "cost_note": "C1 records tokens only; monetary cost not exposed"
+}
