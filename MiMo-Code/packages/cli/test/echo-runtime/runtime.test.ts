@@ -150,13 +150,13 @@ test("concurrent initialize and shutdown calls share one operation each", async 
   expect(runtime.lifecycle.snapshot().state).toBe("Stopped")
 })
 
-test("rejects shutdown before initialization without changing lifecycle state", () => {
+test("rejects shutdown before initialization without changing lifecycle state", async () => {
   const runtime = createCoreRuntime({
     initialize: () => {},
     shutdown: () => {},
   })
 
-  expect(() => runtime.requestShutdown()).toThrow(RuntimeLifecycleTransitionError)
+  await expect(runtime.requestShutdown()).rejects.toBeInstanceOf(RuntimeLifecycleTransitionError)
   expect(runtime.lifecycle.snapshot()).toEqual({ state: "Created", revision: 0 })
 })
 
