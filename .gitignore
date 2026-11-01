@@ -8,14 +8,13 @@ auth.json
 .mimocode.jsonc
 secrets/
 
-# 记忆与个人数据
-memory/
-**/memory/
-MEMORY.md
-checkpoint.md
-notes.md
-MiMoMemory/
-MiMoCodeMemory/
+# 记忆与个人数据（仅根目录；源码中的 memory/ 模块必须入仓）
+/memory/
+/MEMORY.md
+/checkpoint.md
+/notes.md
+/MiMoMemory/
+/MiMoCodeMemory/
 
 # 数据库与运行时
 *.db
