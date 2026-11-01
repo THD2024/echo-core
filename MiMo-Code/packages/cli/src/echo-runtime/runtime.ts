@@ -82,7 +82,7 @@ export function createCoreRuntime(hooks: CoreRuntimeLifecycleHooks): CoreRuntime
     controller.beginRunning()
   }
 
-  const requestShutdown = (): Promise<void> => {
+  const requestShutdown = async (): Promise<void> => {
     if (shutdown) return shutdown
 
     // A Host shutdown request received during initialization is queued behind
@@ -91,7 +91,8 @@ export function createCoreRuntime(hooks: CoreRuntimeLifecycleHooks): CoreRuntime
       if (!initialization) {
         throw new Error("Core Runtime is initializing without an initialization operation")
       }
-      return initialization.then(() => requestShutdown())
+      await initialization
+      return requestShutdown()
     }
 
     controller.beginStopping()
