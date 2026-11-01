@@ -8,6 +8,8 @@ import {
  *
  * These hooks must only initialize and release Runtime-owned foundations.
  * They must not take ownership of functional-system initialization or resources.
+ * shutdown() must also tolerate partial initialization because it is called
+ * after initialize() fails.
  */
 export interface CoreRuntimeLifecycleHooks {
   initialize(): void | Promise<void>
