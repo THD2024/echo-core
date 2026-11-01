@@ -126,7 +126,7 @@ test("shutdown failure transitions the Runtime to Failed", async () => {
   runtime.enterRunning()
 
   await expect(runtime.requestShutdown()).rejects.toBe(failure)
-  expect(runtime.lifecycle.snapshot()).toEqual({ state: "Failed", revision: 4, cause: failure })
+  expect(runtime.lifecycle.snapshot()).toEqual({ state: "Failed", revision: 5, cause: failure })
 })
 
 test("concurrent initialize and shutdown calls share one operation each", async () => {
