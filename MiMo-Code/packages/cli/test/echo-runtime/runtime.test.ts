@@ -182,3 +182,18 @@ test("a queued shutdown request preserves initialization failure and does not cl
   expect(cleanupCalls).toBe(1)
   expect(runtime.lifecycle.snapshot()).toEqual({ state: "Failed", revision: 2, cause: original })
 })
+
+test("does not reinitialize a Runtime instance after it becomes Ready or Stopped", async () => {
+  const runtime = createCoreRuntime({
+    initialize: () => {},
+    shutdown: () => {},
+  })
+
+  await runtime.initialize()
+  await expect(runtime.initialize()).rejects.toBeInstanceOf(RuntimeLifecycleTransitionError)
+  expect(runtime.lifecycle.snapshot().state).toBe("Ready")
+
+  await runtime.requestShutdown()
+  await expect(runtime.initialize()).rejects.toBeInstanceOf(RuntimeLifecycleTransitionError)
+  expect(runtime.lifecycle.snapshot().state).toBe("Stopped")
+})
