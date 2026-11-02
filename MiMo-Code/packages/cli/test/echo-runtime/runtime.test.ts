@@ -175,10 +175,14 @@ test("a queued shutdown request preserves initialization failure and does not cl
   const initializing = runtime.initialize()
   await Promise.resolve()
   const stopping = runtime.requestShutdown()
+  // Attach a rejection handler before initialization is allowed to fail.
+  // Both promises reject with the original cause; delaying this handler lets
+  // Bun report the queued shutdown rejection as unhandled.
+  const stoppingOutcome = stopping.catch((error: unknown) => error)
   gate.resolve()
 
   await expect(initializing).rejects.toBe(original)
-  await expect(stopping).rejects.toBe(original)
+  await expect(stoppingOutcome).resolves.toBe(original)
   expect(cleanupCalls).toBe(1)
   expect(runtime.lifecycle.snapshot()).toEqual({ state: "Failed", revision: 2, cause: original })
 })
