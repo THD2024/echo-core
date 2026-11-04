@@ -20,7 +20,7 @@
 | Echo Core git | `1fb512e150d59ae42693dca4b88f81bec84dbbcc` branch `main` |
 | Echo Core worktree | has uncommitted changes (len=212 porcelain lines) — **recorded, not cleaned** |
 | C1 gates.json | c1:true, enabled:true, soft_limit:75000, hard_limit:110000 |
-| C1 plugin path | `C:\Users\微醺\.config\mimocode\context-gate\index.ts` |
+| C1 plugin path | `C:\Users\<user>\.config\mimocode\context-gate\index.ts` |
 | stats.jsonl lines at freeze | 9333 |
 | Model observed in C1 | `mimo-v2.6-flash` |
 

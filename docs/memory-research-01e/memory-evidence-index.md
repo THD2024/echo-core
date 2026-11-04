@@ -125,7 +125,7 @@
 | memory_fts 897 行 | mimocode.db 只读抽样（2026-10-31） | VERIFIED |
 | 分布：sessions/checkpoint 362, free 338, projects 168, progress 29 | 同上 | VERIFIED |
 | 迁移 56 条 | `__drizzle_migrations` 表 | VERIFIED |
-| Memory 根：`C:\Users\微醺\.local\share\mimocode\memory\` | paths.ts + 实际目录 | VERIFIED |
+| Memory 根：`C:\Users\<user>\.local\share\mimocode\memory\` | paths.ts + 实际目录 | VERIFIED |
 
 ---
 

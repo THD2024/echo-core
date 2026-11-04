@@ -12,7 +12,7 @@
 |----|-----|
 | 构建命令 | `C:\Temp\bun\bun.exe run script/build.ts --single`（ASCII 路径规避 ENOENT） |
 | 构建环境变量 | `MIMOCODE_CHANNEL=local` `MIMOCODE_VERSION=local` |
-| 二进制路径 | `C:\Users\微醺\.mimocode\bin\mimo.exe` |
+| 二进制路径 | `C:\Users\<user>\.mimocode\bin\mimo.exe` |
 | SHA256 | `bb4c2e12b7bf7651d8ba553ef73fb076edc0550502128c04ae0bd37e2acf8ad7` |
 | SIZE | 136009728 bytes |
 | `--version` 输出 | `local` |

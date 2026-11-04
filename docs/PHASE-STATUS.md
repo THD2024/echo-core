@@ -12,7 +12,7 @@
 | MiMoCode | v0.1.16（`mimo --version`），本机 mimo.exe 135,978,496 B |
 | 源码镜像 | `D:\EchoCore\MiMo-Code`，tag `v0.1.16` = `b8dbe084` |
 | 研发目录 | `D:\EchoCore\echo-core`，git main @ `1fb512e` |
-| 生产环境 | `C:\Users\微醺\.config\mimocode\` |
+| 生产环境 | `C:\Users\<user>\.config\mimocode\` |
 | C1 状态 | **已生效并冒烟通过**（2026-10-31 重启后实测） |
 
 ## 2. Phase 1 本轮完成

@@ -87,7 +87,7 @@ C1 账本只记 Token（`tin`/`cache`/`tout`），**不记货币成本**（`actu
 
 **生效条件：** 需重建/重启 CLI。当前进程仍用旧二进制；`build:local` 在 bun compile 复制 runtime 时 `ENOENT` 失败（临时目录/权限），**未产出新 mimo 二进制**。
 
-### 2.2 C1（`C:\Users\微醺\.config\mimocode\context-gate\index.ts`）
+### 2.2 C1（`C:\Users\<user>\.config\mimocode\context-gate\index.ts`）
 
 - `peekTidByAgent`  
 - `metrics.model_call` / `metrics.tool_call` 使用 `peekTidByAgent`  
@@ -205,7 +205,7 @@ Bun v1.3.14 (Windows x64)
 | 默认 TEMP 可写 | 通过 |
 | ASCII TEMP（`C:\Temp\BunBuild`）仍失败 | 失败 — TEMP 本身不是根因 |
 | 最小 `Bun.build({compile})` 探针 | 同样 ENOENT — 与 mimo 源码无关 |
-| `process.execPath` = `C:\Users\微醺\AppData\Roaming\npm\...\bun.exe` | **路径含中文用户名「微醺」** |
+| `process.execPath` = `C:\Users\<user>\AppData\Roaming\npm\...\bun.exe` | **路径含中文用户名「（已脱敏）」** |
 | 将 bun.exe 复制到 `C:\Temp\bun\bun.exe` 后最小 compile | **BUILD_OK** |
 
 **根因：** Bun 1.3.14 在 `compile` 时会把 **`process.execPath` 自身** 复制到临时文件；当 execPath 含非 ASCII 字符（中文用户名）时，内部复制路径解析失败 → ENOENT。与构建脚本、依赖、工作目录无关。
@@ -227,7 +227,7 @@ Set-Location "D:\EchoCore\MiMo-Code\packages\cli"
 
 | 项 | 值 |
 |----|-----|
-| 安装路径 | `C:\Users\微醺\.mimocode\bin\mimo.exe` |
+| 安装路径 | `C:\Users\<user>\.mimocode\bin\mimo.exe` |
 | 构建产物 | `D:\EchoCore\MiMo-Code\packages\cli\dist\mimocode-windows-x64\bin\mimo.exe` |
 | Size | 135,996,928 |
 | mtime | 2026-10-31T13:09:23+0800 |
@@ -480,7 +480,7 @@ ev:error kind=tool error_class=tool_param tid=T_FAULT_PARAM agent=fault-agent-1
   "tools": 2,
   "errors": 2,
   "error_classes": ["tool_execution", "tool_execution"],
-  "stderr_tail": "Error: File not found: C:\\Users\\微醺\\12345\nError: Invalid arguments for the read tool: expected string, received undefined → at file_path"
+  "stderr_tail": "Error: File not found: C:\\Users\\<user>\\12345\nError: Invalid arguments for the read tool: expected string, received undefined → at file_path"
 }
 ```
 
@@ -545,13 +545,13 @@ ev:error kind=tool error_class=tool_param tid=T_FAULT_PARAM agent=fault-agent-1
 ```json
 {
   "binary_identity": {
-    "path": "C:\\Users\\微醺\\.mimocode\\bin\\mimo.exe",
+    "path": "C:\\Users\\<user>\\.mimocode\\bin\\mimo.exe",
     "sha256": "86bad66b5451f7e4096a2abcd490404d2ff95c616b9cb9215d9d86bf9a254685",
     "matches_expected": true
   },
   "running_processes": [
-    {"Id": 18232, "Path": "C:\\Users\\微醺\\.mimocode\\bin\\mimo.exe"},
-    {"Id": 27456, "Path": "C:\\Users\\微醺\\.mimocode\\bin\\mimo.exe"}
+    {"Id": 18232, "Path": "C:\\Users\\<user>\\.mimocode\\bin\\mimo.exe"},
+    {"Id": 27456, "Path": "C:\\Users\\<user>\\.mimocode\\bin\\mimo.exe"}
   ],
   "error_classification": {
     "total_tool_errors": 4,
@@ -595,7 +595,7 @@ ev:error kind=tool error_class=tool_param tid=T_FAULT_PARAM agent=fault-agent-1
 
 ## 9. 配置变更（非代码修复）
 
-`C:\Users\微醺\.config\mimocode\mimocode.jsonc`：
+`C:\Users\<user>\.config\mimocode\mimocode.jsonc`：
 
 - `"model": "deepseek/deepseek-flash"` → `"xiaomi/mimo-v2.6-flash"`  
 - 删除 DeepSeek `provider` 块（余额 402）  
@@ -808,7 +808,7 @@ ev:error kind=tool error_class=tool_param tid=T_FAULT_PARAM agent=fault-agent-1
 
 | 项 | 值 |
 |----|-----|
-| 正式路径 | `C:\Users\微醺\.mimocode\bin\mimo.exe` |
+| 正式路径 | `C:\Users\<user>\.mimocode\bin\mimo.exe` |
 | **SHA256** | **`dc28dff15cdda164eedc4c935563001231a13ba4179821dc25db2c4408949eaa`** |
 | 旧二进制备份 | `bin\backups\mimo.exe.20261031_170829.801c91d0`（SHA256 `801c91d0…7bdd`） |
 | 备用构建（勿动） | `C:\Temp\bun\mimo-new.exe`（SHA256 `86bad66b…4685`） |

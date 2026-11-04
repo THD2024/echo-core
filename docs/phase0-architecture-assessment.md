@@ -43,7 +43,7 @@
 │ 第二层：Echo 外层（人格 + 规则 + 记忆 + 桌面集成 + 投影插件）          │
 │                                                                 │
 │  [实存且在跑]                                                     │
-│   C:\Users\微醺\.config\mimocode\context-gate\                    │
+│   C:\Users\<user>\.config\mimocode\context-gate\                    │
 │       index.ts(413行)  chat.messages.transform 视图投影            │
 │                       onEvent → stats.jsonl 观测账本               │
 │       verify.ts       verify 预检（含 -File 误报缺陷）              │
@@ -60,9 +60,9 @@
 │       BRIEF-VERIFIER,TRIAGE,HANDOFF,RECOVERY}.md + wu.py          │
 │                                                                 │
 │  [死代码，从未注册]                                                │
-│   C:\Users\微醺\.mimocode\tools\*.ts   30+ 个 TS（含 46.9KB        │
+│   C:\Users\<user>\.mimocode\tools\*.ts   30+ 个 TS（含 46.9KB        │
 │       memory-manager.ts、读 auth.json 的 model-router.ts）         │
-│   C:\Users\微醺\.mimocode\hooks\vision-routing.ts.disabled         │
+│   C:\Users\<user>\.mimocode\hooks\vision-routing.ts.disabled         │
 └─────────────────────────────────────────────────────────────────┘
                               ↓ 唯一接口：packages/plugin 的 24 个 Hooks
 ┌─────────────────────────────────────────────────────────────────┐
@@ -201,7 +201,7 @@
 | 4 | 任务账本与状态管理 | **实存但链路死**：wu.py 人工用过、自动 0；stats.jsonl 才是真账本 | `orchestrator\wu.py` + `workunits.json`（12+ 条，5 条 EXCEEDED）；`context-gate\stats.jsonl` | 可追溯台账 | wu 无实效证据；stats **0 行 error** | 中（task 树重复状态管理） | wu.py **归档**；stats **扩展 error 行（C1）**；任务归因**迁核心** |
 | 5 | 失败分类与错误恢复 | RECOVERY 四分类=**仅文档**；verify-gate=**实存在跑** | `orchestrator\RECOVERY.md`；`context-gate\verify.ts`（99 verify 事件） | 失败不可见、自检漏 | verify 有 BOM 自动修复，但 **-File 误报实证 4+ 次**（2026-10-15/10-19） | 高（retry.ts/classify.ts 原生真分类器） | RECOVERY **删除**；verify.ts **修 -File 后保留** |
 | 6 | Token 预算意识 | 多点半成品：context-gate 闸**在跑**；B0 断链；cost_gate / watchdog **隔离未部署** | `gates.json`（soft 75K/hard 110K）；`wp4.9` allocator 链断裂；`wp6-final\src\cost_gate.py`（测试 46/0）；`wp4.2/4.7\implement\budget_watchdog.py`（24/24，未部署） | 超支无闸、成本低估 | 投影 65.78% 有效；B0 实测 84/84 `tool_call_limit=null`、drive58 从不调 allocator | 中（core 180K 才是真边界） | cost_gate 三态语义**并入核心**；watchdog 语义**重构进 C2**；B0 **删除** |
-| 7 | 工具与角色调度 | **死代码**（30+ TS 从未加载） | `C:\Users\微醺\.mimocode\tools\{model-router,circuit-breaker,task-state,gui-agent,semantic-gui,memory-manager,vision-gateway,...}.ts` | 模型分档、熔断、任务态 | 【无证据】0 次加载；DB 中 memory-manager 调用全集中在 2026-09-23、其后归零 | 全部重复或需底层接口 | **删除/归档**；有效语义在核心**重写** |
+| 7 | 工具与角色调度 | **死代码**（30+ TS 从未加载） | `C:\Users\<user>\.mimocode\tools\{model-router,circuit-breaker,task-state,gui-agent,semantic-gui,memory-manager,vision-gateway,...}.ts` | 模型分档、熔断、任务态 | 【无证据】0 次加载；DB 中 memory-manager 调用全集中在 2026-09-23、其后归零 | 全部重复或需底层接口 | **删除/归档**；有效语义在核心**重写** |
 | 8 | 上下文与记忆管理 | 投影 + roundtrip_hint **实证有效**；memory-manager 闸**死代码**；四层库在但旁路直写 | `context-gate\{index.ts 413行, gates.json}`；`~/.mimocode\tools\memory-manager.ts`（未注册）；`D:\MiMoCodeMemory\` 5 层实存 | 上下文长变慢变贵、记忆无治理 | 投影 65.78% / errs=0（实测 8,417 行）；四层库工具路径 09-23 后 0 写入 | 中（compaction/checkpoint/memory FTS 原生） | 投影**留外层**；memory-manager **删除、核心重写**；gates-changelog 治理**保留** |
 | 9 | 人格、执行风格与行为规则 | **实存生效**（文件 + 脚本 + 记忆规则） | `D:\MiMoMemory\identity\Echo.md`（2026-10-15 权威源）、`echo-avatar.*`、`Set-MimoTerminalIcon.ps1`（E2E PASS）、MEMORY.md Rules 协作纪律 | 人格一致性、协作边界 | 行为层真实（用户硬要求跨会话）；无自动度量 | **无重复**（MiMoCode 无人格层） | **保留并迁入 Echo 独立核心**（最有价值差异化资产） |
 | 10 | 安全、稳定与流程控制 | deny 规则**在跑**；MIMOCODE_HOME=原生能力；steward **已删**；保护清单=记忆约定 | `.mimocode\mimocode.json`（7 条 shutdown 族 deny）；`PHASE-STATUS.md` §5；`MEMORY-rules-protection-lists.md` | 误破坏、误触高危 | deny 在配置层生效（**无触发样本 = 【无证据】实战拦截**） | 低（permission 系统原生但规则是 Echo 的） | deny / 保护清单**保留**；MIMOCODE_HOME **保留用于隔离**；steward **维持删除** |

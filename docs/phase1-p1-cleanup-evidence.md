@@ -11,7 +11,7 @@
 
 | 项 | 实测 |
 |---|---|
-| 文件位置 | `C:\Users\微醺\.mimocode\tools\` |
+| 文件位置 | `C:\Users\<user>\.mimocode\tools\` |
 | 总数 | 27 个 `.ts` 文件，合计 ~293 KB |
 | 最大文件 | `semantic-gui.ts` (58.4 KB)、`memory-manager.ts` (47.0 KB)、`win-worker-client.ts` (24.7 KB) |
 | 配置注册 | **零**。`~/.mimocode/mimocode.json` 仅注册 `./tui`；`~/.config/mimocode/mimocode.jsonc` 仅注册 `./context-gate` |
@@ -31,8 +31,8 @@
 
 | 项 | 实测 |
 |---|---|
-| 文件位置 | `C:\Users\微醺\.mimocode\tools\model-router.ts`（247 行） |
-| 密钥读取 | **L7**：硬编码 `AUTH_FILE = "C:\\Users\\微醺\\.local\\share\\mimocode\\auth.json"` |
+| 文件位置 | `C:\Users\<user>\.mimocode\tools\model-router.ts`（247 行） |
+| 密钥读取 | **L7**：硬编码 `AUTH_FILE = "C:\\Users\\<user>\\.local\\share\\mimocode\\auth.json"` |
 | | **L9-11**：`loadAuth()` 读取整个 auth.json |
 | | **L23-53**：`getProviders()` 将 xiaomi/siliconflow/volcengine 三家的 `apiKey` 提取到内存对象 |
 | auth.json 现状 | 存在，含 4 个 provider key（xiaomi, siliconflow, volcengine, deepseek） |
@@ -108,7 +108,7 @@
 
 | 对象 | 位置 | 状态 |
 |---|---|---|
-| context-gate 投影 | `C:\Users\微醺\.config\mimocode\context-gate\` | ✅ 活跃（528 行，含 C1） |
+| context-gate 投影 | `C:\Users\<user>\.config\mimocode\context-gate\` | ✅ 活跃（528 行，含 C1） |
 | 人格身份层 | `D:\MiMoMemory\identity\Echo.md` | ✅ 在位 |
 | gates-changelog | `context-gate\gates-changelog.jsonl` | ✅ 已更新（含 C1 记录） |
 | probe.py | `D:\AlroLab\temp\self-opt\src\probe.py` 等 3 处 | ✅ 在位 |

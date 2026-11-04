@@ -39,7 +39,7 @@
 |----|-----|
 | 构建命令 | `C:\bun\bun.exe run script/build.ts --single`（修复后标准路径） |
 | 环境变量 | `MIMOCODE_CHANNEL=local` `MIMOCODE_VERSION=local` |
-| 二进制路径 | `C:\Users\微醺\.mimocode\bin\mimo.exe` |
+| 二进制路径 | `C:\Users\<user>\.mimocode\bin\mimo.exe` |
 | SHA256 | `bb4c2e12b7bf7651d8ba553ef73fb076edc0550502128c04ae0bd37e2acf8ad7` |
 | SIZE | 136009728 bytes |
 | `--version` | `local` |
@@ -109,7 +109,7 @@ bash exit=1
 
 ## 五、stats.jsonl 原始证据
 
-账本：`C:\Users\微醺\.config\mimocode\context-gate\stats.jsonl`
+账本：`C:\Users\<user>\.config\mimocode\context-gate\stats.jsonl`
 
 L2_bash_exit1 的 ev:tool + ev:error 原文（cid 一致）：
 ```
