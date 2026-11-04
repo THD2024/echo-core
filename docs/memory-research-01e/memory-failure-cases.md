@@ -173,7 +173,7 @@
 
 - **失败用例**：`disable_write: true → memory write is refused with an explicit 'disabled' message`（`:38-70`）
 - **断言**：`expect(message).not.toMatch(/[\u4e00-\u9fff]/)`（`:52`）
-- **实际**：拒绝消息内嵌绝对路径 `C:\Users\微醺\AppData\Local\Temp\...`——用户名含汉字"微醺"，触发假阳性失败。
+- **实际**：拒绝消息内嵌绝对路径 `C:\Users\<user>\AppData\Local\Temp\...`——用户名含汉字"<user>"，触发假阳性失败。
 - **根因判断**：测试假设拒绝消息只含 ASCII；在非 ASCII 用户名的 Windows 机上路径部分必然含 CJK。**产品文案本身是英文**（源码 `memory-path-guard.ts:186-193`），失败源于测试对路径内容的过度断言。
 - **影响**：测试环境脆弱性，非功能缺陷。证据等级：VERIFIED（本次运行复现）。
 

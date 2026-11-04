@@ -2,7 +2,7 @@
 
 > **审计性质**：只读。未修改任何代码或运行时数据。  
 > **代码基线**：`D:\EchoCore\MiMo-Code\packages\cli`  
-> **运行时库**：`C:\Users\微醺\.local\share\mimocode\mimocode.db`（WAL SQLite）  
+> **运行时库**：`C:\Users\<user>\.local\share\mimocode\mimocode.db`（WAL SQLite）  
 > **审计日期**：2026 年（基于当前 checkout + 本机运行时快照）
 
 ---
@@ -373,7 +373,7 @@ reconcileMemory()  ── prune：索引中不在磁盘集合的 path → DELETE
 - Global.Path.data：由 `resolveMimocodeHome()`（`global/index.ts:8-16`）  
 - CC root：`path.join(os.homedir(), ".claude", "projects")`（`service.ts:40`）
 
-本机实际：`C:\Users\微醺\.local\share\mimocode\memory`
+本机实际：`C:\Users\<user>\.local\share\mimocode\memory`
 
 ### 6.2 解析规则（paths.ts）
 
@@ -493,7 +493,7 @@ dream?: { auto?: boolean; interval_days?: number }  // 默认 false / 7
 
 ## 8. 运行时实际数据
 
-> 路径：`C:\Users\微醺\.local\share\mimocode\mimocode.db`  
+> 路径：`C:\Users\<user>\.local\share\mimocode\mimocode.db`  
 > 打开方式：`node:sqlite` `DatabaseSync(..., { readOnly: true })`  
 > PRAGMA journal_mode = WAL（旁路 `-wal` / `-shm` 文件）
 

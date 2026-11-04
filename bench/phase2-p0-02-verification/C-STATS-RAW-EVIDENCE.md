@@ -2,7 +2,7 @@
 
 任务编号：EC-PHASE2-P0-02-V  
 日期：2026-10-31  
-账本：`C:\Users\微醺\.config\mimocode\context-gate\stats.jsonl`
+账本：`C:\Users\<user>\.config\mimocode\context-gate\stats.jsonl`
 
 ---
 

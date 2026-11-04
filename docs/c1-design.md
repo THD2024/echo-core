@@ -3,7 +3,7 @@
 - 状态：设计定稿，A 档实现随本文件落地
 - 依据：`docs/phase0-architecture-assessment.md` §D/§F 阶段 1；P2 任务书 2.1–2.7
 - 宿主基线：MiMoCode **v0.1.16**（tag `b8dbe084`）——本文件全部事件/字段结论均经 `git show v0.1.16:` 逐条读源码确认，**未依赖 README/Release Notes/模块名**
-- 落点：`C:\Users\微醺\.config\mimocode\context-gate\`（外层插件，**零核心改动**）
+- 落点：`C:\Users\<user>\.config\mimocode\context-gate\`（外层插件，**零核心改动**）
 - 回滚：`gates.json` 设 `"c1": false`（mtime 热加载，无需重启）；或还原 `index.ts.pre-c1` 备份
 
 ---

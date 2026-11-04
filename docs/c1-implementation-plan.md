@@ -10,7 +10,7 @@
 ## 1. 根因与准确源码位置（双层）
 
 ### L1 账本层（外层插件，已实证）
-`C:\Users\微醺\.config\mimocode\context-gate\index.ts:369-392` `onEvent()` **只处理两类事件**：
+`C:\Users\<user>\.config\mimocode\context-gate\index.ts:369-392` `onEvent()` **只处理两类事件**：
 - `metrics.model_call` → `logStats({ev:"model", ...})`（:374-385）
 - `session.compacted` → `logStats({ev:"compacted"})`（:386-389）
 

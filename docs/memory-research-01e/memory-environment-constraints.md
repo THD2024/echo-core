@@ -9,7 +9,7 @@
 
 | 项目 | 值 | 证据等级 |
 |------|-----|---------|
-| OS | Windows 11（用户环境） | VERIFIED（进程路径 `C:\Users\微醺\`） |
+| OS | Windows 11（用户环境） | VERIFIED（进程路径 `C:\Users\<user>\`） |
 | 运行时 | Bun（编译为单二进制 `mimo.exe`） | VERIFIED（`package.json` packageManager: bun@1.3.14） |
 | 数据库 | SQLite（bundled，node:sqlite） | VERIFIED（`service.ts` 使用 `DatabaseSync`） |
 | 存储 | 本地文件系统 + SQLite | VERIFIED |
@@ -66,8 +66,8 @@
 
 | 项目 | 值 | 证据等级 |
 |------|-----|---------|
-| Memory 根目录 | `C:\Users\微醺\.local\share\mimocode\memory\` | VERIFIED |
-| SQLite 路径 | `C:\Users\微醺\.local\share\mimocode\mimocode.db` | VERIFIED |
+| Memory 根目录 | `C:\Users\<user>\.local\share\mimocode\memory\` | VERIFIED |
+| SQLite 路径 | `C:\Users\<user>\.local\share\mimocode\mimocode.db` | VERIFIED |
 | 当前 memory_fts 行数 | 897 行 | VERIFIED（只读抽样） |
 | 文件大小上限 | 无硬编码限制 | VERIFIED（代码中未发现） |
 | 搜索默认 limit | 10 条 | VERIFIED（`service.ts`） |

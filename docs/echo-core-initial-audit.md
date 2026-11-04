@@ -16,7 +16,7 @@
 | 最新稳定版本 | `v0.1.15`，发布于 2026-09-22T14:58:45Z，target=main，非 prerelease | GitHub Releases API（`/releases?per_page=3`，首条） |
 | v0.1.15 对应 commit | `14dfe68a1c121f859544ba810b3c308e8501bfb2` | `git fetch --depth 1 origin tag v0.1.15` 后 `git rev-parse v0.1.15` |
 | 审计时 main HEAD | `496bb8cbe614aecea27623457d143600cc12c275`（2026-10-15 15:59 +0800，已超前于 v0.1.15 tag） | `git log -1` |
-| 本机已装版本 | 0.1.15（与最新稳定版一致） | `mimocode --version` → `0.1.15`；`C:\Users\微醺\.mimocode\bin\mimocode.cmd` → `mimo.exe` |
+| 本机已装版本 | 0.1.15（与最新稳定版一致） | `mimocode --version` → `0.1.15`；`C:\Users\<user>\.mimocode\bin\mimocode.cmd` → `mimo.exe` |
 | 许可证 | MIT（双版权：`Copyright (c) 2026 MiMo Code, Xiaomi Corporation` + `Copyright (c) 2025 opencode`） | `LICENSE` 全文 |
 | 使用限制 | 另受 `USE_RESTRICTIONS.md` 约束：禁止违法/军事/恶意网络活动等；**明确禁止"在无适当人类监督或授权的情况下自主执行高风险动作"** | `USE_RESTRICTIONS.md` 第 19 行 |
 | 贡献规则 | 见下 | `CONTRIBUTING.md` 全文 |
@@ -204,16 +204,16 @@ SessionPrompt（session/prompt.ts，7227 行主控文件）
 
 | 机制 | 位置与证据 | 状态 |
 |---|---|---|
-| context-gate 插件：视图侧投影（超 soft_limit 压缩老消息/图/工具输出）、roundtrip_hint、verify 预检、stats.jsonl 账本 | `C:\Users\微醺\.config\mimocode\context-gate\{index.ts(413行),verify.ts,gates.json}`；全局 `mimocode.jsonc` `"plugin":["./context-gate"]` | **在跑**（WP-R2 实测投影加权缩减 25.83%、errs=0；verify 有 4/13 误报） |
-| TUI 插件 agent-panel.tsx（Agent 面板定制，含 phase3/4.2 备份） | `C:\Users\微醺\.mimocode\tui\` + `~\.mimocode\mimocode.json` `"plugin":["./tui"]` | 在跑（TUI-only 注册方式有既定坑，见 MEMORY.md 架构决策） |
-| 模型/Provider 配置（deepseek flash 日常 + v4-pro 备用；含**明文 apiKey，禁止抄录**） | `C:\Users\微醺\.config\mimocode\mimocode.jsonc` | 在跑 |
+| context-gate 插件：视图侧投影（超 soft_limit 压缩老消息/图/工具输出）、roundtrip_hint、verify 预检、stats.jsonl 账本 | `C:\Users\<user>\.config\mimocode\context-gate\{index.ts(413行),verify.ts,gates.json}`；全局 `mimocode.jsonc` `"plugin":["./context-gate"]` | **在跑**（WP-R2 实测投影加权缩减 25.83%、errs=0；verify 有 4/13 误报） |
+| TUI 插件 agent-panel.tsx（Agent 面板定制，含 phase3/4.2 备份） | `C:\Users\<user>\.mimocode\tui\` + `~\.mimocode\mimocode.json` `"plugin":["./tui"]` | 在跑（TUI-only 注册方式有既定坑，见 MEMORY.md 架构决策） |
+| 模型/Provider 配置（deepseek flash 日常 + v4-pro 备用；含**明文 apiKey，禁止抄录**） | `C:\Users\<user>\.config\mimocode\mimocode.jsonc` | 在跑 |
 | 上下文预算调参：`compaction.max_context:200K`、`checkpoint.thresholds:["70K","140K"]`、push_caps 砍半 | 同上（2026-10-14 定案，实测生效） | 在跑 |
 | 危险命令 deny 规则（关机/重启族） | `~\.mimocode\mimocode.json` permission.bash | 在跑 |
-| ~150 个个人 skills（Blender/办公/设计全家桶） | `C:\Users\微醺\.mimocode\skills\`、`C:\Users\微醺\.agents\skills\` | 在跑 |
+| ~150 个个人 skills（Blender/办公/设计全家桶） | `C:\Users\<user>\.mimocode\skills\`、`C:\Users\<user>\.agents\skills\` | 在跑 |
 | 个人记忆档案（MEMORY.md 68KB + 150+ spillover + identity 目录） | `D:\MiMoMemory\`、`~\.local\share\mimocode\memory\` | 在跑，**含密钥，禁止入仓** |
 | 编排七步包（TRIAGE/HANDOFF/RECOVERY/任务账本 wu.py） | `D:\AlroLab\orchestrator\` | **人工约定，自动调用 0 次**（WP-R2 [M]） |
 | memory-manager 写入闸门（四层查重/审计双账） | WP 阶段三产物 | **未注册**（仅工具路径生效，主控未挂） |
-| tools/*.ts（model-router/circuit-breaker/task-state/gui-agent） | `C:\Users\微醺\.mimocode\tools\` | **从未加载 = 死代码**（WP-R2 [M]） |
+| tools/*.ts（model-router/circuit-breaker/task-state/gui-agent） | `C:\Users\<user>\.mimocode\tools\` | **从未加载 = 死代码**（WP-R2 [M]） |
 | Alro 通道（8088 HTTP/QQ + 常驻 serve 4097） | `D:\AlroChannel\`、launch-agent.bat | 在跑（4097 serve 用旧插件，用户明令勿擅自重启） |
 
 ### 4.3 第三层：本机运行环境带来的能力/限制
@@ -240,7 +240,7 @@ SessionPrompt（session/prompt.ts，7227 行主控文件）
 
 ### 5.1 总体原则
 
-- **不动生产**：`C:\Users\微醺\.mimocode`（安装+项目配置）、`~\.config\mimocode\`、`~\.local\{share,state}\mimocode\`、4097 serve、AlroChannel 全部保持原样。
+- **不动生产**：`C:\Users\<user>\.mimocode`（安装+项目配置）、`~\.config\mimocode\`、`~\.local\{share,state}\mimocode\`、4097 serve、AlroChannel 全部保持原样。
 - **fork 优先**：从 `XiaomiMiMo/MiMo-Code` fork，不重写、不另造历史。
 - **一切密钥与个人数据不入仓**（见 5.5）。
 
@@ -281,7 +281,7 @@ D:\EchoCore\
 | 密钥入仓 | 仓内**不复制** `mimocode.jsonc`（含明文 apiKey）、`auth.json`、`Mimo Key.txt`；配置用 `${secret.X}` 占位；提交前 `git diff --stat` 人工审 + 可选 gitleaks 扫描【工具未装，待批准】 |
 | 私人记忆/日志入仓 | `MIMOCODE_HOME` 独立根 + `.gitignore` 覆盖 `**/memory/**`、`**/*.db*`、`log/`、`stats.jsonl`；**本报告与仓内文件一律不抄密钥值** |
 | 实验失败 | 三重回滚：① git（`echo-dev` 每步可回退，基线 tag 在）② `MIMOCODE_HOME` 目录整体删除/替换 ③ 生产环境零接触 → 天然无回滚需求 |
-| 自动更新污染生产 | 生产 `mimo.exe` 不动；echo-core 运行只用 `bun run dev`/`dist`，不安装到 `C:\Users\微醺\.mimocode` |
+| 自动更新污染生产 | 生产 `mimo.exe` 不动；echo-core 运行只用 `bun run dev`/`dist`，不安装到 `C:\Users\<user>\.mimocode` |
 
 ### 5.6 与现有 Echo 的隔离清单
 
@@ -330,7 +330,7 @@ D:\EchoCore\
 
 ## 7. 历史优化机制盘点与迁移评估（补充任务）
 
-> 证据源：`D:\MiMoMemory\projects\global\MEMORY.md` 及 MEMORY-* 档案、`C:\Users\微醺\docs\echo-efficiency-audit-wp-r2-20261015.md`（WP-R2）、外层插件实文件、`D:\EchoCore\MiMo-Code` 源码。**"已实现"只认实存代码/配置/日志，纯文档约定单列标注。**
+> 证据源：`D:\MiMoMemory\projects\global\MEMORY.md` 及 MEMORY-* 档案、`C:\Users\<user>\docs\echo-efficiency-audit-wp-r2-20261015.md`（WP-R2）、外层插件实文件、`D:\EchoCore\MiMo-Code` 源码。**"已实现"只认实存代码/配置/日志，纯文档约定单列标注。**
 
 ### 7.1 机制逐项追踪表（任务书点名的 10 项全部回应）
 
