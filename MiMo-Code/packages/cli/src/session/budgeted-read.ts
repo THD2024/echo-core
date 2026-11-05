@@ -26,14 +26,14 @@ export async function readBudgeted(
   return { text: clean + hint, truncated: true, totalTokens }
 }
 
-type Section = {
+export type Section = {
   header: string
   italic: string
   body: string[]
   indexLines: string[]
 }
 
-function parseSections(text: string): { preamble: string[]; sections: Section[] } {
+export function parseSections(text: string): { preamble: string[]; sections: Section[] } {
   const preamble: string[] = []
   const sections: Section[] = []
   let current: Section | null = null
