@@ -287,6 +287,45 @@ describe("italic line: structural, same rule as budgeted-read", () => {
     expect(parseSections(raw).sections[0].italic).toBe("")
   })
 
+  describe("CRLF: the structural rule does not depend on the line ending", () => {
+    const crlf = (s: string) => s.replace(/\n/g, "\r\n")
+    const italicTexts = (raw: string) =>
+      checkInvariants(raw)
+        .segments.filter((s) => s.kind === "italic")
+        .map((s) => s.text.replace(/\r?\n$/, ""))
+
+    test("current template", () => {
+      const doc = checkInvariants(crlf(MEMORY_TEMPLATE))
+      expect(doc.segments.filter((s) => s.kind === "italic")).toHaveLength(4)
+      expect(listRecords(doc)).toHaveLength(0)
+    })
+
+    test("old / unknown first italic text", () => {
+      expect(italicTexts(crlf("## Rules\n" + OLD + "\n\n- a\n"))).toEqual([OLD])
+    })
+
+    test("italic after other records is still the section's first italic", () => {
+      const doc = checkInvariants(crlf("## Rules\n- a\n\n_emphasis only_\n- b\n"))
+      expect(doc.segments.filter((s) => s.kind === "italic").map((s) => s.text)).toEqual(["_emphasis only_\r\n"])
+      expect(listRecords(doc).map((r) => r.text)).toEqual(["- a\r\n", "- b\r\n"])
+    })
+
+    test("plain first content stays a record; only the first italic counts", () => {
+      const doc = checkInvariants(crlf("## Rules\n- a rule\n\n_first_\n\n_second_\n"))
+      expect(kinds(doc)).toEqual(["section-header", "record", "blank", "italic", "blank", "record"])
+    })
+
+    test("lazy italic-looking line after a bullet", () => {
+      const doc = checkInvariants(crlf("## Rules\n- wrapped\n_note_\n"))
+      expect(kinds(doc)).toEqual(["section-header", "record", "italic"])
+    })
+
+    test("mixed LF / CRLF in one file", () => {
+      const doc = checkInvariants("## Rules\r\n_note_\n- a\r\n")
+      expect(kinds(doc)).toEqual(["section-header", "italic", "record"])
+    })
+  })
+
   test("documented divergence: an italic-looking line inside fenced code stays code", () => {
     const raw = "## Rules\n```\n_x_\n```\n"
     const doc = checkInvariants(raw)
