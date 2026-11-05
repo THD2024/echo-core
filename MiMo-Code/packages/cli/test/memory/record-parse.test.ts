@@ -2,7 +2,6 @@ import { describe, expect, test } from "bun:test"
 import fs from "node:fs/promises"
 import path from "node:path"
 import {
-  TEMPLATE_INSTRUCTIONS,
   countByKind,
   listRecords,
   parseMemoryDocument,
@@ -34,19 +33,32 @@ function checkInvariants(raw: string): MemoryDocument {
   const theirs = parseSections(raw).sections.map((s) => norm(s.header))
   const ours = doc.segments.filter((s) => s.kind === "section-header").map((s) => norm(s.text))
   expect(ours).toEqual(theirs)
+  expectItalicParity(raw, doc)
   return doc
 }
 
-describe("template", () => {
-  test("TEMPLATE_INSTRUCTIONS matches the italic lines of MEMORY_TEMPLATE", () => {
-    const lines = MEMORY_TEMPLATE.split("\n")
-    const fromTemplate: string[] = []
-    for (let i = 0; i < lines.length; i++) {
-      if (lines[i].startsWith("# ") || lines[i].startsWith("## ")) fromTemplate.push(lines[i + 1])
-    }
-    expect([...TEMPLATE_INSTRUCTIONS].sort()).toEqual([...fromTemplate].sort())
-  })
+/**
+ * Per-section italic line must equal the budgeted reader's `italic`. The two scans differ
+ * only where documented in record-parse.ts: CRLF input (the reader's endsWith("_") misses
+ * "\r"), and sections containing fenced code or an HTML comment (the reader also looks inside them).
+ */
+function expectItalicParity(raw: string, doc: MemoryDocument) {
+  const reader = parseSections(raw).sections
+  const ours: string[] = []
+  for (const s of doc.segments) {
+    if (s.kind === "section-header") ours.push("")
+    else if (s.kind === "italic") ours[ours.length - 1] = s.text.replace(/\r?\n$/, "")
+  }
+  expect(ours).toHaveLength(reader.length)
+  const sectionTexts = raw.split(/^## /m).slice(1)
+  for (let k = 0; k < reader.length; k++) {
+    if (ours[k] === reader[k].italic) continue
+    const explained = /\r\n/.test(sectionTexts[k] ?? "") || /^[ \t]*(```|~~~|<!--)/m.test(sectionTexts[k] ?? "")
+    expect(explained).toBe(true)
+  }
+}
 
+describe("template", () => {
   test("current MEMORY.md template: no records, placeholders and instructions classified", () => {
     const doc = checkInvariants(MEMORY_TEMPLATE)
     expect(doc.segments[0].kind).toBe("preamble")
@@ -191,35 +203,95 @@ describe("non-record content stays verbatim as raw", () => {
     expect(rawOf("## Rules\n    code block\n\n    more\n")[0].notes).toEqual(["orphan-indented"])
   })
 
+  test("an unterminated HTML comment only claims its own line; the rest still parses", () => {
+    const doc = checkInvariants("## Rules\n<!-- stray\n- a\n- b\n")
+    expect(kinds(doc)).toEqual(["section-header", "raw", "record", "record"])
+    expect(doc.segments[1].notes).toEqual(["html-comment", "unterminated-comment"])
+  })
+
   test("records after a subheading are still records of the same section", () => {
     const doc = checkInvariants("## Rules\n### Sub\n- x\n- y\n")
     expect(listRecords(doc).map((r) => r.section)).toEqual(["Rules", "Rules"])
   })
 })
 
-describe("italic instruction vs real content", () => {
-  test("exact template instruction as first line is an instruction", () => {
-    const doc = checkInvariants("## Rules\n" + TEMPLATE_INSTRUCTIONS[2] + "\n\n- a\n")
+describe("italic line: structural, same rule as budgeted-read", () => {
+  const OLD = "_An older wording of the instruction that no template contains any more._"
+
+  test("current template: each section's instruction is the italic line", () => {
+    const doc = checkInvariants(MEMORY_TEMPLATE)
+    expect(doc.segments.filter((s) => s.kind === "italic")).toHaveLength(4)
+  })
+
+  test("old / unknown first italic line is still the italic line, not a record", () => {
+    const doc = checkInvariants("## Rules\n" + OLD + "\n\n- a\n")
     expect(kinds(doc)).toEqual(["section-header", "italic", "blank", "record"])
+    expect(listRecords(doc).map((r) => r.text)).toEqual(["- a\n"])
   })
 
-  test("a different italic first line is content, flagged, never swallowed", () => {
-    const doc = checkInvariants("## Rules\n_always ask before deleting_\n- a\n")
-    const recs = listRecords(doc)
-    expect(recs).toHaveLength(2)
-    expect(recs[0].text).toBe("_always ask before deleting_\n")
-    expect(recs[0].notes).toEqual(["italic-not-template"])
+  test("any text qualifies: it is the structure, not the wording", () => {
+    for (const line of ["_x_", "_anything at all, even content-like_", "__dunder__", "_"]) {
+      const doc = checkInvariants("## Rules\n" + line + "\n- a\n")
+      expect(doc.segments[1].kind).toBe("italic")
+    }
+  })
+
+  test("an ordinary first record that is not italic stays a record", () => {
+    const doc = checkInvariants("## Rules\n- a rule\n- another\n")
+    expect(kinds(doc)).toEqual(["section-header", "record", "record"])
     expect(doc.segments.some((s) => s.kind === "italic")).toBe(false)
   })
 
-  test("template text that is not the first content line is a plain record", () => {
-    const doc = checkInvariants("## Rules\n- a\n" + TEMPLATE_INSTRUCTIONS[2] + "\n")
+  test("only the FIRST italic line of a section is the italic line; later ones are content", () => {
+    const doc = checkInvariants("## Rules\n_first_\n\n_second_\n- a\n")
+    expect(doc.segments.filter((s) => s.kind === "italic").map((s) => s.text)).toEqual(["_first_\n"])
+    expect(listRecords(doc).map((r) => r.text)).toEqual(["_second_\n", "- a\n"])
+  })
+
+  test("the italic line need not be the first non-blank line (reader scans the whole section)", () => {
+    const raw = "## Rules\n- a\n\n_emphasis only_\n- b\n"
+    const doc = checkInvariants(raw)
+    expect(doc.segments.filter((s) => s.kind === "italic").map((s) => s.text)).toEqual(["_emphasis only_\n"])
+    expect(parseSections(raw).sections[0].italic).toBe("_emphasis only_")
+  })
+
+  test("a lazy italic-looking line right after a bullet is the italic line, not a continuation", () => {
+    const raw = "## Rules\n- wrapped\n_note_\n"
+    const doc = checkInvariants(raw)
+    expect(kinds(doc)).toEqual(["section-header", "record", "italic"])
+    expect(parseSections(raw).sections[0].italic).toBe("_note_")
+  })
+
+  test("a paragraph is cut at an italic-looking line while the section still has none", () => {
+    const doc = checkInvariants("## Rules\ntext\n_note_\nmore\n")
+    expect(kinds(doc)).toEqual(["section-header", "record", "italic", "record"])
+  })
+
+  test("each section has its own italic line", () => {
+    const doc = checkInvariants("## A\n_a_\n- x\n## B\n- y\n_b_\n")
+    expect(doc.segments.filter((s) => s.kind === "italic").map((s) => [s.section, s.text.trim()])).toEqual([
+      ["A", "_a_"],
+      ["B", "_b_"],
+    ])
+  })
+
+  test("lines that merely contain underscores are not italic", () => {
+    const doc = checkInvariants("## Rules\nsnake_case_name\n_leading only\ntrailing only_\n  _indented_\n")
     expect(doc.segments.some((s) => s.kind === "italic")).toBe(false)
   })
 
-  test("italic mid-section is an ordinary record", () => {
-    const doc = checkInvariants("## Rules\n- a\n\n_emphasis only_\n")
-    expect(listRecords(doc)).toHaveLength(2)
+  test("documented divergence: CRLF italic is recognised here, the reader's endsWith misses it", () => {
+    const raw = "## Rules\r\n_note_\r\n- a\r\n"
+    const doc = checkInvariants(raw)
+    expect(doc.segments[1].kind).toBe("italic")
+    expect(parseSections(raw).sections[0].italic).toBe("")
+  })
+
+  test("documented divergence: an italic-looking line inside fenced code stays code", () => {
+    const raw = "## Rules\n```\n_x_\n```\n"
+    const doc = checkInvariants(raw)
+    expect(doc.segments.some((s) => s.kind === "italic")).toBe(false)
+    expect(parseSections(raw).sections[0].italic).toBe("_x_")
   })
 })
 
@@ -255,16 +327,6 @@ describe("lossless edge cases", () => {
   })
 })
 
-describe("parity with budgeted-read parseSections on the italic line", () => {
-  test("template: our italic segment is the reader's italic", () => {
-    const theirs = parseSections(MEMORY_TEMPLATE).sections.map((s) => s.italic)
-    const ours = parseMemoryDocument(MEMORY_TEMPLATE)
-      .segments.filter((s) => s.kind === "italic")
-      .map((s) => s.text.replace(/\r?\n$/, ""))
-    expect(ours).toEqual(theirs)
-  })
-})
-
 describe("fuzz: any line soup still satisfies the invariants", () => {
   const vocab = [
     "## Rules",
@@ -284,7 +346,8 @@ describe("fuzz: any line soup still satisfies the invariants", () => {
     "- [ ] todo",
     "(none yet)",
     "_italic_",
-    TEMPLATE_INSTRUCTIONS[1],
+    "_Some instruction wording that no template contains._",
+    "snake_case_line",
     "```",
     "~~~",
     "````",

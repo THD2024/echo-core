@@ -20,10 +20,12 @@
  *
  * Boundary rules inside a section (T-a defines them; they do not change the file layout):
  *  - blank lines                      -> `blank`
- *  - the template's italic instruction (first non-blank line, exact template text)
- *                                     -> `italic`. Any OTHER italic first line is real
- *                                        content, so it becomes a `record` with the note
- *                                        `italic-not-template` instead of being swallowed.
+ *  - the section's italic line        -> `italic`. Structural, same rule as the budgeted
+ *                                        reader's `parseSections`: the FIRST line of the section
+ *                                        that starts and ends with "_" (any text, so an old or
+ *                                        edited template instruction is still an instruction).
+ *                                        Later `_..._` lines are ordinary content. No template
+ *                                        text is consulted.
  *  - a bare `(none yet)` line         -> `placeholder`
  *  - bullet (`-`, `*`, `+`, with or without a `[ ]` checkbox) or ordered (`1.` / `1)`)
  *    item at indent <= 3, plus its continuation (indented lines, blank lines followed by
@@ -35,6 +37,12 @@
  *  - fenced code at top level, tables, `#`/`###`+ headings, horizontal rules, HTML
  *    comments, orphan indented blocks -> `raw` (not memory content; no id will ever be
  *    attached to them)
+ *
+ * Known, deliberate divergences from the reader's raw-line scan (the reader looks at every
+ * line; this parser only looks where a block can start): an italic-looking line buried in
+ * fenced code or inside a closed HTML comment stays part of that raw block, and a CRLF italic
+ * line is recognised here while the reader's `endsWith("_")` misses it because of the
+ * trailing "\r".
  */
 
 export type MemorySegmentKind =
@@ -78,15 +86,6 @@ export interface MemorySegment {
 export interface MemoryDocument {
   segments: MemorySegment[]
 }
-
-/** The fixed italic instruction lines of MEMORY_TEMPLATE (session/checkpoint-templates.ts). */
-export const TEMPLATE_INSTRUCTIONS: readonly string[] = [
-  "_Durable project-level knowledge. Persists across all sessions in this project. Edit only content under italic instructions._",
-  "_What is this project? What's its goal? High-level identity._",
-  "_Hard constraints from user that every session must respect._",
-  '_Major design choices with rationale. The "why" matters more than the "what" for future sessions._',
-  "_Cross-task facts that survive across sessions. Promoted from session checkpoints' §7 when proven durable._",
-]
 
 const PLACEHOLDER = "(none yet)"
 
@@ -141,10 +140,18 @@ function closesFence(content: string, open: { ch: string; len: number }): boolea
   return !!m && m[1][0] === open.ch && m[1].length >= open.len
 }
 
-/** Whether a zero/low-indent line begins a new top-level block (so it ends a lazy run). */
-function startsBlock(l: Line): boolean {
+/** Same predicate as `parseSections` in session/budgeted-read.ts (CR already stripped). */
+const isItalicLine = (l: Line) => l.content.startsWith("_") && l.content.endsWith("_")
+
+/**
+ * Whether a zero/low-indent line begins a new top-level block (so it ends a lazy run).
+ * `italicOpen`: this section has not produced its italic line yet, so an italic-looking
+ * line starts one (keeps parity with the reader instead of burying it in a lazy run).
+ */
+function startsBlock(l: Line, italicOpen: boolean): boolean {
   const c = l.content
   return (
+    (italicOpen && isItalicLine(l)) ||
     c.trim() === PLACEHOLDER ||
     BULLET.test(c) ||
     ORDERED.test(c) ||
@@ -172,7 +179,7 @@ function consumeFence(lines: Line[], i: number): { next: number; closed: boolean
 
 function parseSectionBody(lines: Line[], emit: Emit): void {
   let i = 0
-  let firstContent = true // no non-blank line seen yet in this section
+  let italicSeen = false // the section's single italic line has been emitted
   while (i < lines.length) {
     const l = lines[i]
     const c = l.content
@@ -185,18 +192,15 @@ function parseSectionBody(lines: Line[], emit: Emit): void {
       continue
     }
 
-    const wasFirst = firstContent
-    firstContent = false
-
     if (c.trim() === PLACEHOLDER && !isIndented(l)) {
       emit("placeholder", [l])
       i++
       continue
     }
 
-    // Template italic instruction: only the exact fixed template text, and only as the
-    // first non-blank line of the section.
-    if (wasFirst && TEMPLATE_INSTRUCTIONS.includes(c.trim())) {
+    // The section's italic line: first block-start line that starts and ends with "_".
+    if (!italicSeen && isItalicLine(l)) {
+      italicSeen = true
       emit("italic", [l])
       i++
       continue
@@ -233,15 +237,20 @@ function parseSectionBody(lines: Line[], emit: Emit): void {
     if (COMMENT_OPEN.test(c)) {
       let j = i
       while (j < lines.length && !lines[j].content.includes("-->")) j++
-      const closed = j < lines.length
-      const end = closed ? j + 1 : j
-      emit("raw", lines.slice(i, end), closed ? ["html-comment"] : ["html-comment", "unterminated-comment"])
-      i = end
+      if (j < lines.length) {
+        emit("raw", lines.slice(i, j + 1), ["html-comment"])
+        i = j + 1
+      } else {
+        // A stray "<!--" with no close must not swallow the rest of the section: keep only
+        // its own line as raw and parse everything after it normally.
+        emit("raw", [l], ["html-comment", "unterminated-comment"])
+        i++
+      }
       continue
     }
 
     if (BULLET.test(c) || ORDERED.test(c)) {
-      i = consumeListItem(lines, i, emit)
+      i = consumeListItem(lines, i, emit, !italicSeen)
       continue
     }
 
@@ -277,17 +286,14 @@ function parseSectionBody(lines: Line[], emit: Emit): void {
 
     // Plain paragraph: consecutive non-blank lines up to the next block start.
     let j = i + 1
-    while (j < lines.length && !isBlank(lines[j]) && !startsBlock(lines[j])) j++
-    const notes: string[] = []
-    // An italic first line that is NOT the template text is content, not an instruction.
-    if (wasFirst && j === i + 1 && /^_[^_].*_$/.test(c.trim())) notes.push("italic-not-template")
-    emit("record", lines.slice(i, j), notes.length ? notes : undefined)
+    while (j < lines.length && !isBlank(lines[j]) && !startsBlock(lines[j], !italicSeen)) j++
+    emit("record", lines.slice(i, j))
     i = j
   }
 }
 
 /** Consume one bullet/ordered item and its continuation; emits one `record`; returns next index. */
-function consumeListItem(lines: Line[], i: number, emit: Emit): number {
+function consumeListItem(lines: Line[], i: number, emit: Emit, italicOpen: boolean): number {
   const notes: string[] = []
   let j = i + 1
   // A fence opened on the item line itself is not valid markdown; ignore. Continuation scan:
@@ -314,7 +320,7 @@ function consumeListItem(lines: Line[], i: number, emit: Emit): number {
       continue
     }
     // zero-indent, non-blank: lazy continuation unless it starts a new block
-    if (startsBlock(l)) break
+    if (startsBlock(l, italicOpen)) break
     j++
   }
   emit("record", lines.slice(i, j), notes.length ? notes : undefined)
