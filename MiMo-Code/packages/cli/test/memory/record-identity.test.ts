@@ -68,16 +68,16 @@ describe("record identity stamping", () => {
     expect(r.text).toContain("id=cccccccc")
   })
 
-  test("stamps an edited canonical record set with a fresh id", () => {
+  test("restores identity for a safely corresponding edited record", () => {
     const oldText = "## Rules\n- existing <!--m id=abc123 at=2026-11-05T09:12:00Z src=u-->\n"
     const newText = "## Rules\n- existing edited\n"
     const r = stampMemoryRecords(oldText, newText, options(["zzzzzzzz"]))
     expect(r.ok).toBe(true)
     if (!r.ok) return
-    expect(r.text).toContain("id=zzzzzzzz")
-    expect(r.text).toContain("at=2026-11-06T12:00:00.000Z")
-    expect(r.text).toContain("src=i")
-    expect(r.text).not.toContain("id=abc123")
+    expect(r.text).toContain("id=abc123")
+    expect(r.text).toContain("at=2026-11-05T09:12:00Z")
+    expect(r.text).toContain("src=u")
+    expect(r.text).not.toContain("id=zzzzzzzz")
   })
 
   test("does not reuse a conflicting existing id", () => {
