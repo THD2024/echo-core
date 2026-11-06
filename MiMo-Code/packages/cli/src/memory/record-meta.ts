@@ -24,7 +24,7 @@
  *    marker deletes it plus exactly one space directly before it, so insert-then-remove restores
  *    the original bytes.
  *  - Wire keys: `id` record_id, `at` recorded_at, `src` source_type (one letter code),
- *    `ret` retracted_at, `why` retract_reason. Any other well-formed key is an opaque EXTRA: kept
+ *    `ret` retracted_at, `why` retract_reason (enum: superseded | incorrect | withdrawn). Any other well-formed key is an opaque EXTRA: kept
  *    verbatim and in order, never interpreted (this covers refs / valid_* / disputed / author /
  *    mig: their key names are reserved, their parsing belongs to later tasks. In particular
  *    `source_refs` already has frozen V1 semantics; T-f, not T-b, parses it).
@@ -40,6 +40,10 @@
  * run over a broken marker (repairing is a later task).
  */
 import type { MemoryDocument, MemoryRecordMetadata, MemorySegment } from "./record-parse"
+
+/** Frozen V1 retract_reason enum. */
+export type RecordRetractReason = "superseded" | "incorrect" | "withdrawn"
+const RETRACT_REASONS: ReadonlySet<string> = new Set(["superseded", "incorrect", "withdrawn"])
 
 export type RecordSourceType = "user_statement" | "tool_output" | "model_observation" | "model_inference"
 
@@ -85,7 +89,10 @@ export interface RecordMetaDiagnostic {
 }
 
 /** Metadata the codec understands; `source_type` is narrowed from the T-a slot's `string`. */
-export type RecordMeta = Omit<MemoryRecordMetadata, "source_type"> & { source_type?: RecordSourceType }
+export type RecordMeta = Omit<MemoryRecordMetadata, "source_type" | "retract_reason"> & {
+  source_type?: RecordSourceType
+  retract_reason?: RecordRetractReason
+}
 
 export interface RecordMetaRead {
   /**
@@ -107,7 +114,7 @@ export interface RecordMetaPatch {
   recorded_at?: string | null
   source_type?: RecordSourceType | null
   retracted_at?: string | null
-  retract_reason?: string | null
+  retract_reason?: RecordRetractReason | null
   extras?: Record<string, string | null>
 }
 
@@ -123,8 +130,9 @@ const CLOSE = "-->"
 // `<!--made by hand-->` and friends are ordinary user comments.
 const CANDIDATE = /<!--m(?=\s|-->|$)/g
 const KEY = /^[a-z][a-z0-9_]{0,31}$/
-const ID = /^[0-9a-z]{8,32}$/
-const REASON = /^[A-Za-z0-9_.:-]{1,64}$/
+// record_id: any non-empty single token. Its shape is an ID-generation policy (T-b2), not a
+// codec validation contract; the codec only needs a value that survives the wire encoding.
+const ID = /^\S+$/
 const EXTRA_VALUE = /^\S{1,256}$/
 const TS = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,9}))?)?Z$/
 const RESERVED = new Set(["id", "at", "src", "ret", "why"])
@@ -144,7 +152,7 @@ interface State {
   at?: string
   src?: RecordSourceType
   ret?: string
-  why?: string
+  why?: RecordRetractReason
   extras: Record<string, string>
 }
 
@@ -276,7 +284,7 @@ function scanRecord(text: string, baseLine: number): Scan {
     switch (key) {
       case "id":
         if (ID.test(val)) state.id = val
-        else (diag("invalid-id", baseLine, "id must match [0-9a-z]{8,32}"), (bad = true))
+        else (diag("invalid-id", baseLine, "id must be a non-empty value without whitespace"), (bad = true))
         break
       case "at":
         if (validTimestamp(val)) state.at = val
@@ -291,8 +299,8 @@ function scanRecord(text: string, baseLine: number): Scan {
         else (diag("invalid-retracted-at", baseLine, "ret must be an ISO-8601 UTC timestamp ending in Z"), (bad = true))
         break
       case "why":
-        if (REASON.test(val)) state.why = val
-        else (diag("invalid-retract-reason", baseLine, "why must match [A-Za-z0-9_.:-]{1,64}"), (bad = true))
+        if (RETRACT_REASONS.has(val)) state.why = val as RecordRetractReason
+        else (diag("invalid-retract-reason", baseLine, "why must be superseded, incorrect or withdrawn"), (bad = true))
         break
       default:
         if (EXTRA_VALUE.test(val)) state.extras[key] = val
@@ -367,7 +375,7 @@ export function withRecordMeta(segment: SegmentLike, patch: RecordMetaPatch): Re
     if (patch.record_id !== undefined) {
       if (patch.record_id === null) delete next.id
       else if (ID.test(patch.record_id)) next.id = patch.record_id
-      else bad("invalid-id", "record_id must match [0-9a-z]{8,32}")
+      else bad("invalid-id", "record_id must be a non-empty value without whitespace")
     }
     if (patch.recorded_at !== undefined) {
       if (patch.recorded_at === null) delete next.at
@@ -386,8 +394,8 @@ export function withRecordMeta(segment: SegmentLike, patch: RecordMetaPatch): Re
     }
     if (patch.retract_reason !== undefined) {
       if (patch.retract_reason === null) delete next.why
-      else if (REASON.test(patch.retract_reason)) next.why = patch.retract_reason
-      else bad("invalid-retract-reason", "retract_reason must match [A-Za-z0-9_.:-]{1,64}")
+      else if (RETRACT_REASONS.has(patch.retract_reason)) next.why = patch.retract_reason
+      else bad("invalid-retract-reason", "retract_reason must be superseded, incorrect or withdrawn")
     }
     for (const [k, v] of Object.entries(patch.extras ?? {})) {
       if (!KEY.test(k)) bad("bad-key", `invalid extra key "${k}"`)

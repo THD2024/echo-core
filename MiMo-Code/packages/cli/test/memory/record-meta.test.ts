@@ -183,11 +183,11 @@ describe("3. codec roundtrip and idempotence", () => {
     const w = mustWrite("- fact\n", {
       ...FULL,
       retracted_at: "2026-11-06T00:00:00Z",
-      retract_reason: "user-request",
+      retract_reason: "withdrawn",
       extras: { refs: "a:event,b:record", mig: "v1" },
     })
     expect(w.text).toBe(
-      `- fact <!--m id=${ID} at=${AT} src=u ret=2026-11-06T00:00:00Z why=user-request refs=a:event,b:record mig=v1-->\n`,
+      `- fact <!--m id=${ID} at=${AT} src=u ret=2026-11-06T00:00:00Z why=withdrawn refs=a:event,b:record mig=v1-->\n`,
     )
     const r = readRecordMeta(rec(w.text))
     expect(r.status).toBe("valid")
@@ -196,7 +196,7 @@ describe("3. codec roundtrip and idempotence", () => {
       recorded_at: AT,
       source_type: "user_statement",
       retracted_at: "2026-11-06T00:00:00Z",
-      retract_reason: "user-request",
+      retract_reason: "withdrawn",
     })
     expect(r.extras).toEqual({ refs: "a:event,b:record", mig: "v1" })
   })
@@ -331,16 +331,16 @@ describe("7. malformed markers: all-or-nothing, deterministic, never throw", () 
     ["bare token", "- x <!--m id=8k2f9q3x oops-->\n", "bad-token"],
     ["bad key", "- x <!--m ID=8k2f9q3x-->\n", "bad-key"],
     ["duplicate key", "- x <!--m id=8k2f9q3x id=zzzzzzzz-->\n", "duplicate-key"],
-    ["short id", "- x <!--m id=abc-->\n", "invalid-id"],
-    ["uppercase id", "- x <!--m id=8K2F9Q3X-->\n", "invalid-id"],
     ["bad timestamp", "- x <!--m at=not-a-time-->\n", "invalid-recorded-at"],
     ["non-UTC timestamp", "- x <!--m at=2026-11-05T09:12:00+08:00-->\n", "invalid-recorded-at"],
     ["impossible date", "- x <!--m at=2026-02-30T09:12Z-->\n", "invalid-recorded-at"],
     ["bad src", "- x <!--m src=x-->\n", "invalid-source-type"],
     ["full-name src", "- x <!--m src=user_statement-->\n", "invalid-source-type"],
     ["ret without why", `- x <!--m ret=${AT}-->\n`, "retract-unpaired"],
-    ["why without ret", "- x <!--m why=stale-->\n", "retract-unpaired"],
+    ["why without ret", "- x <!--m why=incorrect-->\n", "retract-unpaired"],
     ["bad why", `- x <!--m ret=${AT} why=a/b-->\n`, "invalid-retract-reason"],
+    ["free-text why", `- x <!--m ret=${AT} why=stale-->\n`, "invalid-retract-reason"],
+    ["wrong-case why", `- x <!--m ret=${AT} why=Withdrawn-->\n`, "invalid-retract-reason"],
     ["empty value", "- x <!--m id=-->\n", "invalid-id"],
     ["over-long extra", `- x <!--m fut=${"a".repeat(257)}-->\n`, "invalid-extra-value"],
   ]
@@ -375,7 +375,7 @@ describe("7. malformed markers: all-or-nothing, deterministic, never throw", () 
   })
 
   test("diagnostic line numbers are offset from the segment line", () => {
-    expect(readRecordMeta(rec("- x <!--m id=a-->\n", 42)).diagnostics[0].line).toBe(42)
+    expect(readRecordMeta(rec("- x <!--m id=a id=b-->\n", 42)).diagnostics[0].line).toBe(42)
   })
 })
 
@@ -461,10 +461,12 @@ describe("10. unknown and reserved keys", () => {
   test("invalid patch values are refused and the text is untouched", () => {
     const t = "- x\n"
     for (const patch of [
-      { record_id: "short" },
+      { record_id: "has space" },
+      { record_id: "" },
       { recorded_at: "yesterday" },
       { source_type: "guess" as never },
-      { retract_reason: "has space" },
+      { retract_reason: "stale" as never },
+      { retract_reason: "has space" as never },
       { retracted_at: AT },
     ] as RecordMetaPatch[]) {
       const w = withRecordMeta(rec(t), patch)
@@ -474,10 +476,39 @@ describe("10. unknown and reserved keys", () => {
   })
 
   test("retraction fields must be set and cleared together", () => {
-    const set = mustWrite("- x\n", { retracted_at: AT, retract_reason: "stale" }).text
+    const set = mustWrite("- x\n", { retracted_at: AT, retract_reason: "superseded" }).text
     expect(withRecordMeta(rec(set), { retract_reason: null }).ok).toBe(false)
     const cleared = mustWrite(set, { retracted_at: null, retract_reason: null })
     expect(cleared.text).toBe("- x\n")
+  })
+})
+
+describe("record_id: any non-empty single token (shape is T-b2 policy)", () => {
+  test("short, uppercase, punctuated and numeric ids are all carried verbatim", () => {
+    for (const id of ["a", "abc", "8K2F9Q3X", "id-1.2:3_x", "0001", "x".repeat(64), "a=b", "<z>"]) {
+      const w = mustWrite("- x\n", { record_id: id })
+      expect(w.text).toBe(`- x <!--m id=${id}-->\n`)
+      expect(readRecordMeta(rec(w.text)).meta.record_id).toBe(id)
+    }
+  })
+  test("empty or whitespace-containing ids are refused", () => {
+    expect(readRecordMeta(rec("- x <!--m id=-->\n")).status).toBe("malformed")
+    for (const id of ["", " ", "a b", "a\tb"]) expect(withRecordMeta(rec("- x\n"), { record_id: id }).ok).toBe(false)
+  })
+})
+
+describe("retract_reason: frozen enum superseded | incorrect | withdrawn", () => {
+  test("each enum value round-trips", () => {
+    for (const why of ["superseded", "incorrect", "withdrawn"] as const) {
+      const w = mustWrite("- x\n", { retracted_at: AT, retract_reason: why })
+      expect(readRecordMeta(rec(w.text)).meta).toEqual({ retracted_at: AT, retract_reason: why })
+    }
+  })
+  test("anything else is rejected on read and on write", () => {
+    for (const why of ["stale", "user-request", "SUPERSEDED", "", "superseded,incorrect"]) {
+      expect(readRecordMeta(rec(`- x <!--m ret=${AT} why=${why}-->\n`)).status).toBe("malformed")
+      expect(withRecordMeta(rec("- x\n"), { retracted_at: AT, retract_reason: why as never }).ok).toBe(false)
+    }
   })
 })
 
