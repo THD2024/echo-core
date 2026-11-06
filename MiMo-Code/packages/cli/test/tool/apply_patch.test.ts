@@ -672,6 +672,47 @@ describe("tool.apply_patch memory-path-guard", () => {
     })
   })
 
+  test("stamps record markers when patching canonical project MEMORY.md", async () => {
+    await using fixture = await tmpdir({ git: true })
+    const { ctx } = makeCtx()
+    const projectDir = path.join(Global.Path.data, "memory", "projects", "p_stamp")
+    const target = path.join(projectDir, "MEMORY.md")
+    await fs.mkdir(projectDir, { recursive: true })
+    // Two legacy records, no metadata marker yet.
+    await fs.writeFile(target, "## Rules\n- alpha\n- beta\n", "utf-8")
+
+    try {
+      await Instance.provide({
+        directory: fixture.path,
+        fn: async () => {
+          await execute(
+            {
+              patch_text: `*** Begin Patch\n*** Update File: ${target}\n@@\n-- alpha\n+- alpha edited\n*** End Patch`,
+            },
+            ctx,
+          )
+
+          const after = await fs.readFile(target, "utf-8")
+          const marker = "<!--m id=([a-z0-9]{8}) at=\\d{4}-\\d{2}-\\d{2}T[\\d:.]+Z src=i-->"
+          const lines = after.split("\n")
+
+          // Patch itself took effect, headings untouched, newline style preserved.
+          expect(lines[0]).toBe("## Rules")
+          expect(after).not.toContain("\r")
+          expect(after.endsWith("\n")).toBe(true)
+          expect(lines[1]).toMatch(new RegExp(`^- alpha edited ${marker}$`))
+          expect(lines[2]).toMatch(new RegExp(`^- beta ${marker}$`))
+
+          // Each record got its own id.
+          const ids = [lines[1], lines[2]].map((line) => line!.match(new RegExp(marker))![1])
+          expect(new Set(ids).size).toBe(2)
+        },
+      })
+    } finally {
+      await fs.rm(projectDir, { recursive: true, force: true })
+    }
+  })
+
   test("rejects writing another task's memory (taskId=T3 → tasks/T5)", async () => {
     await using fixture = await tmpdir({ git: true })
     const { ctx: base } = makeCtx()
