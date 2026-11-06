@@ -189,7 +189,9 @@ export const ApplyPatchTool = Tool.define(
           if (diffChange.added) change.additions += diffChange.count || 0
           if (diffChange.removed) change.deletions += diffChange.count || 0
         }
-      }\n\n      totalDiff = fileChanges.map((change) => change.diff).join("\n") + (fileChanges.length > 0 ? "\n" : "")
+      }
+
+      totalDiff = fileChanges.map((change) => change.diff).join("\n") + (fileChanges.length > 0 ? "\n" : "")
 
       // Build per-file metadata for UI rendering (used for both permission and result)
       const files = fileChanges.map((change) => ({
