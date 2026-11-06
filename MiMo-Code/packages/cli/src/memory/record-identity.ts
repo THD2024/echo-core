@@ -25,15 +25,35 @@ function markerlessText(segment: MemorySegment): string {
   return removed.ok ? removed.text : segment.text
 }
 
+const POSITIONAL_SIMILARITY_THRESHOLD = 0.5
+
+function lcsSimilarity(a: string, b: string): number {
+  if (a === b) return 1
+  if (!a.length || !b.length) return 0
+  const dp = new Array<number>(b.length + 1).fill(0)
+  for (let i = 1; i <= a.length; i++) {
+    let diagonal = 0
+    for (let j = 1; j <= b.length; j++) {
+      const above = dp[j]!
+      if (a[i - 1] === b[j - 1]) dp[j] = diagonal + 1
+      else dp[j] = Math.max(dp[j]!, dp[j - 1]!)
+      diagonal = above
+    }
+  }
+  return dp[b.length]! / Math.max(a.length, b.length)
+}
+
 function lcsPairs(oldRecords: MemorySegment[], newRecords: MemorySegment[]): Pair[] {
   const n = oldRecords.length, m = newRecords.length
+  const oldTexts = oldRecords.map(markerlessText)
+  const newTexts = newRecords.map(markerlessText)
   const dp = Array.from({ length: n + 1 }, () => new Array<number>(m + 1).fill(0))
   for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--)
-    dp[i]![j] = markerlessText(oldRecords[i]!) === markerlessText(newRecords[j]!) ? dp[i + 1]![j + 1]! + 1 : Math.max(dp[i + 1]![j]!, dp[i]![j + 1]!)
+    dp[i]![j] = oldTexts[i] === newTexts[j] ? dp[i + 1]![j + 1]! + 1 : Math.max(dp[i + 1]![j]!, dp[i]![j + 1]!)
   const anchors: Pair[] = []
   let i = 0, j = 0
   while (i < n && j < m) {
-    if (markerlessText(oldRecords[i]!) === markerlessText(newRecords[j]!)) {
+    if (oldTexts[i] === newTexts[j]) {
       anchors.push({ oldIndex: i, newIndex: j, safe: true }); i++; j++
     } else if (dp[i + 1]![j]! >= dp[i]![j + 1]!) i++
     else j++
@@ -41,12 +61,26 @@ function lcsPairs(oldRecords: MemorySegment[], newRecords: MemorySegment[]): Pai
   const all = [...anchors]
   let prevOld = -1, prevNew = -1
   for (const a of anchors) {
-    if (a.oldIndex - prevOld - 1 === 1 && a.newIndex - prevNew - 1 === 1)
-      all.push({ oldIndex: prevOld + 1, newIndex: prevNew + 1, safe: false })
+    if (a.oldIndex - prevOld - 1 === 1 && a.newIndex - prevNew - 1 === 1) {
+      const oldIndex = prevOld + 1
+      const newIndex = prevNew + 1
+      all.push({
+        oldIndex,
+        newIndex,
+        safe: lcsSimilarity(oldTexts[oldIndex]!, newTexts[newIndex]!) >= POSITIONAL_SIMILARITY_THRESHOLD,
+      })
+    }
     prevOld = a.oldIndex; prevNew = a.newIndex
   }
-  if (n - prevOld - 1 === 1 && m - prevNew - 1 === 1)
-    all.push({ oldIndex: prevOld + 1, newIndex: prevNew + 1 })
+  if (n - prevOld - 1 === 1 && m - prevNew - 1 === 1) {
+    const oldIndex = prevOld + 1
+    const newIndex = prevNew + 1
+    all.push({
+      oldIndex,
+      newIndex,
+      safe: lcsSimilarity(oldTexts[oldIndex]!, newTexts[newIndex]!) >= POSITIONAL_SIMILARITY_THRESHOLD,
+    })
+  }
   return all
 }
 
