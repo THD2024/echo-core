@@ -713,6 +713,40 @@ describe("tool.apply_patch memory-path-guard", () => {
     }
   })
 
+  test("preserves existing identity when Add File overwrites canonical project MEMORY.md", async () => {
+    await using fixture = await tmpdir({ git: true })
+    const { ctx } = makeCtx()
+    const projectDir = path.join(Global.Path.data, "memory", "projects", "p_add_existing")
+    const target = path.join(projectDir, "MEMORY.md")
+    await fs.mkdir(projectDir, { recursive: true })
+    await fs.writeFile(target, "## Rules\n- old fact <!--m id=oldadd01 at=2026-11-01T00:00:00Z src=u-->\n", "utf-8")
+    try {
+      await Instance.provide({ directory: fixture.path, fn: async () => {
+        await execute({ patch_text: "*** Begin Patch\n*** Add File: " + target + "\n+## Rules\n+- new fact\n*** End Patch" }, ctx)
+        const after = await fs.readFile(target, "utf-8")
+        expect(after).toContain("- new fact <!--m id=oldadd01 at=2026-11-01T00:00:00Z src=u-->")
+      }})
+    } finally { await fs.rm(projectDir, { recursive: true, force: true }) }
+  })
+
+  test("preserves destination identity when moving over an existing canonical project MEMORY.md", async () => {
+    await using fixture = await tmpdir({ git: true })
+    const { ctx } = makeCtx()
+    const source = path.join(fixture.path, "source.md")
+    const projectDir = path.join(Global.Path.data, "memory", "projects", "p_move_existing")
+    const target = path.join(projectDir, "MEMORY.md")
+    await fs.mkdir(projectDir, { recursive: true })
+    await fs.writeFile(source, "## Rules\n- moved fact\n", "utf-8")
+    await fs.writeFile(target, "## Rules\n- destination fact <!--m id=oldmove1 at=2026-11-02T00:00:00Z src=u-->\n", "utf-8")
+    try {
+      await Instance.provide({ directory: fixture.path, fn: async () => {
+        await execute({ patch_text: "*** Begin Patch\n*** Update File: " + source + "\n*** Move to: " + target + "\n@@\n-moved fact\n+destination fact edited\n*** End Patch" }, ctx)
+        const after = await fs.readFile(target, "utf-8")
+        expect(after).toContain("- destination fact edited <!--m id=oldmove1 at=2026-11-02T00:00:00Z src=u-->")
+      }})
+    } finally { await fs.rm(projectDir, { recursive: true, force: true }) }
+  })
+
   test("rejects writing another task's memory (taskId=T3 → tasks/T5)", async () => {
     await using fixture = await tmpdir({ git: true })
     const { ctx: base } = makeCtx()
