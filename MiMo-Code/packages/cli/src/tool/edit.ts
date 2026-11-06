@@ -87,6 +87,7 @@ export const EditTool = Tool.define(
             Effect.gen(function* () {
               if (params.old_string === "") {
                 const existed = yield* afs.existsSafe(filePath)
+                if (existed) contentOld = yield* afs.readFileString(filePath)
                 contentNew = yield* stampMemoryRecords(filePath, contentOld, params.new_string)
                 diff = trimDiff(createTwoFilesPatch(filePath, filePath, contentOld, contentNew))
                 yield* askEditUnlessMemory(ctx, filePath, {
