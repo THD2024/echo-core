@@ -13,6 +13,7 @@ import { Agent } from "../../src/agent/agent"
 import { Bus } from "../../src/bus"
 import { BusEvent } from "../../src/bus/bus-event"
 import { Truncate } from "../../src/tool"
+import { Global } from "../../src/global"
 import { SessionID, MessageID, PartID } from "../../src/session/schema"
 import type { MessageV2 } from "../../src/session/message-v2"
 
@@ -329,6 +330,43 @@ describe("tool.edit", () => {
           expect(await fs.readFile(filepath, "utf-8")).toBe("updated by edit")
         },
       })
+    })
+
+    test("preserves identity when edit old_string=\"\" overwrites canonical project MEMORY.md", async () => {
+      await using tmp = await tmpdir()
+      const projectDir = path.join(Global.Path.data, "memory", "projects", "p_edit_existing")
+      const filepath = path.join(projectDir, "MEMORY.md")
+      await fs.mkdir(projectDir, { recursive: true })
+      await fs.writeFile(
+        filepath,
+        "## Rules\\n- old fact <!--m id=oldedit1 at=2026-11-03T00:00:00Z src=u-->\\n",
+        "utf-8",
+      )
+
+      try {
+        await Instance.provide({
+          directory: tmp.path,
+          fn: async () => {
+            const edit = await resolve()
+            const result = await Effect.runPromise(
+              edit.execute(
+                {
+                  file_path: filepath,
+                  old_string: "",
+                  new_string: "## Rules\\n- old fact edited",
+                },
+                baseCtx,
+              ),
+            )
+
+            expect(result.output).toContain("Edit applied successfully")
+            const after = await fs.readFile(filepath, "utf-8")
+            expect(after).toContain("- old fact edited <!--m id=oldedit1 at=2026-11-03T00:00:00Z src=u-->")
+          },
+        })
+      } finally {
+        await fs.rm(projectDir, { recursive: true, force: true })
+      }
     })
 
     test("throws error when file does not exist", async () => {
