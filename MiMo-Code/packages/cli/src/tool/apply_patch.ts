@@ -171,6 +171,7 @@ export const ApplyPatchTool = Tool.define(
             fileChanges.push({
               filePath,
               oldContent: contentToDelete,
+              stampOldContent: contentToDelete,
               newContent: "",
               type: "delete",
               diff: deleteDiff,
