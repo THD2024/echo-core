@@ -740,7 +740,7 @@ describe("tool.apply_patch memory-path-guard", () => {
     await fs.writeFile(target, "## Rules\n- destination fact <!--m id=oldmove1 at=2026-11-02T00:00:00Z src=u-->\n", "utf-8")
     try {
       await Instance.provide({ directory: fixture.path, fn: async () => {
-        await execute({ patch_text: "*** Begin Patch\n*** Update File: " + source + "\n*** Move to: " + target + "\n@@\n-moved fact\n+destination fact edited\n*** End Patch" }, ctx)
+        await execute({ patch_text: "*** Begin Patch\n*** Update File: " + source + "\n*** Move to: " + target + "\n@@\n-- moved fact\n+- destination fact edited\n*** End Patch" }, ctx)
         const after = await fs.readFile(target, "utf-8")
         expect(after).toContain("- destination fact edited <!--m id=oldmove1 at=2026-11-02T00:00:00Z src=u-->")
       }})
