@@ -56,6 +56,7 @@ export const ApplyPatchTool = Tool.define(
       const fileChanges: Array<{
         filePath: string
         oldContent: string
+        stampOldContent: string
         newContent: string
         type: "add" | "update" | "delete" | "move"
         movePath?: string
@@ -73,6 +74,7 @@ export const ApplyPatchTool = Tool.define(
         switch (hunk.type) {
           case "add": {
             const oldContent = ""
+            const stampOldContent = (yield* afs.existsSafe(filePath)) ? yield* afs.readFileString(filePath) : ""
             const newContent =
               hunk.contents.length === 0 || hunk.contents.endsWith("\n") ? hunk.contents : `${hunk.contents}\n`
             const diff = trimDiff(createTwoFilesPatch(filePath, filePath, oldContent, newContent))
@@ -87,6 +89,7 @@ export const ApplyPatchTool = Tool.define(
             fileChanges.push({
               filePath,
               oldContent,
+              stampOldContent,
               newContent,
               type: "add",
               diff,
@@ -129,10 +132,14 @@ export const ApplyPatchTool = Tool.define(
 
             const movePath = hunk.move_path ? path.resolve(SessionCwd.get(ctx.sessionID), hunk.move_path) : undefined
             yield* assertWriteAllowed(ctx, movePath)
+            const stampOldContent = movePath
+              ? (yield* afs.existsSafe(movePath)) ? yield* afs.readFileString(movePath) : oldContent
+              : oldContent
 
             fileChanges.push({
               filePath,
               oldContent,
+              stampOldContent,
               newContent,
               type: hunk.move_path ? "move" : "update",
               movePath,
@@ -181,7 +188,7 @@ export const ApplyPatchTool = Tool.define(
       for (const change of fileChanges) {
         if (change.type === "delete") continue
         const target = change.movePath ?? change.filePath
-        change.newContent = yield* stampMemoryRecords(target, change.oldContent, change.newContent)
+        change.newContent = yield* stampMemoryRecords(target, change.stampOldContent, change.newContent)
         change.diff = trimDiff(createTwoFilesPatch(target, target, change.oldContent, change.newContent))
         change.additions = 0
         change.deletions = 0
