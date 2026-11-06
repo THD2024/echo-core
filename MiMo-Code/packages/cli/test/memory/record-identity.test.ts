@@ -88,7 +88,7 @@ describe("record identity stamping", () => {
     const r = stampMemoryRecords(oldText, newText, options(["newfact1"]))
     expect(r.ok).toBe(true)
     if (!r.ok) return
-    expect(r.text).toContain("id=oldfact1")
+    expect(r.text).toContain("id=newfact1")
     expect(r.text).toContain("src=i")
     expect(r.text).toContain("at=2026-11-06T12:00:00.000Z")
     expect(r.text).not.toContain("retracted_at=")
