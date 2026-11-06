@@ -529,7 +529,7 @@ describe("11. freeze guards", () => {
 
   test("only a type-only import of T-a; no fs / clock / random / process", async () => {
     const text = await fs.readFile(src, "utf8")
-    const imports = text.split("\n").filter((l) => /^\s*import\b/.test(l))
+    const imports = text.split(/\r?\n/).filter((l) => /^\s*import\b/.test(l))
     expect(imports).toEqual(['import type { MemoryDocument, MemoryRecordMetadata, MemorySegment } from "./record-parse"'])
     for (const banned of ["Date.now", "new Date()", "Math.random", "process.", "node:fs", "crypto", "require("])
       expect(text.includes(banned)).toBe(false)
