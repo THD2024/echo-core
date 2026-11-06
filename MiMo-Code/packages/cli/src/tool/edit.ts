@@ -20,6 +20,7 @@ import { Snapshot } from "@/snapshot"
 import { assertWriteAllowed, askEditUnlessMemory } from "./external-directory"
 import { AppFileSystem } from "@mimo-ai/shared/filesystem"
 import { Flag } from "@/flag/flag"
+import { stampMemoryRecords } from "./memory-record-stamp"
 
 function normalizeLineEndings(text: string): string {
   return text.replaceAll("\r\n", "\n")
@@ -86,13 +87,13 @@ export const EditTool = Tool.define(
             Effect.gen(function* () {
               if (params.old_string === "") {
                 const existed = yield* afs.existsSafe(filePath)
-                contentNew = params.new_string
+                contentNew = yield* stampMemoryRecords(filePath, contentOld, params.new_string)
                 diff = trimDiff(createTwoFilesPatch(filePath, filePath, contentOld, contentNew))
                 yield* askEditUnlessMemory(ctx, filePath, {
                   patterns: [path.relative(Instance.worktree, filePath)],
                   diff,
                 })
-                yield* afs.writeWithDirs(filePath, params.new_string)
+                yield* afs.writeWithDirs(filePath, contentNew)
                 yield* format.file(filePath)
                 yield* bus.publish(File.Event.Edited, { file: filePath })
                 yield* bus.publish(FileWatcher.Event.Updated, {
@@ -112,6 +113,7 @@ export const EditTool = Tool.define(
               const next = convertToLineEnding(normalizeLineEndings(params.new_string), ending)
 
               contentNew = replace(contentOld, old, next, params.replace_all)
+              contentNew = yield* stampMemoryRecords(filePath, contentOld, contentNew)
 
               diff = trimDiff(
                 createTwoFilesPatch(
