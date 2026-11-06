@@ -80,6 +80,21 @@ describe("record identity stamping", () => {
     expect(r.text).not.toContain("id=zzzzzzzz")
   })
 
+
+  test("does not inherit trust or retraction metadata across unsafe positional pairing", () => {
+    const oldText =
+      "## Rules\n- OLD user fact <!--m id=oldfact1 at=2026-02-01T00:00:00Z src=u retracted_at=2026-02-01T01:00:00Z retract_reason=incorrect-->\n"
+    const newText = "## Rules\n- COMPLETELY UNRELATED model guess\n"
+    const r = stampMemoryRecords(oldText, newText, options(["newfact1"]))
+    expect(r.ok).toBe(true)
+    if (!r.ok) return
+    expect(r.text).toContain("id=oldfact1")
+    expect(r.text).toContain("src=i")
+    expect(r.text).toContain("at=2026-11-06T12:00:00.000Z")
+    expect(r.text).not.toContain("retracted_at=")
+    expect(r.text).not.toContain("retract_reason=")
+  })
+
   test("does not reuse a conflicting existing id", () => {
     const oldText = "## Rules\n- old <!--m id=abc123 at=2026-11-05T09:12:00Z src=u-->\n"
     const newText = "## Rules\n- old edited\n- another <!--m id=abc123 at=2026-11-05T09:13:00Z src=i-->\n"
