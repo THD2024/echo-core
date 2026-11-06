@@ -339,7 +339,7 @@ describe("tool.edit", () => {
       await fs.mkdir(projectDir, { recursive: true })
       await fs.writeFile(
         filepath,
-        "## Rules\\n- old fact <!--m id=oldedit1 at=2026-11-03T00:00:00Z src=u-->\\n",
+        "## Rules\n- old fact <!--m id=oldedit1 at=2026-11-03T00:00:00Z src=u-->\n",
         "utf-8",
       )
 
@@ -353,7 +353,7 @@ describe("tool.edit", () => {
                 {
                   file_path: filepath,
                   old_string: "",
-                  new_string: "## Rules\\n- old fact edited",
+                  new_string: "## Rules\n- old fact edited",
                 },
                 baseCtx,
               ),
