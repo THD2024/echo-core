@@ -143,7 +143,7 @@ export function stampMemoryRecords(rawOld: string, rawNew: string, options: Reco
     }
 
     if (current.meta.record_id === undefined) {
-      if (patch.record_id === undefined || usedIds.has(patch.record_id)) {
+      if (patch.record_id === undefined || typeof patch.record_id !== "string" || usedIds.has(patch.record_id)) {
         patch.record_id = newId()
       } else {
         usedIds.add(patch.record_id)
