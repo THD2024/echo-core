@@ -177,7 +177,19 @@ export const ApplyPatchTool = Tool.define(
         }
       }
 
-      // Stamp canonical MEMORY.md only after all hunks are derived and permissions have passed through the existing gate.\n      for (const change of fileChanges) {\n        if (change.type === "delete") continue\n        const target = change.movePath ?? change.filePath\n        change.newContent = yield* stampMemoryRecords(target, change.oldContent, change.newContent)\n        change.diff = trimDiff(createTwoFilesPatch(target, target, change.oldContent, change.newContent))\n        change.additions = 0\n        change.deletions = 0\n        for (const diffChange of diffLines(change.oldContent, change.newContent)) {\n          if (diffChange.added) change.additions += diffChange.count || 0\n          if (diffChange.removed) change.deletions += diffChange.count || 0\n        }\n      }\n\n      totalDiff = fileChanges.map((change) => change.diff).join("\n") + (fileChanges.length > 0 ? "\n" : "")
+      // Stamp canonical MEMORY.md only after all hunks are derived and permissions have passed through the existing gate.
+      for (const change of fileChanges) {
+        if (change.type === "delete") continue
+        const target = change.movePath ?? change.filePath
+        change.newContent = yield* stampMemoryRecords(target, change.oldContent, change.newContent)
+        change.diff = trimDiff(createTwoFilesPatch(target, target, change.oldContent, change.newContent))
+        change.additions = 0
+        change.deletions = 0
+        for (const diffChange of diffLines(change.oldContent, change.newContent)) {
+          if (diffChange.added) change.additions += diffChange.count || 0
+          if (diffChange.removed) change.deletions += diffChange.count || 0
+        }
+      }\n\n      totalDiff = fileChanges.map((change) => change.diff).join("\n") + (fileChanges.length > 0 ? "\n" : "")
 
       // Build per-file metadata for UI rendering (used for both permission and result)
       const files = fileChanges.map((change) => ({
