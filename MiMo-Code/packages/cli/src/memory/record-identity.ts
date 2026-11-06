@@ -106,7 +106,7 @@ function correspondence(oldDoc: ReturnType<typeof parseMemoryDocument>, newDoc: 
 
 function mergeMissing(current: RecordMetaRead, old: RecordMetaRead, preserveDetails = true): RecordMetaPatch {
   const patch: RecordMetaPatch = {}
-  if (current.meta.record_id === undefined && old.meta.record_id !== undefined) patch.record_id = old.meta.record_id
+  if (preserveDetails && current.meta.record_id === undefined && old.meta.record_id !== undefined) patch.record_id = old.meta.record_id
   if (preserveDetails) {
     if (current.meta.recorded_at === undefined && old.meta.recorded_at !== undefined) patch.recorded_at = old.meta.recorded_at
     if (current.meta.source_type === undefined && old.meta.source_type !== undefined) patch.source_type = old.meta.source_type
