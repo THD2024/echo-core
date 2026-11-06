@@ -11,7 +11,7 @@ export type RecordIdentityResult =
   | { ok: true; text: string; changed: boolean; stamped: number; preserved: number; generated: number }
   | { ok: false; text: string; error: string }
 
-type Pair = { oldIndex: number; newIndex: number }
+type Pair = { oldIndex: number; newIndex: number; safe: boolean }
 const DEFAULT_SOURCE = "model_inference" as const
 
 function markerlessText(segment: MemorySegment): string {
@@ -34,7 +34,7 @@ function lcsPairs(oldRecords: MemorySegment[], newRecords: MemorySegment[]): Pai
   let i = 0, j = 0
   while (i < n && j < m) {
     if (markerlessText(oldRecords[i]!) === markerlessText(newRecords[j]!)) {
-      anchors.push({ oldIndex: i, newIndex: j }); i++; j++
+      anchors.push({ oldIndex: i, newIndex: j, safe: true }); i++; j++
     } else if (dp[i + 1]![j]! >= dp[i]![j + 1]!) i++
     else j++
   }
@@ -42,7 +42,7 @@ function lcsPairs(oldRecords: MemorySegment[], newRecords: MemorySegment[]): Pai
   let prevOld = -1, prevNew = -1
   for (const a of anchors) {
     if (a.oldIndex - prevOld - 1 === 1 && a.newIndex - prevNew - 1 === 1)
-      all.push({ oldIndex: prevOld + 1, newIndex: prevNew + 1 })
+      all.push({ oldIndex: prevOld + 1, newIndex: prevNew + 1, safe: false })
     prevOld = a.oldIndex; prevNew = a.newIndex
   }
   if (n - prevOld - 1 === 1 && m - prevNew - 1 === 1)
@@ -50,7 +50,7 @@ function lcsPairs(oldRecords: MemorySegment[], newRecords: MemorySegment[]): Pai
   return all
 }
 
-function correspondence(oldDoc: ReturnType<typeof parseMemoryDocument>, newDoc: ReturnType<typeof parseMemoryDocument>): Map<number, number> {
+function correspondence(oldDoc: ReturnType<typeof parseMemoryDocument>, newDoc: ReturnType<typeof parseMemoryDocument>): Map<number, { oldIndex: number; safe: boolean }> {
   const oldBySection = new Map<string | null, { index: number; segment: MemorySegment }[]>()
   const newBySection = new Map<string | null, { index: number; segment: MemorySegment }[]>()
   oldDoc.segments.forEach((s, index) => {
@@ -61,25 +61,29 @@ function correspondence(oldDoc: ReturnType<typeof parseMemoryDocument>, newDoc: 
     if (s.kind !== "record") return
     const list = newBySection.get(s.section) ?? []; list.push({ index, segment: s }); newBySection.set(s.section, list)
   })
-  const out = new Map<number, number>()
+  const out = new Map<number, { oldIndex: number; safe: boolean }>()
   for (const [section, news] of newBySection) {
     const olds = oldBySection.get(section) ?? []
     for (const p of lcsPairs(olds.map((x) => x.segment), news.map((x) => x.segment)))
-      out.set(news[p.newIndex]!.index, olds[p.oldIndex]!.index)
+      out.set(news[p.newIndex]!.index, { oldIndex: olds[p.oldIndex]!.index, safe: p.safe })
   }
   return out
 }
 
-function mergeMissing(current: RecordMetaRead, old: RecordMetaRead): RecordMetaPatch {
+function mergeMissing(current: RecordMetaRead, old: RecordMetaRead, preserveDetails = true): RecordMetaPatch {
   const patch: RecordMetaPatch = {}
   if (current.meta.record_id === undefined && old.meta.record_id !== undefined) patch.record_id = old.meta.record_id
-  if (current.meta.recorded_at === undefined && old.meta.recorded_at !== undefined) patch.recorded_at = old.meta.recorded_at
-  if (current.meta.source_type === undefined && old.meta.source_type !== undefined) patch.source_type = old.meta.source_type
-  if (current.meta.retracted_at === undefined && old.meta.retracted_at !== undefined) patch.retracted_at = old.meta.retracted_at
-  if (current.meta.retract_reason === undefined && old.meta.retract_reason !== undefined) patch.retract_reason = old.meta.retract_reason
-  const extras: Record<string, string> = {}
-  for (const [k, v] of Object.entries(old.extras)) if (!(k in current.extras)) extras[k] = v
-  if (Object.keys(extras).length) patch.extras = extras
+  if (preserveDetails) {
+    if (current.meta.recorded_at === undefined && old.meta.recorded_at !== undefined) patch.recorded_at = old.meta.recorded_at
+    if (current.meta.source_type === undefined && old.meta.source_type !== undefined) patch.source_type = old.meta.source_type
+    if (current.meta.retracted_at === undefined && old.meta.retracted_at !== undefined) patch.retracted_at = old.meta.retracted_at
+    if (current.meta.retract_reason === undefined && old.meta.retract_reason !== undefined) patch.retract_reason = old.meta.retract_reason
+  }
+  if (preserveDetails) {
+    const extras: Record<string, string> = {}
+    for (const [k, v] of Object.entries(old.extras)) if (!(k in current.extras)) extras[k] = v
+    if (Object.keys(extras).length) patch.extras = extras
+  }
   return patch
 }
 
@@ -136,10 +140,10 @@ export function stampMemoryRecords(rawOld: string, rawNew: string, options: Reco
         if (oldSameId) patch = mergeMissing(current, oldSameId)
       }
     } else {
-      const oldIndex = pairs.get(i)
-      const oldSegment = oldIndex === undefined ? undefined : oldDoc.segments[oldIndex]
+      const pair = pairs.get(i)
+      const oldSegment = pair === undefined ? undefined : oldDoc.segments[pair.oldIndex]
       const oldRead = oldSegment?.kind === "record" ? readRecordMeta(oldSegment) : undefined
-      if (oldRead?.status === "valid") patch = mergeMissing(current, oldRead)
+      if (oldRead?.status === "valid") patch = mergeMissing(current, oldRead, pair?.safe ?? false)
     }
 
     if (current.meta.record_id === undefined) {
