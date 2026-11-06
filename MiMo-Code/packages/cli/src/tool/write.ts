@@ -14,6 +14,7 @@ import { Instance } from "../project/instance"
 import { SessionCwd } from "./session-cwd"
 import { trimDiff } from "./edit"
 import { assertWriteAllowed, askEditUnlessMemory } from "./external-directory"
+import { stampMemoryRecords } from "./memory-record-stamp"
 
 const MAX_PROJECT_DIAGNOSTICS_FILES = 5
 
@@ -41,13 +42,15 @@ export const WriteTool = Tool.define(
           const exists = yield* fs.existsSafe(filepath)
           const contentOld = exists ? yield* fs.readFileString(filepath) : ""
 
-          const diff = trimDiff(createTwoFilesPatch(filepath, filepath, contentOld, params.content))
+          const contentNew = yield* stampMemoryRecords(filepath, contentOld, params.content)
+
+          const diff = trimDiff(createTwoFilesPatch(filepath, filepath, contentOld, contentNew))
           yield* askEditUnlessMemory(ctx, filepath, {
             patterns: [path.relative(Instance.worktree, filepath)],
             diff,
           })
 
-          yield* fs.writeWithDirs(filepath, params.content)
+          yield* fs.writeWithDirs(filepath, contentNew)
           yield* format.file(filepath)
           yield* bus.publish(File.Event.Edited, { file: filepath })
           yield* bus.publish(FileWatcher.Event.Updated, {
