@@ -168,6 +168,8 @@ export const retractMemoryRecord = Effect.fn("Memory.retractRecord")(function* (
         }
       }
 
+      const tombRaw = (yield* fs.existsSafe(tombstonePath)) ? yield* fs.readFileString(tombstonePath) : ""
+
       const matches = sourceReads.filter(
         (item) => item.read.status === "valid" && item.read.meta.record_id === input.recordId,
       )
@@ -189,7 +191,6 @@ export const retractMemoryRecord = Effect.fn("Memory.retractRecord")(function* (
         throw new Error(`Retract refused: record_id '${input.recordId}' is duplicated in source MEMORY.md.`)
       }
 
-      const tombRaw = (yield* fs.existsSafe(tombstonePath)) ? yield* fs.readFileString(tombstonePath) : ""
       const source = matches[0].segment
       const sourceMeta = matches[0].read
       if (sourceMeta.meta.retracted_at !== undefined || sourceMeta.meta.retract_reason !== undefined) {
