@@ -41,6 +41,28 @@ describe("Memory.search", () => {
     ),
   )
 
+  it.live("excludes retracted history from normal search but allows explicit audit type", () =>
+    provideTmpdirInstance(() =>
+      Effect.gen(function* () {
+        const memory = yield* Memory.Service
+        const root = yield* memory.root()
+        yield* Effect.promise(() => fs.rm(root, { recursive: true, force: true }))
+        const globalDir = path.join(root, "global")
+        const projectDir = path.join(root, "projects", "project-a")
+        yield* Effect.promise(() => fs.mkdir(globalDir, { recursive: true }))
+        yield* Effect.promise(() => fs.mkdir(projectDir, { recursive: true }))
+        yield* Effect.promise(() => fs.writeFile(path.join(globalDir, "active.md"), "unique-retract-query active fact"))
+        yield* Effect.promise(() => fs.writeFile(path.join(projectDir, "retracted.md"), "unique-retract-query retracted fact"))
+
+        const normal = yield* memory.search({ query: "unique-retract-query" })
+        expect(normal.map((row) => row.path)).toEqual([path.join(globalDir, "active.md")])
+
+        const audit = yield* memory.search({ query: "unique-retract-query", type: "retracted" })
+        expect(audit.map((row) => row.path)).toEqual([path.join(projectDir, "retracted.md")])
+      }),
+    ),
+  )
+
   it.live("filters by scope", () =>
     provideTmpdirInstance(() =>
       Effect.gen(function* () {
