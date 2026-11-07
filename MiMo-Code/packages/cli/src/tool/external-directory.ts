@@ -18,7 +18,7 @@ type Options = {
   kind?: Kind
   /** Only memory-retract may set this; it authorizes the retract-owned tombstone path. */
   retract?: boolean
-  }
+}
 
 export const assertExternalDirectoryEffect = Effect.fn("Tool.assertExternalDirectory")(function* (
   ctx: Tool.Context,
