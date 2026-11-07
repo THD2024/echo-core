@@ -39,6 +39,15 @@ describe("parsePath", () => {
     })
   })
 
+  test("retracted.md is classified as retracted history", () => {
+    expect(parsePath("/data/memory/projects/uuid-1/retracted.md")).toEqual({
+      scope: "projects",
+      scope_id: "uuid-1",
+      type: "retracted",
+      key: "retracted",
+    })
+  })
+
   test("uppercase MEMORY-rules.md spillover detects as memory type", () => {
     expect(parsePath("/data/memory/projects/uuid-1/MEMORY-rules.md")).toEqual({
       scope: "projects",
