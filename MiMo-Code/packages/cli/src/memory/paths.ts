@@ -12,6 +12,7 @@ export type MemoryType =
   | "project"
   | "reference"
   | "user"
+  | "retracted"
 
 export const CC_TYPES = ["feedback", "project", "reference", "user"] as const
 export type CcType = (typeof CC_TYPES)[number]
@@ -31,6 +32,8 @@ const TYPE_PATTERNS: Array<{ match: RegExp; type: MemoryType }> = [
   // classify as checkpoint.
   { match: /^memory$/i, type: "memory" },
   { match: /^memory-/i, type: "memory" },
+  // Retraction history is indexed for auditability, but is not normal memory.
+  { match: /^retracted$/i, type: "retracted" },
   { match: /^checkpoint$/, type: "checkpoint" },
   { match: /^checkpoint-/, type: "checkpoint" },
   { match: /^tasks\/[^/]+\/progress$/, type: "progress" },
