@@ -1,0 +1,1 @@
+Retract one canonical project Memory record using the controlled T-c protocol. The operation writes and verifies a tombstone in retracted.md before precisely deleting the unchanged source record. Global MEMORY.md retraction is intentionally disabled until stable global record IDs are available.
