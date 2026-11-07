@@ -108,14 +108,14 @@ describe("T-d.3 memory retract executor", () => {
   })
 
   test("tombstone changed during final verification fails closed", async () => {
-    const mutated = `## Retracted records\\n\\n- Alpha <!--m id=alpha123 at=2026-11-07T10:00:00Z src=i ret=2026-11-07T10:03:00Z why=withdrawn-->\\n`
+    const mutated = `## Retracted records\n\n- Alpha <!--m id=alpha123 at=2026-11-07T10:00:00Z src=i ret=2026-11-07T10:03:00Z why=withdrawn-->\n`
     const fs = fakeFs({ [sourcePath]: stamped, [tombstonePath]: tomb })
     const originalRead = fs.readFileString
     let tombReads = 0
     fs.readFileString = (file: string) => {
       if (file === tombstonePath) {
         tombReads += 1
-        if (tombReads >= 2) return Effect.succeed(mutated)
+        if (tombReads >= 3) return Effect.succeed(mutated)
       }
       return originalRead(file)
     }
