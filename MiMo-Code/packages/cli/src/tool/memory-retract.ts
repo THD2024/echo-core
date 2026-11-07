@@ -53,7 +53,7 @@ function appendTombstone(existing: string, record: string): string {
 
 export const retractMemoryRecord = Effect.fn("Memory.retractRecord")(function* (input: {
   ctx: Tool.Context
-  fs: AppFileSystem.Service
+  fs: AppFileSystem.Interface
   filepath: string
   recordId: string
   reason: RecordRetractReason
