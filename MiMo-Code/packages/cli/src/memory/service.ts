@@ -96,6 +96,10 @@ export const layer: Layer.Layer<Service, never, Config.Service> = Layer.effect(
       if (input.type) {
         conditions.push("memory_fts.type = ?")
         params.push(input.type)
+      } else {
+        // Retraction history remains indexed for audit/reconcile, but normal memory search must not leak it.
+        conditions.push("memory_fts.type != ?")
+        params.push("retracted")
       }
       const whereClause = conditions.length > 0 ? `AND ${conditions.join(" AND ")}` : ""
 
