@@ -38,7 +38,7 @@ export const RetractTool = Tool.define(
             metadata: result,
             output: `Retracted memory record '${params.record_id}' into retracted.md; source deletion completed only after tombstone verification.`,
           }
-        }),
+        }).pipe(Effect.orDie),
     }
   }),
 )
