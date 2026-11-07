@@ -62,12 +62,11 @@ export function parseSections(text: string): { preamble: string[]; sections: Sec
   return { preamble, sections }
 }
 
-export async function readBudgetedSectionAware(
-  filePath: string,
+export function readBudgetedSectionAwareText(
+  fullText: string,
   budgetTokens: number,
-): Promise<BudgetedReadResult | undefined> {
-  const fullText = await Bun.file(filePath).text().catch(() => undefined as string | undefined)
-  if (fullText === undefined) return undefined
+  filePath: string,
+): BudgetedReadResult {
   const totalTokens = Token.estimate(fullText)
   if (totalTokens <= budgetTokens) return { text: fullText, truncated: false, totalTokens }
 
@@ -115,4 +114,14 @@ export async function readBudgetedSectionAware(
     `${filePath} is ~${totalTokens} tokens total. ` +
     `read("${filePath}") for full content.`
   return { text: out.join("\n") + hint, truncated: true, totalTokens }
+}
+
+
+export async function readBudgetedSectionAware(
+  filePath: string,
+  budgetTokens: number,
+): Promise<BudgetedReadResult | undefined> {
+  const fullText = await Bun.file(filePath).text().catch(() => undefined as string | undefined)
+  if (fullText === undefined) return undefined
+  return readBudgetedSectionAwareText(fullText, budgetTokens, filePath)
 }
