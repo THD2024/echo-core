@@ -8,6 +8,8 @@ import { SessionCwd } from "./session-cwd"
 import { retractMemoryRecord } from "./memory-retract"
 import type { RecordRetractReason } from "../memory/record-meta"
 
+export const T_C_RETRACT_ENABLED = false
+
 const Parameters = z.object({
   file_path: z.string().describe("Canonical project MEMORY.md containing the record"),
   record_id: z.string().min(1).describe("Stable record_id of the record to retract"),
