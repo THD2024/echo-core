@@ -109,6 +109,7 @@ export const retractMemoryRecord = Effect.fn("Memory.retractRecord")(function* (
   filepath: string
   recordId: string
   reason: RecordRetractReason
+  assertWriteAllowedFn?: typeof assertWriteAllowed
 }) {
   const parts = projectMemoryParts(input.filepath)
   if (!parts) {
@@ -121,8 +122,9 @@ export const retractMemoryRecord = Effect.fn("Memory.retractRecord")(function* (
   const sourcePath = path.resolve(input.filepath)
   const tombstonePath = parts.tombstone
 
-  yield* assertWriteAllowed(input.ctx, sourcePath)
-  yield* assertWriteAllowed(input.ctx, tombstonePath, { retract: true })
+  const gate = input.assertWriteAllowedFn ?? assertWriteAllowed
+  yield* gate(input.ctx, sourcePath)
+  yield* gate(input.ctx, tombstonePath, { retract: true })
 
   return yield* lock(parts.projectDir).withPermits(1)(
     Effect.gen(function* () {
@@ -187,13 +189,13 @@ export const retractMemoryRecord = Effect.fn("Memory.retractRecord")(function* (
         throw new Error(`Retract refused: record_id '${input.recordId}' is duplicated in source MEMORY.md.`)
       }
 
+      const tombRaw = (yield* fs.existsSafe(tombstonePath)) ? yield* fs.readFileString(tombstonePath) : ""
       const source = matches[0].segment
       const sourceMeta = matches[0].read
       if (sourceMeta.meta.retracted_at !== undefined || sourceMeta.meta.retract_reason !== undefined) {
         throw new Error("Retract refused: an active MEMORY.md record must not already carry retraction state.")
       }
 
-      const tombRaw = (yield* fs.existsSafe(tombstonePath)) ? yield* fs.readFileString(tombstonePath) : ""
       const tombDoc = parseMemoryDocument(tombRaw)
       const tombRecords = tombDoc.segments.filter((s) => s.kind === "record")
       const tombReads = tombRecords.map((segment) => ({ segment, read: readRecordMeta(segment) }))
