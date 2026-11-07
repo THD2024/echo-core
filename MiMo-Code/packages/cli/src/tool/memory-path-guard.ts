@@ -59,8 +59,25 @@ export function assertAgentWriteSandbox(input: {
 /** True when `child` is `root` itself or nested under it. Normalizes a trailing
  *  separator so `/a/memory` does not match `/a/memory-other`. */
 function pathContains(root: string, child: string): boolean {
-  const normalizedRoot = root.endsWith(path.sep) ? root.slice(0, -1) : root
-  return child === normalizedRoot || child.startsWith(normalizedRoot + path.sep)
+  return pathContainsNormalized(root, child)
+}
+
+function pathContainsNormalized(root: string, child: string): boolean {
+  const normalize = (value: string) => {
+    const resolved = path.resolve(value)
+    return process.platform === "win32" ? resolved.toLowerCase() : resolved
+  }
+  const normalizedRoot = normalize(root).replace(/[\\/]$/, "")
+  const normalizedChild = normalize(child)
+  return normalizedChild === normalizedRoot || normalizedChild.startsWith(normalizedRoot + path.sep)
+}
+
+function isRetractedPath(parts: string[]): boolean {
+  const lower = parts.map((part) => process.platform === "win32" ? part.toLowerCase() : part)
+  return (
+    (lower.length === 3 && lower[0] === "projects" && lower[2] === "retracted.md") ||
+    (lower.length === 2 && lower[0] === "global" && lower[1] === "retracted.md")
+  )
 }
 
 const TASK_ID_RE = /^T\d+(\.\d+)*$/
@@ -165,14 +182,17 @@ export function assertMemoryWriteAllowed(input: {
   taskId?: string
   /** Whether memory writing is enabled. Omitted → enabled (the default). */
   writeEnabled?: boolean
+  /** Only memory_retract may authorize writes to retracted.md. */
+  retract?: boolean
 }): void {
-  const { target, agentName, memoryRoot, projectID, sessionID } = input
+  const target = path.resolve(input.target)
+  const memoryRoot = path.resolve(input.memoryRoot)
+  const { agentName, projectID, sessionID } = input
   const memoryFile = path.join(memoryRoot, "projects", projectID, "MEMORY.md")
   const notesFile = path.join(memoryRoot, "sessions", sessionID, "notes.md")
   const checkpointFile = path.join(memoryRoot, "sessions", sessionID, "checkpoint.md")
   const taskMemDir = path.join(memoryRoot, "sessions", sessionID, "tasks")
-  const normalizedRoot = memoryRoot.endsWith(path.sep) ? memoryRoot : memoryRoot + path.sep
-  if (!target.startsWith(normalizedRoot)) return
+  if (!pathContainsNormalized(memoryRoot, target)) return
 
   // Memory write switch. Deliberately worded so the refusal cannot be mistaken
   // for a path/permission problem — a model that reads "not allowed here" tends to
@@ -196,6 +216,17 @@ export function assertMemoryWriteAllowed(input: {
 
   const rel = path.relative(memoryRoot, target)
   const parts = rel.split(path.sep)
+
+  // Retraction history is an authority boundary, not an ordinary free-form
+  // memory file. Only the controlled memory_retract tool may create or modify it.
+  if (isRetractedPath(parts)) {
+    if (!input.retract) {
+      throw new Error(
+        `Path '${rel}' is reserved for memory_retract and cannot be modified by ordinary memory write tools.`,
+      )
+    }
+    return
+  }
 
   if (parts.length < 2) {
     throw new Error(formatMainAgentHelp(memoryFile, notesFile, target))
