@@ -95,4 +95,35 @@ describe("T-d.3 memory retract executor", () => {
     await expect(Effect.runPromise(retractMemoryRecord({ ...input(), fs }))).rejects.toThrow(/malformed tombstone/)
     expect(fs.files.get(sourcePath)).toBe(before)
   })
+  test("write gate rejection leaves both files untouched", async () => {
+    const fs = fakeFs({ [sourcePath]: stamped, [tombstonePath]: tomb })
+    const beforeSource = fs.files.get(sourcePath)
+    const beforeTomb = fs.files.get(tombstonePath)
+    const denyGate = () => Effect.fail(new Error("Memory WRITING is disabled"))
+    await expect(
+      Effect.runPromise(retractMemoryRecord({ ...input("alpha123", denyGate as any), fs })),
+    ).rejects.toThrow(/disabled/)
+    expect(fs.files.get(sourcePath)).toBe(beforeSource)
+    expect(fs.files.get(tombstonePath)).toBe(beforeTomb)
+  })
+
+  test("tombstone changed during final verification fails closed", async () => {
+    const mutated = `## Retracted records\\n\\n- Alpha <!--m id=alpha123 at=2026-11-07T10:00:00Z src=i ret=2026-11-07T10:03:00Z why=withdrawn-->\\n`
+    const fs = fakeFs({ [sourcePath]: stamped, [tombstonePath]: tomb })
+    const originalRead = fs.readFileString
+    let tombReads = 0
+    fs.readFileString = (file: string) => {
+      if (file === tombstonePath) {
+        tombReads += 1
+        if (tombReads >= 2) return Effect.succeed(mutated)
+      }
+      return originalRead(file)
+    }
+    const beforeSource = fs.files.get(sourcePath)
+    await expect(
+      Effect.runPromise(retractMemoryRecord({ ...input(), fs })),
+    ).rejects.toThrow(/changed or disappeared/)
+    expect(fs.files.get(sourcePath)).toBe(beforeSource)
+  })
+
 })
