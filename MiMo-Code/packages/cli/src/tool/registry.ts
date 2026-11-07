@@ -16,6 +16,7 @@ import { CronTool } from "./cron"
 import { WorkflowTool } from "./workflow"
 import { WebFetchTool } from "./webfetch"
 import { WriteTool } from "./write"
+import { RetractTool } from "./retract"
 import { NotebookEditTool } from "./notebook-edit"
 import { InvalidTool } from "./invalid"
 import { SkillTool } from "./skill"
@@ -153,6 +154,7 @@ export const layer = Layer.effect(
     const codesearch = yield* CodeSearchTool
     const globtool = yield* GlobTool
     const writetool = yield* WriteTool
+    const retracttool = yield* RetractTool
     const notebookedit = yield* NotebookEditTool
     const edit = yield* EditTool
     const greptool = yield* GrepTool
@@ -233,6 +235,7 @@ export const layer = Layer.effect(
           grep: Tool.init(greptool),
           edit: Tool.init(edit),
           write: Tool.init(writetool),
+          memory_retract: Tool.init(retracttool),
           notebookedit: Tool.init(notebookedit),
           actor: Tool.init(actor),
           fetch: Tool.init(webfetch),
@@ -265,6 +268,7 @@ export const layer = Layer.effect(
             tool.grep,
             tool.edit,
             tool.write,
+            tool.memory_retract,
             tool.notebookedit,
             tool.actor,
             tool.fetch,
