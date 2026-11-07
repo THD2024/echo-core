@@ -71,6 +71,31 @@ function tombstoneMatchesSource(source: MemorySegment, tombstone: MemorySegment)
   return markerless(source) === markerless(tombstone) && sameAssertionMetadata(sourceRead, tombRead)
 }
 
+function alreadyConvergedFromTombstone(
+  tombRaw: string,
+  recordId: string,
+  reason: RecordRetractReason,
+): { retractedAt: string } | null {
+  const tombDoc = parseMemoryDocument(tombRaw)
+  const tombReads = tombDoc.segments
+    .filter((segment) => segment.kind === "record")
+    .map((segment) => ({ segment, read: readRecordMeta(segment) }))
+  if (tombReads.some((item) => item.read.status === "malformed")) {
+    throw new Error("Retract repair refused: malformed tombstone metadata.")
+  }
+  const tombMatches = tombReads.filter(
+    (item) => item.read.status === "valid" && item.read.meta.record_id === recordId,
+  )
+  if (
+    tombMatches.length === 1 &&
+    tombMatches[0].read.meta.retract_reason === reason &&
+    tombMatches[0].read.meta.retracted_at !== undefined
+  ) {
+    return { retractedAt: tombMatches[0].read.meta.retracted_at }
+  }
+  return null
+}
+
 function appendTombstone(existing: string, record: string): string {
   const header = "## Retracted records\n\n"
   if (existing.length === 0) return header + record + (record.endsWith("\n") ? "" : "\n")
@@ -144,12 +169,22 @@ export const retractMemoryRecord = Effect.fn("Memory.retractRecord")(function* (
       const matches = sourceReads.filter(
         (item) => item.read.status === "valid" && item.read.meta.record_id === input.recordId,
       )
-      if (matches.length !== 1) {
-        throw new Error(
-          matches.length === 0
-            ? `Retract refused: record_id '${input.recordId}' is not present in source MEMORY.md.`
-            : `Retract refused: record_id '${input.recordId}' is duplicated in source MEMORY.md.`,
-        )
+      if (matches.length === 0) {
+        const converged = alreadyConvergedFromTombstone(tombRaw, input.recordId, input.reason)
+        if (converged) {
+          return {
+            sourcePath,
+            tombstonePath,
+            recordId: input.recordId,
+            reason: input.reason,
+            retractedAt: converged.retractedAt,
+            alreadyConverged: true,
+          }
+        }
+        throw new Error(`Retract refused: record_id '${input.recordId}' is not present in source MEMORY.md.`)
+      }
+      if (matches.length > 1) {
+        throw new Error(`Retract refused: record_id '${input.recordId}' is duplicated in source MEMORY.md.`)
       }
 
       const source = matches[0].segment
