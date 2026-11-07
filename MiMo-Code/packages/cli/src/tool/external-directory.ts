@@ -16,7 +16,9 @@ type Kind = "file" | "directory"
 type Options = {
   bypass?: boolean
   kind?: Kind
-}
+  /** Only memory-retract may set this; it authorizes the retract-owned tombstone path. */
+  retract?: boolean
+  }
 
 export const assertExternalDirectoryEffect = Effect.fn("Tool.assertExternalDirectory")(function* (
   ctx: Tool.Context,
@@ -137,6 +139,7 @@ export const assertWriteAllowed = Effect.fn("Tool.assertWriteAllowed")(function*
     sessionID: ctx.sessionID,
     taskId: ctx.taskId,
     writeEnabled: yield* memoryWriteEnabled,
+    retract: options?.retract === true,
   })
 })
 
