@@ -12,7 +12,7 @@ import { ActorRegistry } from "@/actor/registry"
 import type { AgentOutcome, FailureInfo, ForkContext } from "@/actor/spawn"
 import { spawnRef } from "@/actor/spawn-ref"
 import { prefixCaptureRef } from "./prefix-capture-ref"
-import { Database, and, eq, or } from "@/storage"
+import { Database, and, eq, or, ne } from "@/storage"
 import { Instance } from "@/project/instance"
 import { ProjectID } from "@/project/schema"
 import { SessionTable } from "./session.sql"
@@ -35,7 +35,7 @@ import {
   globalMemoryPath,
   migrateProjectMemory,
 } from "./checkpoint-paths"
-import { readBudgeted, readBudgetedSectionAware } from "./budgeted-read"
+import { readBudgeted, readBudgetedSectionAware, readBudgetedSectionAwareText } from "./budgeted-read"
 import type { LastMessageInfo } from "./last-message-info"
 import { CHECKPOINT_TEMPLATE, MEMORY_TEMPLATE, NOTES_TEMPLATE, CHECKPOINT_SECTION_BUDGETS } from "./checkpoint-templates"
 import { adjustBoundaryForApiInvariants } from "./boundary"
@@ -43,6 +43,7 @@ import { alignToNonToolResultUser } from "./checkpoint-align"
 import { loadPriorDiscoveredTitles } from "./checkpoint-retry"
 import * as CheckpointContext from "./checkpoint-context"
 import { buildProgressDiff } from "./checkpoint-progress-reconcile"
+import { deductRetracted } from "@/memory/retract-view"
 import { renderTailDigest } from "./tail-digest"
 
 const log = Log.create({ service: "session.checkpoint" })
@@ -1342,10 +1343,21 @@ export const layer: Layer.Layer<
       const checkpointText = checkpointResult?.text ?? ""
 
       yield* Effect.promise(() => migrateProjectMemory(projectID))
-      const memoryResult = yield* Effect.promise(() =>
-        readBudgetedSectionAware(memoryPath(projectID), caps.memory ?? 10_000),
+      const memoryFile = memoryPath(projectID)
+      const retractedFile = path.join(path.dirname(memoryFile), "retracted.md")
+      const memoryRaw = yield* Effect.promise(() =>
+        Bun.file(memoryFile).text().catch(() => ""),
       )
-      const memoryText = memoryResult?.text ?? ""
+      const retractedRaw = yield* Effect.promise(() =>
+        Bun.file(retractedFile).text().catch(() => ""),
+      )
+      const memoryView = deductRetracted(memoryRaw, retractedRaw)
+      const memoryResult = readBudgetedSectionAwareText(
+        memoryView.text,
+        caps.memory ?? 10_000,
+        memoryFile,
+      )
+      const memoryText = memoryResult.text
 
       const notesResult = yield* Effect.promise(() =>
         readBudgeted(notesPath(sessionID), caps.notes ?? 6000),
@@ -1516,7 +1528,11 @@ export const layer: Layer.Layer<
             )
       const scopedPaths = yield* Effect.sync(() =>
         Database.use((db) =>
-          db.select({ path: MemoryFtsTable.path }).from(MemoryFtsTable).where(scopeFilter).all(),
+          db
+            .select({ path: MemoryFtsTable.path })
+            .from(MemoryFtsTable)
+            .where(and(scopeFilter, ne(MemoryFtsTable.type, "retracted")))
+            .all(),
         ),
       )
       const keyEntries = scopedPaths
