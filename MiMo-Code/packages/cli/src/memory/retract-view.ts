@@ -40,11 +40,35 @@ export function deductRetracted(sourceRaw: string, tombRaw: string): RetractView
   if (retracted.size === 0) return { text: sourceRaw, deducted: [], diagnostics }
 
   const deducted: string[] = []
+  const escapedId = (id: string) => id.replace(/[.*+?^\\$()|[\\]\\\\]/g, "\\  const deducted: string[] = []
   for (const segment of sourceDoc.segments) {
     if (segment.kind !== "record") continue
     const read = readRecordMeta(segment)
     if (read.status === "malformed") {
       diagnostics.push(`malformed source metadata at line ${segment.line}`)
+      continue
+    }
+    const id = read.status === "valid" ? read.meta.record_id : undefined
+    if (!id || !retracted.has(id)) continue
+    segment.text = ""
+    deducted.push(id)
+  }")
+  for (const segment of sourceDoc.segments) {
+    if (segment.kind !== "record") continue
+    const read = readRecordMeta(segment)
+    if (read.status === "malformed") {
+      diagnostics.push(`malformed source metadata at line ${segment.line}`)
+      // T-d.3 hardening: if a malformed carrier still contains an exact known
+      // retracted id in the carrier, hide it rather than fail-open.
+      const firstLine = segment.text.split(/\\r?\\n/, 1)[0]
+      for (const id of retracted) {
+        const marker = new RegExp("<!--m\\\\s[^>]*\\\\bid=" + escapedId(id) + "(?:\\\\s|-->)")
+        if (marker.test(firstLine)) {
+          segment.text = ""
+          deducted.push(id)
+          break
+        }
+      }
       continue
     }
     const id = read.status === "valid" ? read.meta.record_id : undefined
