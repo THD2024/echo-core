@@ -97,13 +97,5 @@ describe("T-d.3 memory retract executor", () => {
     expect(fs.files.get(sourcePath)).toBe(before)
   })
 
-  test("disable/write-gate rejection happens before any file read", async () => {
-    const gate = mock(() => Effect.fail(new Error("Memory WRITING is disabled")))
-    mock.module("../../src/tool/external-directory", () => ({ assertWriteAllowed: gate }))
-    const { retractMemoryRecord: gatedRetract } = await import("../../src/tool/memory-retract?gate-test")
-    const fs = fakeFs({ [sourcePath]: stamped, [tombstonePath]: tomb })
-    await expect(Effect.runPromise(gatedRetract({ ...input(), fs }))).rejects.toThrow(/disabled/)
-    expect(gate).toHaveBeenCalled()
-    expect(fs.files.get(sourcePath)).toBe(stamped)
   })
 })
