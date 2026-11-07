@@ -1,6 +1,7 @@
 import z from "zod"
 import * as path from "path"
 import { Effect } from "effect"
+import { AppFileSystem } from "@mimo-ai/shared/filesystem"
 import * as Tool from "./tool"
 import DESCRIPTION from "./retract.txt"
 import { SessionCwd } from "./session-cwd"
@@ -16,6 +17,7 @@ const Parameters = z.object({
 export const RetractTool = Tool.define(
   "memory_retract",
   Effect.gen(function* () {
+    const fs = yield* AppFileSystem.Service
     return {
       description: DESCRIPTION,
       parameters: Parameters,
@@ -26,6 +28,7 @@ export const RetractTool = Tool.define(
             : path.join(SessionCwd.get(ctx.sessionID), params.file_path)
           const result = yield* retractMemoryRecord({
             ctx,
+            fs,
             filepath,
             recordId: params.record_id,
             reason: params.reason as RecordRetractReason,
