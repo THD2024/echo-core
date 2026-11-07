@@ -38,6 +38,17 @@ describe("deductRetracted", () => {
     expect(result.diagnostics.length).toBeGreaterThan(0)
   })
 
+  test("hides a malformed source carrier when its exact retracted id survives in the marker", () => {
+    const source = "## Knowledge\n_instruction_\n\n- broken carrier <!--m id=drop06 ret=bad why=withdrawn-->\n"
+    const result = deductRetracted(
+      source,
+      `## Retracted records\n\n${tomb("removed", "drop06")}\n`,
+    )
+    expect(result.text).not.toContain("broken carrier")
+    expect(result.deducted).toEqual(["drop06"])
+    expect(result.diagnostics.length).toBeGreaterThan(0)
+  })
+
   test("does not subtract records without a valid tombstone", () => {
     const source = "## Knowledge\n_instruction_\n\n- active <!--m id=keep04 at=2026-11-07T09:00:00Z src=u-->\n"
     const result = deductRetracted(source, "")
