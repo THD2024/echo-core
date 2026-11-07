@@ -96,6 +96,4 @@ describe("T-d.3 memory retract executor", () => {
     await expect(Effect.runPromise(retractMemoryRecord({ ...input(), fs }))).rejects.toThrow(/malformed tombstone/)
     expect(fs.files.get(sourcePath)).toBe(before)
   })
-
-  })
 })
