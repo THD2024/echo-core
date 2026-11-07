@@ -44,6 +44,33 @@ function markerless(segment: MemorySegment): string {
   return result.text
 }
 
+function sameAssertionMetadata(
+  source: ReturnType<typeof readRecordMeta>,
+  tombstone: ReturnType<typeof readRecordMeta>,
+): boolean {
+  if (source.status !== "valid" || tombstone.status !== "valid") return false
+  if (
+    source.meta.record_id !== tombstone.meta.record_id ||
+    source.meta.recorded_at !== tombstone.meta.recorded_at ||
+    source.meta.source_type !== tombstone.meta.source_type
+  ) {
+    return false
+  }
+  const sourceKeys = Object.keys(source.extras)
+  const tombKeys = Object.keys(tombstone.extras)
+  if (sourceKeys.length !== tombKeys.length) return false
+  return sourceKeys.every((key) => source.extras[key] === tombstone.extras[key])
+}
+
+function tombstoneMatchesSource(source: MemorySegment, tombstone: MemorySegment): boolean {
+  const sourceRead = readRecordMeta(source)
+  const tombRead = readRecordMeta(tombstone)
+  if (sourceRead.status !== "valid" || tombRead.status !== "valid") return false
+  if (sourceRead.meta.retracted_at !== undefined || sourceRead.meta.retract_reason !== undefined) return false
+  if (tombRead.meta.retracted_at === undefined || tombRead.meta.retract_reason === undefined) return false
+  return markerless(source) === markerless(tombstone) && sameAssertionMetadata(sourceRead, tombRead)
+}
+
 function appendTombstone(existing: string, record: string): string {
   const header = "## Retracted records\n\n"
   if (existing.length === 0) return header + record + (record.endsWith("\n") ? "" : "\n")
@@ -70,11 +97,39 @@ export const retractMemoryRecord = Effect.fn("Memory.retractRecord")(function* (
   const tombstonePath = parts.tombstone
 
   yield* assertWriteAllowed(input.ctx, sourcePath)
-  yield* assertWriteAllowed(input.ctx, tombstonePath)
+  yield* assertWriteAllowed(input.ctx, tombstonePath, { retract: true })
 
   return yield* lock(parts.projectDir).withPermits(1)(
     Effect.gen(function* () {
-      if (!(yield* fs.existsSafe(sourcePath))) throw new Error(`Source file not found: ${sourcePath}`)
+      const sourceExists = yield* fs.existsSafe(sourcePath)
+      if (!sourceExists) {
+        const tombRaw = (yield* fs.existsSafe(tombstonePath)) ? yield* fs.readFileString(tombstonePath) : ""
+        const tombDoc = parseMemoryDocument(tombRaw)
+        const tombReads = tombDoc.segments
+          .filter((segment) => segment.kind === "record")
+          .map((segment) => ({ segment, read: readRecordMeta(segment) }))
+        if (tombReads.some((item) => item.read.status === "malformed")) {
+          throw new Error("Retract repair refused: malformed tombstone metadata.")
+        }
+        const tombMatches = tombReads.filter(
+          (item) => item.read.status === "valid" && item.read.meta.record_id === input.recordId,
+        )
+        if (
+          tombMatches.length === 1 &&
+          tombMatches[0].read.meta.retract_reason === input.reason &&
+          tombMatches[0].read.meta.retracted_at !== undefined
+        ) {
+          return {
+            sourcePath,
+            tombstonePath,
+            recordId: input.recordId,
+            reason: input.reason,
+            retractedAt: tombMatches[0].read.meta.retracted_at,
+            alreadyConverged: true,
+          }
+        }
+        throw new Error(`Source file not found: ${sourcePath}`)
+      }
       const sourceRaw = yield* fs.readFileString(sourcePath)
       const sourceDoc = parseMemoryDocument(sourceRaw)
       const sourceRecords = sourceDoc.segments.filter((s) => s.kind === "record")
@@ -126,7 +181,7 @@ export const retractMemoryRecord = Effect.fn("Memory.retractRecord")(function* (
         if (tombMeta.retract_reason !== input.reason || tombMeta.retracted_at === undefined) {
           throw new Error(`Retract refused: existing tombstone for '${input.recordId}' conflicts with this assertion.`)
         }
-        if (markerless(tomb.segment) !== markerless(source)) {
+        if (!tombstoneMatchesSource(source, tomb.segment)) {
           throw new Error(`Retract refused: existing tombstone for '${input.recordId}' does not match the source assertion.`)
         }
       }
@@ -168,6 +223,24 @@ export const retractMemoryRecord = Effect.fn("Memory.retractRecord")(function* (
         throw new Error("Retract refused: persisted tombstone metadata mismatch.")
       }
 
+      // Final R verification: the tombstone remains the historical authority immediately
+      // before source deletion. If it changed or disappeared, fail closed.
+      const finalTombRaw = yield* fs.readFileString(tombstonePath)
+      const finalTombDoc = parseMemoryDocument(finalTombRaw)
+      const finalTombMatches = finalTombDoc.segments
+        .filter((segment) => segment.kind === "record")
+        .map((segment) => ({ segment, read: readRecordMeta(segment) }))
+        .filter((item) => item.read.status === "valid" && item.read.meta.record_id === input.recordId)
+      if (finalTombMatches.length !== 1 || !tombstoneMatchesSource(source, finalTombMatches[0].segment)) {
+        throw new Error("Retract refused: tombstone changed or disappeared before source deletion.")
+      }
+      if (
+        finalTombMatches[0].read.meta.retracted_at !== retractedAt ||
+        finalTombMatches[0].read.meta.retract_reason !== input.reason
+      ) {
+        throw new Error("Retract refused: final tombstone metadata mismatch.")
+      }
+
       // Phase 2: re-read the source and delete only the exact record captured above.
       const sourceNow = yield* fs.readFileString(sourcePath)
       const sourceNowDoc = parseMemoryDocument(sourceNow)
@@ -187,7 +260,14 @@ export const retractMemoryRecord = Effect.fn("Memory.retractRecord")(function* (
       })
       yield* fs.writeWithDirs(sourcePath, updated)
 
-      return { sourcePath, tombstonePath, recordId: input.recordId, reason: input.reason, retractedAt }
+      return {
+        sourcePath,
+        tombstonePath,
+        recordId: input.recordId,
+        reason: input.reason,
+        retractedAt,
+        alreadyConverged: false,
+      }
     }),
   )
 })
