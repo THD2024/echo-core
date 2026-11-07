@@ -15,6 +15,73 @@ const PROJECT_ID = ProjectID.make("p_test")
 const SESSION_ID = SessionID.make("sid")
 
 describe("assertMemoryWriteAllowed", () => {
+  test("ordinary writes cannot modify project retracted.md", () => {
+    const target = path.join(MEMORY_ROOT, "projects", "p_test", "retracted.md")
+    expect(() =>
+      assertMemoryWriteAllowed({
+        target,
+        agentName: "build",
+        memoryRoot: MEMORY_ROOT,
+        projectID: PROJECT_ID,
+        sessionID: SESSION_ID,
+      }),
+    ).toThrow(/reserved for memory_retract/)
+  })
+
+  test("retract authorization permits project retracted.md", () => {
+    const target = path.join(MEMORY_ROOT, "projects", "p_test", "retracted.md")
+    expect(() =>
+      assertMemoryWriteAllowed({
+        target,
+        agentName: "build",
+        memoryRoot: MEMORY_ROOT,
+        projectID: PROJECT_ID,
+        sessionID: SESSION_ID,
+        retract: true,
+      }),
+    ).not.toThrow()
+  })
+
+  test("path normalization closes .. spelling for retracted.md", () => {
+    const target = path.join(MEMORY_ROOT, "projects", "p_test", "nested", "..", "retracted.md")
+    expect(() =>
+      assertMemoryWriteAllowed({
+        target,
+        agentName: "build",
+        memoryRoot: MEMORY_ROOT,
+        projectID: PROJECT_ID,
+        sessionID: SESSION_ID,
+      }),
+    ).toThrow(/reserved for memory_retract/)
+  })
+
+  test("ordinary writes cannot modify global retracted.md", () => {
+    const target = path.join(MEMORY_ROOT, "global", "retracted.md")
+    expect(() =>
+      assertMemoryWriteAllowed({
+        target,
+        agentName: "build",
+        memoryRoot: MEMORY_ROOT,
+        projectID: PROJECT_ID,
+        sessionID: SESSION_ID,
+      }),
+    ).toThrow(/reserved for memory_retract/)
+  })
+
+  test("Windows casing cannot bypass the retracted.md boundary", () => {
+    if (process.platform !== "win32") return
+    const target = path.join(MEMORY_ROOT, "PROJECTS", "P_TEST", "RETRACTED.MD")
+    expect(() =>
+      assertMemoryWriteAllowed({
+        target,
+        agentName: "build",
+        memoryRoot: MEMORY_ROOT,
+        projectID: PROJECT_ID,
+        sessionID: SESSION_ID,
+      }),
+    ).toThrow(/reserved for memory_retract/)
+  })
+
   test("non-memory path passes for any agent", () => {
     expect(() =>
       assertMemoryWriteAllowed({
