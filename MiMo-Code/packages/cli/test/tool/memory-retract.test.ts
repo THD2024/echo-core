@@ -1,11 +1,7 @@
-import { describe, expect, mock, test } from "bun:test"
+import { describe, expect, test } from "bun:test"
 import { Effect } from "effect"
 import * as path from "path"
 import { Global } from "../../src/global"
-
-mock.module("../../src/tool/external-directory", () => ({
-  assertWriteAllowed: () => Effect.void,
-}))
 
 const { retractMemoryRecord } = await import("../../src/tool/memory-retract")
 
@@ -44,13 +40,16 @@ const base = `## Facts\n\n- Alpha\n\n- Beta\n`
 const stamped = `## Facts\n\n- Alpha <!--m id=alpha123 at=2026-11-07T10:00:00Z src=i-->\n\n- Beta <!--m id=beta123 at=2026-11-07T10:01:00Z src=i-->\n`
 const tomb = `## Retracted records\n\n- Alpha <!--m id=alpha123 at=2026-11-07T10:00:00Z src=i ret=2026-11-07T10:02:00Z why=withdrawn-->\n`
 
-function input(recordId = "alpha123") {
+const allowGate = () => Effect.void
+
+function input(recordId = "alpha123", gate: typeof allowGate = allowGate) {
   return {
     ctx,
     fs: undefined as any,
     filepath: sourcePath,
     recordId,
     reason: "withdrawn" as const,
+    assertWriteAllowedFn: gate as any,
   }
 }
 
