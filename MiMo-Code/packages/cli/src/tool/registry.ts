@@ -17,6 +17,7 @@ import { WorkflowTool } from "./workflow"
 import { WebFetchTool } from "./webfetch"
 import { WriteTool } from "./write"
 import { RetractTool, T_C_RETRACT_ENABLED } from "./retract"
+import { MemoryMigrateTool, T_E_MIGRATION_ENABLED } from "./memory-migrate"
 import { NotebookEditTool } from "./notebook-edit"
 import { InvalidTool } from "./invalid"
 import { SkillTool } from "./skill"
@@ -269,6 +270,7 @@ export const layer = Layer.effect(
             tool.edit,
             tool.write,
             ...(T_C_RETRACT_ENABLED ? [tool.memory_retract] : []),
+            ...(T_E_MIGRATION_ENABLED ? [MemoryMigrateTool] : []),
             tool.notebookedit,
             tool.actor,
             tool.fetch,
