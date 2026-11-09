@@ -84,7 +84,7 @@ describe("T-e legacy memory migration", () => {
     expect(result.text).toContain("mig=legacy-v1")
   })
 
-  test("structure-only budget is reported", () => {
+  test("preserves CRLF and leaves retracted.md untouched", () => {\n    const raw = "## Facts\\r\\n\\r\\n- Legacy\\r\\n"\n    const tomb = "## Retracted records\\r\\n\\r\\n- Old <!--m id=old123 at=2026-11-01T00:00:00Z src=i ret=2026-11-02T00:00:00Z why=withdrawn-->\\r\\n"\n    const result = computeLegacyMigration(raw, tomb, opts())\n    expect(result.ok).toBe(true)\n    if (!result.ok) return\n    expect(result.text).toContain("\\r\\n")\n    expect(result.text).not.toContain("old123")\n  })\n\n  test("structure-only budget is reported", () => {
     const raw = "## Facts\n\n- " + "A".repeat(1000) + "\n"
     const result = computeLegacyMigration(raw, "", { ...opts(), budgetTokens: 10 })
     expect(result.ok).toBe(true)
