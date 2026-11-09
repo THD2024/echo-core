@@ -69,10 +69,12 @@ describe("T-e legacy memory migration", () => {
     expect(result.text).toContain("- A <!--m")
   })
 
-  test("new truncation is rejected and complete-visible records never decrease", () => {
-    const raw = "## Facts\n\n- " + "A".repeat(700) + "\n\n## More\n\n- " + "B".repeat(700) + "\n"
-    const result = computeLegacyMigration(raw, "", { ...opts(), budgetTokens: 360 })
+  test("rejects a migration that reduces complete-visible records", () => {
+    const raw = "## Facts\\n\\n" + Array.from({ length: 10 }, (_, i) => `- ${String(i)} ${"A".repeat(100)}\\n`).join("\\n")
+    const result = computeLegacyMigration(raw, "", { ...opts(), budgetTokens: 240 })
     expect(result.ok).toBe(false)
+    if (result.ok) return
+    expect(result.error).toMatch(/complete-visible records|new memory truncation/)
   })
 
   test("second precision and mig are generated only for bootstrap", () => {
