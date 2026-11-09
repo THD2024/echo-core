@@ -72,6 +72,80 @@ function completeVisibleRecords(raw: string, budgetText: string): number {
   return doc.segments.filter((segment) => segment.kind === "record" && segment.text.length > 0 && budgetText.includes(segment.text)).length
 }
 
+mport * as path from "path"
+import { randomBytes } from "crypto"
+import { parseMemoryDocument, serializeMemoryDocument, type MemoryDocument } from "./record-parse"
+import { readRecordMeta, withRecordMeta, type RecordMetaRead } from "./record-meta"
+import { deductRetracted } from "./retract-view"
+import { readBudgetedSectionAwareText } from "../session/budgeted-read"
+import { Token } from "../util"
+
+export const LEGACY_MIGRATION_TAG = "legacy-v1"
+export const DEFAULT_MEMORY_BUDGET_TOKENS = 10_000
+
+export type MigrationSkipReason = "partial-metadata"
+
+export interface MigrationReport {
+  changed: boolean
+  migratedRecords: number
+  skippedPartial: number
+  sourceRecordCount: number
+  beforeTokens: number
+  afterTokens: number
+  beforeTruncated: boolean
+  afterTruncated: boolean
+  beforeCompleteVisibleRecords: number
+  afterCompleteVisibleRecords: number
+  beforeStructureOnly: boolean
+  afterStructureOnly: boolean
+}
+
+export interface MigrationComputation {
+  ok: true
+  text: string
+  report: MigrationReport
+} | {
+  ok: false
+  error: string
+}
+
+export interface MigrationOptions {
+  now: string
+  generateId: () => string
+  budgetTokens?: number
+  filePath: string
+  tombstoneRaw?: string
+}
+
+function canonicalProjectPath(filepath: string): { projectID: string; target: string } | null {
+  const target = path.resolve(filepath)
+  const projectsRoot = path.resolve(process.env.MIMOCODE_DATA_DIR ?? "", "memory", "projects")
+  if (projectsRoot === path.resolve("memory", "projects")) return null
+  const relative = path.relative(projectsRoot, target)
+  const parts = relative.split(path.sep)
+  if (parts.length !== 2 || parts[1] !== "MEMORY.md" || !parts[0]) return null
+  if (parts.some((part) => part === ".." || part.includes(path.sep))) return null
+  return { projectID: parts[0], target }
+}
+
+function markerlessIds(raw: string): { ids: Set<string>; malformed: boolean } {
+  const doc = parseMemoryDocument(raw)
+  const ids = new Set<string>()
+  let malformed = false
+  for (const segment of doc.segments) {
+    if (segment.kind !== "record") continue
+    const read = readRecordMeta(segment)
+    if (read.status === "malformed") malformed = true
+    if (read.status === "valid" && read.meta.record_id) ids.add(read.meta.record_id)
+  }
+  return { ids, malformed }
+}
+
+function completeVisibleRecords(raw: string, budgetText: string): number {
+  const doc = parseMemoryDocument(raw)
+  return doc.segments.filter((segment) => segment.kind === "record" && segment.text.length > 0 && budgetText.includes(segment.text)).length
+}
+
 function structureOnly(raw: string, budgetTokens: number): boolean {
   const doc = parseMemoryDocument(raw)
   const { sections } = (() => {
