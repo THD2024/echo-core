@@ -6,6 +6,7 @@ export interface BudgetedReadResult {
   text: string
   truncated: boolean
   totalTokens: number
+  structureOnly?: boolean
 }
 
 export async function readBudgeted(
