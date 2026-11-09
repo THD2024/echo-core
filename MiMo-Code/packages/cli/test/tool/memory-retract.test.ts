@@ -122,7 +122,7 @@ describe("T-d.3 memory retract executor", () => {
     const beforeSource = fs.files.get(sourcePath)
     await expect(
       Effect.runPromise(retractMemoryRecord({ ...input(), fs })),
-    ).rejects.toThrow(/changed or disappeared/)
+    ).rejects.toThrow(/final tombstone metadata mismatch/)
     expect(fs.files.get(sourcePath)).toBe(beforeSource)
   })
 
