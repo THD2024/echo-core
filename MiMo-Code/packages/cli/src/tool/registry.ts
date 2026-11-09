@@ -156,6 +156,7 @@ export const layer = Layer.effect(
     const globtool = yield* GlobTool
     const writetool = yield* WriteTool
     const retracttool = yield* RetractTool
+    const memorymigratetool = yield* MemoryMigrateTool
     const notebookedit = yield* NotebookEditTool
     const edit = yield* EditTool
     const greptool = yield* GrepTool
@@ -237,7 +238,7 @@ export const layer = Layer.effect(
           edit: Tool.init(edit),
           write: Tool.init(writetool),
           memory_retract: Tool.init(retracttool),
-          memory_migrate: Tool.init(yield* MemoryMigrateTool),
+          memory_migrate: Tool.init(memorymigratetool),
           notebookedit: Tool.init(notebookedit),
           actor: Tool.init(actor),
           fetch: Tool.init(webfetch),
