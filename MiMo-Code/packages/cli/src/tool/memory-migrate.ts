@@ -4,8 +4,7 @@ import { Effect } from "effect"
 import { AppFileSystem } from "@mimo-ai/shared/filesystem"
 import { Global } from "../global"
 import { Config } from "../config"
-import { parseMemoryDocument } from "../memory/record-parse"
-import { computeLegacyMigration, canonicalProjectMemoryPath, newLegacyRecordId, secondPrecisionUtc, DEFAULT_MEMORY_BUDGET_TOKENS } from "../memory/legacy-migration"
+import { computeLegacyMigration, canonicalProjectMemoryPath, newLegacyRecordId, secondPrecisionUtc } from "../memory/legacy-migration"
 import { assertWriteAllowed } from "./external-directory"
 import * as Tool from "./tool"
 import { SessionCwd } from "./session-cwd"
@@ -49,7 +48,6 @@ export const MemoryMigrateTool = Tool.define(
             generateId: newLegacyRecordId,
             budgetTokens,
             filePath: canonical,
-            tombstoneRaw,
           })
           if (!computation.ok) throw new Error(computation.error)
 
