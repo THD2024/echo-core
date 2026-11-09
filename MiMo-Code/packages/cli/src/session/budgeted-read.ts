@@ -1,5 +1,7 @@
 import { Token } from "../util"
 
+export const DEFAULT_MEMORY_BUDGET_TOKENS = 10_000
+
 export interface BudgetedReadResult {
   text: string
   truncated: boolean
@@ -14,7 +16,7 @@ export async function readBudgeted(
   if (fullText === undefined) return undefined
   const totalTokens = Token.estimate(fullText)
   if (totalTokens <= budgetTokens)
-    return { text: fullText, truncated: false, totalTokens }
+    return { text: fullText, truncated: false, totalTokens, structureOnly: false }
   const ratio = budgetTokens / totalTokens
   const truncatedText = fullText.slice(0, Math.floor(fullText.length * ratio * 0.95))
   const lastNewline = truncatedText.lastIndexOf("\n")
@@ -83,7 +85,7 @@ export function readBudgetedSectionAwareText(
     const hint =
       `\n\n⚠️ File extremely large (${totalTokens} tokens vs budget ${budgetTokens}). ` +
       `Only structure shown.\n   read("${filePath}") for full content.`
-    return { text: skeleton + hint, truncated: true, totalTokens }
+    return { text: skeleton + hint, truncated: true, totalTokens, structureOnly: true }
   }
 
   const out: string[] = [...preamble]
@@ -113,7 +115,7 @@ export function readBudgetedSectionAwareText(
     `\n\n⚠️ Truncated at ~${budgetTokens} tokens. ` +
     `${filePath} is ~${totalTokens} tokens total. ` +
     `read("${filePath}") for full content.`
-  return { text: out.join("\n") + hint, truncated: true, totalTokens }
+  return { text: out.join("\n") + hint, truncated: true, totalTokens, structureOnly: false }
 }
 
 
