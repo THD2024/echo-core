@@ -1,6 +1,6 @@
 import fs from "fs/promises"
 import path from "path"
-import { Global } from "@/global"
+import { DEFAULT_MEMORY_BUDGET_TOKENS,  Global } from "@/global"
 import { Bus } from "@/bus"
 import { Config } from "@/config"
 import { Flag } from "@/flag/flag"
@@ -1354,7 +1354,7 @@ export const layer: Layer.Layer<
       const memoryView = deductRetracted(memoryRaw, retractedRaw)
       const memoryResult = readBudgetedSectionAwareText(
         memoryView.text,
-        caps.memory ?? 10_000,
+        caps.memory ?? DEFAULT_MEMORY_BUDGET_TOKENS,
         memoryFile,
       )
       const memoryText = memoryResult.text
