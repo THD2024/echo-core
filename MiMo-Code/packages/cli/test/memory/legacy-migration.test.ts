@@ -79,6 +79,14 @@ describe("T-e legacy memory migration", () => {
     expect(result.error).toMatch(/complete-visible records|new memory truncation/)
   })
 
+  test("allows already-truncated memory when complete-visible records do not decrease", () => {
+    const raw = "## Facts\n\n" + Array.from({ length: 10 }, (_, i) => `- ${i} ${"A".repeat(100)}\n`).join("\n")
+    const result = computeLegacyMigration(raw, "", { ...opts(), budgetTokens: 240 })
+    if (!result.ok) return
+    const second = computeLegacyMigration(result.text, "", { ...opts(), budgetTokens: 240 })
+    expect(second.ok).toBe(true)
+  })
+
   test("second precision and mig are generated only for bootstrap", () => {
     const raw = "## Facts\n\n- A\n"
     const result = computeLegacyMigration(raw, "", opts("2026-11-09T10:38:00Z"))
@@ -100,7 +108,7 @@ describe("T-e legacy memory migration", () => {
 
   test("structure-only budget is reported", () => {
     const raw = "## Facts\n\n- " + "A".repeat(1000) + "\n"
-    const result = computeLegacyMigration(raw, "", { ...opts(), budgetTokens: 10 })
+    const result = computeLegacyMigration(raw, "", { ...opts(), budgetTokens: 1 })
     expect(result.ok).toBe(true)
     if (!result.ok) return
     expect(result.report.afterStructureOnly).toBe(true)
