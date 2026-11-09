@@ -70,7 +70,9 @@ describe("T-e legacy memory migration", () => {
   })
 
   test("rejects a migration that reduces complete-visible records", () => {
-    const raw = "## Facts\\n\\n" + Array.from({ length: 10 }, (_, i) => `- ${String(i)} ${"A".repeat(100)}\\n`).join("\\n")
+    const raw =
+      "## Facts\n\n" +
+      Array.from({ length: 10 }, (_, i) => `- ${String(i)} ${"A".repeat(100)}\n`).join("\n")
     const result = computeLegacyMigration(raw, "", { ...opts(), budgetTokens: 240 })
     expect(result.ok).toBe(false)
     if (result.ok) return
@@ -87,12 +89,12 @@ describe("T-e legacy memory migration", () => {
   })
 
   test("preserves CRLF and leaves retracted.md untouched", () => {
-    const raw = "## Facts\\r\\n\\r\\n- Legacy\\r\\n"
-    const tomb = "## Retracted records\\r\\n\\r\\n- Old <!--m id=old123 at=2026-11-01T00:00:00Z src=i ret=2026-11-02T00:00:00Z why=withdrawn-->\\r\\n"
+    const raw = "## Facts\r\n\r\n- Legacy\r\n"
+    const tomb = "## Retracted records\r\n\r\n- Old <!--m id=old123 at=2026-11-01T00:00:00Z src=i ret=2026-11-02T00:00:00Z why=withdrawn-->\r\n"
     const result = computeLegacyMigration(raw, tomb, opts())
     expect(result.ok).toBe(true)
     if (!result.ok) return
-    expect(result.text).toContain("\\r\\n")
+    expect(result.text).toContain("\r\n")
     expect(result.text).not.toContain("old123")
   })
 
