@@ -1,6 +1,6 @@
 import fs from "fs/promises"
 import path from "path"
-import { DEFAULT_MEMORY_BUDGET_TOKENS,  Global } from "@/global"
+import { Global } from "@/global"
 import { Bus } from "@/bus"
 import { Config } from "@/config"
 import { Flag } from "@/flag/flag"
@@ -35,7 +35,7 @@ import {
   globalMemoryPath,
   migrateProjectMemory,
 } from "./checkpoint-paths"
-import { readBudgeted, readBudgetedSectionAware, readBudgetedSectionAwareText } from "./budgeted-read"
+import { DEFAULT_MEMORY_BUDGET_TOKENS, readBudgeted, readBudgetedSectionAware, readBudgetedSectionAwareText } from "./budgeted-read"
 import type { LastMessageInfo } from "./last-message-info"
 import { CHECKPOINT_TEMPLATE, MEMORY_TEMPLATE, NOTES_TEMPLATE, CHECKPOINT_SECTION_BUDGETS } from "./checkpoint-templates"
 import { adjustBoundaryForApiInvariants } from "./boundary"
