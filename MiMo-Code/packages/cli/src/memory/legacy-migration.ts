@@ -3,7 +3,7 @@ import { randomBytes } from "crypto"
 import { parseMemoryDocument, serializeMemoryDocument } from "./record-parse"
 import { readRecordMeta, withRecordMeta } from "./record-meta"
 import { deductRetracted } from "./retract-view"
-import { readBudgetedSectionAwareText } from "../session/budgeted-read"
+import { DEFAULT_MEMORY_BUDGET_TOKENS, readBudgetedSectionAwareText } from "../session/budgeted-read"
 import { Token } from "../util"
 
 export const LEGACY_MIGRATION_TAG = "legacy-v1"
