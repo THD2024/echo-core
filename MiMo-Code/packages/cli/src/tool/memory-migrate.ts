@@ -4,7 +4,14 @@ import { Effect } from "effect"
 import { AppFileSystem } from "@mimo-ai/shared/filesystem"
 import { Global } from "../global"
 import { Config } from "../config"
-import { computeLegacyMigration, canonicalProjectMemoryPath, newLegacyRecordId, secondPrecisionUtc } from "../memory/legacy-migration"
+import {
+  computeLegacyMigration,
+  canonicalProjectMemoryPath,
+  formatMigrationReport,
+  newLegacyRecordId,
+  secondPrecisionUtc,
+} from "../memory/legacy-migration"
+import { DEFAULT_MEMORY_BUDGET_TOKENS } from "../session/budgeted-read"
 import { assertWriteAllowed } from "./external-directory"
 import * as Tool from "./tool"
 import { SessionCwd } from "./session-cwd"
@@ -15,6 +22,69 @@ export const T_E_MIGRATION_ENABLED = false
 const Parameters = z.object({
   file_path: z.string().describe("Canonical project MEMORY.md to migrate"),
   dry_run: z.boolean().default(false).describe("Preview the migration without writing"),
+})
+
+type MemoryBudgetConfig = {
+  get: () => Effect.Effect<{ checkpoint?: { push_caps?: { memory?: number } } | undefined }, unknown, never>
+}
+
+/**
+ * Executor kept separate from the tool wrapper so the gate, filesystem and Config can be
+ * injected in tests without module mocks (same shape as `retractMemoryRecord`).
+ */
+export const migrateLegacyMemory = Effect.fn("Memory.migrateLegacy")(function* (input: {
+  ctx: Tool.Context
+  fs: AppFileSystem.Interface
+  config: MemoryBudgetConfig
+  filepath: string
+  dataRoot: string
+  dryRun: boolean
+  now?: string
+  generateId?: () => string
+  assertWriteAllowedFn?: typeof assertWriteAllowed
+}) {
+  const canonical = canonicalProjectMemoryPath(input.filepath, input.dataRoot)
+  if (!canonical) {
+    throw new Error(
+      "T-e migration currently supports only canonical project MEMORY.md; global, nested, spillover and out-of-root paths are fail-closed.",
+    )
+  }
+
+  // The gate is intentionally first, even for dry-run: dry-run still needs a legal
+  // migration execution context and must remain blocked by memory.disable_write.
+  const gate = input.assertWriteAllowedFn ?? assertWriteAllowed
+  yield* gate(input.ctx, canonical)
+
+  const cfg = yield* input.config.get()
+  const budgetTokens = cfg.checkpoint?.push_caps?.memory ?? DEFAULT_MEMORY_BUDGET_TOKENS
+  const tombstonePath = path.join(path.dirname(canonical), "retracted.md")
+  const raw = yield* input.fs.readFileString(canonical)
+  // retracted.md is only ever read here: its IDs are reserved, the file is never written.
+  const tombstoneRaw = (yield* input.fs.existsSafe(tombstonePath)) ? yield* input.fs.readFileString(tombstonePath) : ""
+  const computation = computeLegacyMigration(raw, tombstoneRaw, {
+    now: input.now ?? secondPrecisionUtc(),
+    generateId: input.generateId ?? newLegacyRecordId,
+    budgetTokens,
+    filePath: canonical,
+  })
+  if (!computation.ok) throw new Error(computation.error)
+
+  let written = false
+  if (!input.dryRun && computation.report.changed) {
+    const reread = yield* input.fs.readFileString(canonical)
+    if (reread !== raw) {
+      throw new Error("T-e migration refused: canonical MEMORY.md changed during migration (CAS mismatch).")
+    }
+    yield* input.fs.writeWithDirs(canonical, computation.text)
+    written = true
+  }
+
+  return {
+    canonical,
+    report: computation.report,
+    written,
+    output: formatMigrationReport(computation.report, { dryRun: input.dryRun, written }),
+  }
 })
 
 export const MemoryMigrateTool = Tool.define(
@@ -30,41 +100,18 @@ export const MemoryMigrateTool = Tool.define(
           const filepath = path.isAbsolute(params.file_path)
             ? params.file_path
             : path.join(SessionCwd.get(ctx.sessionID), params.file_path)
-          const canonical = canonicalProjectMemoryPath(filepath, Global.Path.data)
-          if (!canonical) throw new Error("T-e migration currently supports only canonical project MEMORY.md; global, nested, and spillover paths are fail-closed.")
-
-          // The gate is intentionally first, even for dry-run: dry-run still needs a legal
-          // migration execution context and must remain blocked by memory.disable_write.
-          yield* assertWriteAllowed(ctx, canonical)
-
-          const cfg = yield* config.get()
-          const caps = cfg.checkpoint?.push_caps ?? {}
-          const budgetTokens = caps.memory ?? DEFAULT_MEMORY_BUDGET_TOKENS
-          const tombstonePath = path.join(path.dirname(canonical), "retracted.md")
-          const raw = yield* fs.readFileString(canonical)
-          const tombstoneRaw = (yield* fs.existsSafe(tombstonePath)) ? yield* fs.readFileString(tombstonePath) : ""
-          const computation = computeLegacyMigration(raw, tombstoneRaw, {
-            now: secondPrecisionUtc(),
-            generateId: newLegacyRecordId,
-            budgetTokens,
-            filePath: canonical,
+          const result = yield* migrateLegacyMemory({
+            ctx,
+            fs,
+            config,
+            filepath,
+            dataRoot: Global.Path.data,
+            dryRun: params.dry_run,
           })
-          if (!computation.ok) throw new Error(computation.error)
-
-          if (!params.dry_run && computation.report.changed) {
-            const reread = yield* fs.readFileString(canonical)
-            if (reread !== raw) throw new Error("T-e migration refused: canonical MEMORY.md changed during migration (CAS mismatch).")
-            yield* fs.writeWithDirs(canonical, computation.text)
-          }
-
           return {
-            title: path.basename(canonical),
-            metadata: { ...computation.report, dryRun: params.dry_run },
-            output: params.dry_run
-              ? `Legacy migration dry-run: ${computation.report.migratedRecords} records would receive metadata; no file was written.`
-              : computation.report.changed
-                ? `Legacy migration completed: ${computation.report.migratedRecords} legacy records migrated.`
-                : "Legacy migration is already converged; no file changes were needed.",
+            title: path.basename(result.canonical),
+            metadata: { ...result.report, dryRun: params.dry_run, written: result.written },
+            output: result.output,
           }
         }).pipe(Effect.orDie),
     }

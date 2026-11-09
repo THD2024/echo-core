@@ -11,7 +11,9 @@ export interface MigrationReport {
   changed: boolean
   migratedRecords: number
   skippedPartial: number
+  skippedDiagnostic: number
   sourceRecordCount: number
+  budgetTokens: number
   beforeTokens: number
   afterTokens: number
   beforeTruncated: boolean
@@ -73,9 +75,6 @@ export function computeLegacyMigration(
     if (read.status === "malformed") {
       return { ok: false, error: `Legacy migration refused: malformed metadata at MEMORY.md line ${segment.line}.` }
     }
-    if (read.diagnostics.length > 0) {
-      return { ok: false, error: `Legacy migration refused: metadata diagnostic at MEMORY.md line ${segment.line}.` }
-    }
     if (read.status === "valid" && read.meta.record_id) {
       if (existing.has(read.meta.record_id)) {
         return {
@@ -97,12 +96,20 @@ export function computeLegacyMigration(
   const used = new Set(existing)
   let migratedRecords = 0
   let skippedPartial = 0
+  let skippedDiagnostic = 0
   let textChanged = false
 
   const segments = sourceDoc.segments.map((segment) => {
     if (segment.kind !== "record") return segment
 
     const read = readRecordMeta(segment)
+    // A diagnostic (for example prose that mentions the marker syntax on a later line) is
+    // not corruption: leave that record byte-identical and keep migrating the others. The
+    // same record is skipped again on every run, so the migration stays idempotent.
+    if (read.diagnostics.length > 0) {
+      skippedDiagnostic++
+      return segment
+    }
     if (read.status === "valid") {
       if (
         read.meta.record_id === undefined ||
@@ -144,13 +151,19 @@ export function computeLegacyMigration(
   if (!beforeBudget.truncated && afterBudget.truncated) {
     return {
       ok: false,
-      error: `Legacy migration refused: metadata would introduce new memory truncation (before=${beforeBudget.totalTokens}, after=${afterBudget.totalTokens}).`,
+      error:
+        `Legacy migration refused: metadata would introduce new memory truncation ` +
+        `(budget=${budgetTokens}, before=${beforeBudget.totalTokens}, after=${afterBudget.totalTokens} tokens). ` +
+        `Trim about ${Math.max(0, afterBudget.totalTokens - budgetTokens)} tokens from MEMORY.md, then retry.`,
     }
   }
   if (afterComplete < beforeComplete) {
     return {
       ok: false,
-      error: `Legacy migration refused: complete-visible records would decrease (${beforeComplete} -> ${afterComplete}).`,
+      error:
+        `Legacy migration refused: complete-visible records would decrease (${beforeComplete} -> ${afterComplete}; ` +
+        `budget=${budgetTokens}, before=${beforeBudget.totalTokens}, after=${afterBudget.totalTokens} tokens). ` +
+        `Trim about ${Math.max(0, afterBudget.totalTokens - beforeBudget.totalTokens)} tokens from MEMORY.md, then retry.`,
     }
   }
 
@@ -161,6 +174,8 @@ export function computeLegacyMigration(
       changed: textChanged,
       migratedRecords,
       skippedPartial,
+      skippedDiagnostic,
+      budgetTokens,
       sourceRecordCount: sourceDoc.segments.filter((s) => s.kind === "record").length,
       beforeTokens: beforeBudget.totalTokens,
       afterTokens: afterBudget.totalTokens,
@@ -178,6 +193,9 @@ export function canonicalProjectMemoryPath(filepath: string, dataRoot: string): 
   const target = path.resolve(filepath)
   const projectsRoot = path.resolve(dataRoot, "memory", "projects")
   const relative = path.relative(projectsRoot, target)
+  // On Windows a target on another drive comes back as an absolute path, which would
+  // otherwise split into ["D:", "MEMORY.md"] and look like a project directory.
+  if (path.isAbsolute(relative)) return null
   const parts = relative.split(path.sep)
   if (parts.length !== 2 || parts[1] !== "MEMORY.md" || !parts[0]) return null
   if (parts[0] === "." || parts[0] === "..") return null
@@ -190,4 +208,20 @@ export function newLegacyRecordId(): string {
 
 export function secondPrecisionUtc(now = new Date()): string {
   return now.toISOString().replace(/\.\d{3}Z$/, "Z")
+}
+
+export function formatMigrationReport(report: MigrationReport, mode: { dryRun: boolean; written: boolean }): string {
+  const head = mode.dryRun
+    ? `Legacy migration dry-run: ${report.migratedRecords} records would receive metadata; no file was written.`
+    : mode.written
+      ? `Legacy migration completed: ${report.migratedRecords} legacy records migrated.`
+      : "Legacy migration is already converged; no file changes were needed."
+  return [
+    head,
+    `records=${report.sourceRecordCount} migrated=${report.migratedRecords} skippedPartial=${report.skippedPartial} skippedDiagnostic=${report.skippedDiagnostic}`,
+    `budget=${report.budgetTokens} tokens: before=${report.beforeTokens} after=${report.afterTokens}`,
+    `truncated: before=${report.beforeTruncated} after=${report.afterTruncated}; structureOnly: before=${report.beforeStructureOnly} after=${report.afterStructureOnly}`,
+    `complete-visible records: before=${report.beforeCompleteVisibleRecords} after=${report.afterCompleteVisibleRecords}`,
+    "src=i is the default low-trust source for migrated records, not evidence of model inference; mig=legacy-v1 marks at/src as synthesized.",
+  ].join("\n")
 }
