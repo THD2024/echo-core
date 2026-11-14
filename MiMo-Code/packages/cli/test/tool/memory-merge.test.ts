@@ -138,7 +138,7 @@ describe("T-f merge executor", () => {
       expect(call.gate).toBe(allowGate)
     }
     // Only Phase A (the first write) is the executor's own; everything after goes through retract.
-    expect(fs.writes.filter((w) => w === sourcePath).length).toBeGreaterThanOrEqual(3)
+    expect(fs.writes.filter((w: string) => w === sourcePath).length).toBeGreaterThanOrEqual(3)
   })
 
   test("a Phase B failure keeps M and reports what is pending; re-running resumes and converges", async () => {
