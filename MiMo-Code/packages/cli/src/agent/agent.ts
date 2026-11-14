@@ -364,6 +364,7 @@ export const layer = Layer.effect(
                 glob: "allow",
                 grep: "allow",
                 memory: "allow",
+                memory_merge: "allow",
                 bash: "allow",
                 exec: "allow",
                 external_directory: {
@@ -382,6 +383,7 @@ export const layer = Layer.effect(
               "glob",
               "grep",
               "memory",
+              "memory_merge",
               "bash",
               "exec",
             ],

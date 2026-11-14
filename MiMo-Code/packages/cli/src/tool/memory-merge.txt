@@ -1,0 +1,19 @@
+Merge several existing project memory records into ONE new record and supersede the originals.
+
+Use this whenever you consolidate duplicate or superseded entries in the project MEMORY.md. Do not delete merged entries with edit/write: this tool keeps an audit trail (the originals move to retracted.md with reason=superseded and the new record lists them in refs=).
+
+Parameters:
+- file_path: the project's own MEMORY.md under the memory tree (global memory, nested files and retracted.md are refused).
+- source_ids: 2 to 8 record ids (letters a-z, digits, "_" and "-" only). Each record must already carry a complete metadata marker (id, at, src). Records without one are not eligible.
+- body: the merged text as exactly one bullet or paragraph. Do not write any <!--m ...--> marker; the tool adds id, timestamp, source type and refs.
+- dry_run: preview only.
+
+How it behaves:
+- The new record is written first, then each source is retracted. If a step fails the new record stays; call the tool again with the same source_ids and body to resume.
+- The new record's id is derived from the source ids, so repeating a merge is safe.
+- The new record's source type is never higher than the weakest source (mixed sources become model_inference).
+- The merged state must fit the memory budget; if it would push other records out of the injected memory, the merge is refused. Use a shorter body.
+
+Limits you must respect:
+- Merge records provenance and replacement only. It does not check that the merged text is true or consistent. Do not use it to resolve contradictions; decide the truth first.
+- Direct deletions made with edit/write are not audited by this tool.

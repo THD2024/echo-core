@@ -18,6 +18,7 @@ import { WebFetchTool } from "./webfetch"
 import { WriteTool } from "./write"
 import { RetractTool, T_C_RETRACT_ENABLED } from "./retract"
 import { MemoryMigrateTool, T_E_MIGRATION_ENABLED } from "./memory-migrate"
+import { MemoryMergeTool, T_F_MERGE_ENABLED } from "./memory-merge"
 import { NotebookEditTool } from "./notebook-edit"
 import { InvalidTool } from "./invalid"
 import { SkillTool } from "./skill"
@@ -157,6 +158,7 @@ export const layer = Layer.effect(
     const writetool = yield* WriteTool
     const retracttool = yield* RetractTool
     const memorymigratetool = yield* MemoryMigrateTool
+    const memorymergetool = yield* MemoryMergeTool
     const notebookedit = yield* NotebookEditTool
     const edit = yield* EditTool
     const greptool = yield* GrepTool
@@ -239,6 +241,7 @@ export const layer = Layer.effect(
           write: Tool.init(writetool),
           memory_retract: Tool.init(retracttool),
           memory_migrate: Tool.init(memorymigratetool),
+          memory_merge: Tool.init(memorymergetool),
           notebookedit: Tool.init(notebookedit),
           actor: Tool.init(actor),
           fetch: Tool.init(webfetch),
@@ -273,6 +276,7 @@ export const layer = Layer.effect(
             tool.write,
             ...(T_C_RETRACT_ENABLED ? [tool.memory_retract] : []),
             ...(T_E_MIGRATION_ENABLED ? [tool.memory_migrate] : []),
+            ...(T_F_MERGE_ENABLED ? [tool.memory_merge] : []),
             tool.notebookedit,
             tool.actor,
             tool.fetch,

@@ -126,7 +126,7 @@ Edit the current project's `MEMORY.md` using these sections when useful:
 
 Principles:
 
-- Merge duplicates instead of appending.
+- Merge duplicates instead of appending. When you merge or replace existing records that carry a metadata marker (`<!--m id=... -->`), use the `memory_merge` tool (when available) instead of editing them away: it writes one merged record and moves the originals to `retracted.md`, so the change stays auditable. `memory_merge` records provenance and replacement only; it does not decide which claim is true, so resolve contradictions yourself first. Plain `edit`/`write` remains fine for ordinary maintenance that is not a merge, but it leaves no audit trail for records it deletes.
 - Convert relative dates like "yesterday" to YYYY-MM-DD.
 - Remove contradicted or obsolete entries when newer trajectory or code proves them stale.
 - Keep each entry to 1-3 lines.
@@ -135,7 +135,7 @@ Principles:
 ## Phase 5 - Prune And Verify
 
 - Keep `MEMORY.md` under 200 lines and 10KB when possible. Prefer fewer, denser entries over exhaustive notes.
-- Remove entries superseded by newer decisions.
+- Remove entries superseded by newer decisions (use `memory_merge` when replacing marked records with a merged one).
 - Remove details that mattered only to one session.
 - Remove low-signal memory files or entries that are redundant with stronger project memory.
 - Clear current `notes.md` entries only when fully integrated.
