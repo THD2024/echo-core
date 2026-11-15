@@ -164,6 +164,7 @@ import { ToolResultError } from "../tool/result-error"
 import { errorMessage } from "../util/error"
 import { RecoverableError } from "../tool/recoverable"
 import { shouldAutoDream, shouldAutoDistill, DREAM_TASK, DISTILL_TASK, AUTO_DREAM_TITLE, AUTO_DISTILL_TITLE } from "./auto-dream"
+import { T_G_AUDIT_ENABLED, observeDreamRun, autoDreamAuditDeps } from "./dream-audit"
 import {
   announcedDeferredMcpTools,
   createMcpToolSearchCatalog,
@@ -4664,7 +4665,10 @@ NOTE: At any point in time through this workflow you should feel free to ask the
                     Effect.gen(function* () {
                       const s = yield* svc.create({ title: AUTO_DREAM_TITLE })
                       const sp = yield* Service
-                      yield* sp.prompt({ sessionID: s.id, agent: "dream", model: mdl, source: "hook", parts: [{ type: "text", text: DREAM_TASK }] })
+                      const dream = sp.prompt({ sessionID: s.id, agent: "dream", model: mdl, source: "hook", parts: [{ type: "text", text: DREAM_TASK }] })
+                      yield* T_G_AUDIT_ENABLED
+                        ? observeDreamRun(dream, autoDreamAuditDeps({ sessionID: s.id, projectID: s.projectID, memoryBudgetTokens: cfg.checkpoint?.push_caps?.memory }))
+                        : dream
                     }),
                   ),
                 ).catch((err) => log.error("auto-dream prompt failed", { error: String(err) }))
