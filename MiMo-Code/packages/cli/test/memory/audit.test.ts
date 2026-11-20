@@ -1,9 +1,11 @@
 import { describe, expect, test } from "bun:test"
 import {
+  ID_CHURN_LCS_CELL_BUDGET,
   PROVENANCE_MAX_DEPTH,
   auditInvariants,
   auditProvenance,
   auditTransition,
+  type AuditStats,
   type Finding,
   type MemoryState,
 } from "../../src/memory/audit"
@@ -288,5 +290,123 @@ describe("T-g.1 state findings and invariants", () => {
   test("deriveMergeId stays in sync with the merge the audit replays", () => {
     const a = mergeA(before0, ["a1", "b1"], "- Alpha and Beta combined")
     expect(a.mergeId).toBe(deriveMergeId(["a1", "b1"]))
+  })
+})
+
+// ---------------------------------------------------------------------------------------------------
+// T-g.1b: bounded id_churn (global LCS budget, exact-text fast path, no duplicated transition audit).
+// ---------------------------------------------------------------------------------------------------
+const stats = (): AuditStats => ({ lcsCells: 0, lcsPairs: 0, uncheckedPairs: 0 })
+/** Deterministic pseudo-text of `len` chars; different seeds give different, similar-length records. */
+function prose(seed: number, len: number): string {
+  let x = (seed * 2654435761) >>> 0
+  let out = ""
+  while (out.length < len) {
+    x = (Math.imul(x, 1664525) + 1013904223) >>> 0
+    out += "abcdefghij klmnop"[x % 17]
+  }
+  return out.trim().replace(/<|>|-/g, "x")
+}
+const bulk = (prefix: string, n: number, len: number, seedBase: number) =>
+  Array.from({ length: n }, (_, i) => rec(`${prefix}${i}`, prose(seedBase + i, len))).join("")
+const errorsOf = (fs: Finding[]) => fs.filter((f) => f.severity === "error")
+
+describe("T-g.1b bounded id_churn", () => {
+  const b = { S: `## Facts\n\n${bulk("o", 6, 120, 1)}`, R: "" }
+  const a = { S: `## Facts\n\n${bulk("n", 6, 120, 500)}`, R: "" }
+
+  test("budget not exhausted: id_churn is evaluated as before and nothing is reported as limited", () => {
+    const s = stats()
+    const f = auditTransition(b, a, { stats: s })
+    expect(codes(f)).not.toContain("audit_limited")
+    expect(s.uncheckedPairs).toBe(0)
+    expect(s.lcsPairs).toBeGreaterThan(0)
+    expect(s.lcsCells).toBeLessThanOrEqual(ID_CHURN_LCS_CELL_BUDGET)
+    expect(codes(f).filter((c) => c === "unexplained_disappearance")).toHaveLength(6)
+  })
+
+  test("budget exhausted: audit_limited warn, ids [], manual_review, honest unchecked count, hard cell bound", () => {
+    const s = stats()
+    const budget = 125 * 125 * 2 // record text is ~123 chars with its bullet: exactly two pairs fit
+    const f = auditTransition(b, a, { lcsCellBudget: budget, stats: s })
+    const limited = f.filter((x) => x.code === "audit_limited")
+    expect(limited).toHaveLength(1)
+    expect(limited[0]!.severity).toBe("warn")
+    expect(limited[0]!.ids).toEqual([])
+    expect(limited[0]!.recovery.action).toBe("manual_review")
+    expect(s.lcsCells).toBeLessThanOrEqual(budget)
+    expect(s.lcsPairs).toBe(2)
+    expect(s.uncheckedPairs).toBeGreaterThan(0)
+    expect(limited[0]!.message).toContain(`${s.uncheckedPairs} candidate pair(s) were not checked`)
+  })
+
+  test("budget exhaustion never changes the error-level findings", () => {
+    const tombBefore = TOMB_HEAD + tomb("t1", "An old retraction")
+    const before = { S: b.S + rec("gone", "This record vanishes without a tombstone"), R: tombBefore }
+    const after = { S: a.S, R: TOMB_HEAD + tomb("t1", "An old retraction edited") } // t1 mutated, gone disappeared
+    const full = auditTransition(before, after)
+    const starved = auditTransition(before, after, { lcsCellBudget: 0 })
+    expect(codes(starved)).toContain("audit_limited")
+    expect(errorsOf(starved)).toEqual(errorsOf(full))
+    expect(codes(errorsOf(starved))).toEqual(expect.arrayContaining(["tombstone_mutated", "unexplained_disappearance"]))
+  })
+
+  test("exact-text fast path pairs without spending any LCS cell, even with budget 0", () => {
+    const text = prose(7, 200)
+    const before = { S: `## Facts\n\n${rec("old1", text)}${rec("keep", "Stays")}`, R: "" }
+    const after = { S: `## Facts\n\n${rec("new1", text)}${rec("keep", "Stays")}`, R: "" }
+    const s = stats()
+    const f = auditTransition(before, after, { lcsCellBudget: 0, stats: s })
+    expect(f.find((x) => x.code === "id_churn")!.ids).toEqual(["old1", "new1"])
+    expect(f.find((x) => x.code === "id_churn")!.message).toContain("similarity 1.00")
+    expect(s).toEqual({ lcsCells: 0, lcsPairs: 0, uncheckedPairs: 0 })
+    expect(codes(f)).not.toContain("audit_limited")
+  })
+
+  test("pairs whose lengths cannot reach the threshold are pruned for free (not 'unchecked')", () => {
+    const before = { S: `## Facts\n\n${rec("old1", prose(1, 400))}`, R: "" }
+    const after = { S: `## Facts\n\n${rec("new1", prose(2, 60))}`, R: "" }
+    const s = stats()
+    const f = auditTransition(before, after, { lcsCellBudget: 0, stats: s })
+    expect(codes(f)).toEqual(["unexplained_disappearance"])
+    expect(s.uncheckedPairs).toBe(0)
+  })
+
+  test("auditInvariants runs the transition audit once and reuses it", () => {
+    const only = stats()
+    auditTransition(b, a, { stats: only })
+    const viaInvariants = stats()
+    const report = auditInvariants(a, { budgetTokens: 10_000, filePath, before: b, now: NOW, stats: viaInvariants })
+    expect(viaInvariants).toEqual(only) // a second full pass would double lcsCells/lcsPairs
+    expect(report.converge.ok).toBe(true)
+  })
+
+  test("audit_limited is a warning: it does not fail any invariant and still carries a recovery", () => {
+    const report = auditInvariants(a, { budgetTokens: 10_000, filePath, before: b, now: NOW, lcsCellBudget: 0 })
+    expect(report.findings.some((f) => f.code === "audit_limited")).toBe(true)
+    expect(report.trace.ok).toBe(true)
+    expect(report.inject.ok).toBe(true)
+    expect(report.converge.ok).toBe(true)
+    expect(report.recover.ok).toBe(true)
+  })
+
+  test("a negative budget behaves like zero", () => {
+    expect(auditTransition(b, a, { lcsCellBudget: -5 })).toEqual(auditTransition(b, a, { lcsCellBudget: 0 }))
+  })
+
+  test("worst case 200 vanished x 200 new (~300 chars each) stays under 2 s and says it was limited", () => {
+    const before = { S: `## Facts\n\n${bulk("o", 200, 300, 1)}`, R: "" }
+    const after = { S: `## Facts\n\n${bulk("n", 200, 300, 9000)}`, R: "" }
+    expect(Buffer.byteLength(before.S)).toBeLessThan(256 * 1024)
+    const s = stats()
+    const t0 = performance.now()
+    const report = auditInvariants(after, { budgetTokens: 100_000, filePath, before, now: NOW, stats: s })
+    const ms = performance.now() - t0
+    expect(ms).toBeLessThan(2000)
+    expect(s.lcsCells).toBeLessThanOrEqual(ID_CHURN_LCS_CELL_BUDGET)
+    expect(s.uncheckedPairs).toBeGreaterThan(0)
+    expect(report.findings.filter((f) => f.code === "audit_limited")).toHaveLength(1)
+    expect(report.findings.filter((f) => f.code === "unexplained_disappearance")).toHaveLength(200)
+    expect(report.nodisappear!.ok).toBe(false)
   })
 })
