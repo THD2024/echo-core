@@ -25,6 +25,8 @@ export type FindingCode =
   // The id is present in BOTH MEMORY.md and retracted.md (the S+R double-store state T-d.3 repairs).
   | "retracted_without_tombstone_history"
   | "id_churn"
+  // The heuristic id_churn pairing ran out of its computation budget: some candidate pairs were NOT checked.
+  | "audit_limited"
   | "incomplete_merge"
   | "malformed_metadata"
   | "refs_unparseable"
@@ -54,6 +56,25 @@ export interface MemoryState {
 /** Same threshold as the T-b2 reconcile pairing (record-identity.ts); duplicated because it is not exported. */
 export const ID_CHURN_SIMILARITY_THRESHOLD = 0.5
 export const PROVENANCE_MAX_DEPTH = 8
+/**
+ * Hard upper bound on LCS dynamic-programming cells spent by the heuristic id_churn pairing in ONE
+ * auditTransition call (~0.2 s of CPU). It bounds only id_churn; the error-level checks are O(n) and never
+ * consult it. When it runs out, the audit says so with an `audit_limited` warning.
+ */
+export const ID_CHURN_LCS_CELL_BUDGET = 25_000_000
+const LCS_CHAR_CAP = 2000
+
+/** Optional accounting for the bounded id_churn pairing; counters are added to, never reset. */
+export interface AuditStats {
+  lcsCells: number
+  lcsPairs: number
+  uncheckedPairs: number
+}
+export interface TransitionOptions {
+  /** Defaults to ID_CHURN_LCS_CELL_BUDGET. 0 disables the LCS stage (exact-text matches still pair). */
+  lcsCellBudget?: number
+  stats?: AuditStats
+}
 
 const MANUAL = (detail: string) => ({ action: "manual_review" as const, detail })
 
@@ -82,8 +103,8 @@ function markerlessText(segment: Pick<MemorySegment, "kind" | "text">): string {
 function lcsSimilarity(a: string, b: string): number {
   if (a === b) return 1
   if (!a.length || !b.length) return 0
-  const x = a.slice(0, 2000)
-  const y = b.slice(0, 2000)
+  const x = a.slice(0, LCS_CHAR_CAP)
+  const y = b.slice(0, LCS_CHAR_CAP)
   const dp = new Array<number>(y.length + 1).fill(0)
   for (let i = 1; i <= x.length; i++) {
     let diagonal = 0
@@ -198,7 +219,7 @@ function incompleteMerges(index: Index): Finding[] {
  * What changed between two snapshots. Reports only; nothing is repaired. The window is the two
  * snapshots, so a finding does not say who acted.
  */
-export function auditTransition(before: MemoryState, after: MemoryState): Finding[] {
+export function auditTransition(before: MemoryState, after: MemoryState, options: TransitionOptions = {}): Finding[] {
   const b = indexState(before)
   const a = indexState(after)
   const findings: Finding[] = [...stateFindings(a), ...incompleteMerges(a)]
@@ -248,16 +269,45 @@ export function auditTransition(before: MemoryState, after: MemoryState): Findin
   }
 
   // A vanished id plus a brand-new, similar, non-merge record usually means an edit lost its identity.
+  // Bounded: exact-text matches pair in O(n); the rest are pruned by a sound length bound and then share ONE
+  // global LCS cell budget. Pairs the budget cannot afford are counted and reported (audit_limited).
+  const budget = Math.max(0, options.lcsCellBudget ?? ID_CHURN_LCS_CELL_BUDGET)
+  let cellsUsed = 0
+  let pairsDone = 0
+  let unchecked = 0
   const taken = new Set<string>()
+  const oldText = new Map<string, string>()
+  const exactByText = new Map<string, string[]>()
+  for (const id of disappeared) {
+    const text = markerlessText(b.records.get(id)![0]!.segment)
+    oldText.set(id, text)
+    exactByText.set(text, [...(exactByText.get(text) ?? []), id])
+  }
   for (const [newId, entries] of [...a.records].sort(([x], [y]) => (x < y ? -1 : 1))) {
     if (b.records.has(newId) || b.tombs.has(newId) || entries.length !== 1) continue
     if (entries[0]!.read.extras[MERGE_REFS_KEY] !== undefined) continue
     const newText = markerlessText(entries[0]!.segment)
     let best: { id: string; score: number } | undefined
-    for (const oldId of disappeared) {
-      if (taken.has(oldId)) continue
-      const score = lcsSimilarity(markerlessText(b.records.get(oldId)![0]!.segment), newText)
-      if (score >= ID_CHURN_SIMILARITY_THRESHOLD && (!best || score > best.score)) best = { id: oldId, score }
+    const exactId = exactByText.get(newText)?.find((id) => !taken.has(id))
+    if (exactId !== undefined) best = { id: exactId, score: 1 }
+    else {
+      for (const oldId of disappeared) {
+        if (taken.has(oldId)) continue
+        const text = oldText.get(oldId)!
+        const x = Math.min(text.length, LCS_CHAR_CAP)
+        const y = Math.min(newText.length, LCS_CHAR_CAP)
+        if (x === 0 || y === 0) continue
+        // lcs <= min(x, y), so similarity <= min/max: below the threshold it can never pair (exact pruning).
+        if (Math.min(x, y) / Math.max(x, y) < ID_CHURN_SIMILARITY_THRESHOLD) continue
+        if (cellsUsed + x * y > budget) {
+          unchecked++
+          continue
+        }
+        cellsUsed += x * y
+        pairsDone++
+        const score = lcsSimilarity(text, newText)
+        if (score >= ID_CHURN_SIMILARITY_THRESHOLD && (!best || score > best.score)) best = { id: oldId, score }
+      }
     }
     if (best) {
       taken.add(best.id)
@@ -269,6 +319,20 @@ export function auditTransition(before: MemoryState, after: MemoryState): Findin
         recovery: MANUAL(`Check whether '${newId}' is the edited '${best.id}' and restore the original id if so.`),
       })
     }
+  }
+  if (options.stats) {
+    options.stats.lcsCells += cellsUsed
+    options.stats.lcsPairs += pairsDone
+    options.stats.uncheckedPairs += unchecked
+  }
+  if (unchecked > 0) {
+    findings.push({
+      code: "audit_limited",
+      severity: "warn",
+      ids: [],
+      message: `id_churn check was limited: its computation budget (${budget} cells) ran out, so ${unchecked} candidate pair(s) were not checked; absence of id_churn findings is not a guarantee.`,
+      recovery: MANUAL("Compare vanished and newly added records by hand, or audit smaller snapshots."),
+    })
   }
   return sortFindings(findings)
 }
@@ -411,10 +475,20 @@ const RECOVERY_ACTIONS = new Set<RecoveryAction>(["resume_merge", "repair_double
 /** Memory V1 minimal measurable invariants on a state, optionally relative to an earlier snapshot. */
 export function auditInvariants(
   after: MemoryState,
-  options: { budgetTokens: number; filePath: string; before?: MemoryState; now?: string },
+  options: {
+    budgetTokens: number
+    filePath: string
+    before?: MemoryState
+    now?: string
+    lcsCellBudget?: number
+    stats?: AuditStats
+  },
 ): InvariantReport {
   const provenance = auditProvenance(after.S, after.R)
-  const transition = options.before ? auditTransition(options.before, after) : null
+  // The one and only full transition audit of this call (its result is reused below).
+  const transition = options.before
+    ? auditTransition(options.before, after, { lcsCellBudget: options.lcsCellBudget, stats: options.stats })
+    : null
   const index = indexState(after)
   const findings = sortFindings([
     ...provenance,
@@ -465,8 +539,13 @@ export function auditInvariants(
     else if (replay.mergeId !== id) convergeDetails.push(`merge '${id}' does not match the id derived from its refs (${replay.mergeId})`)
     else if (replay.mode === "fresh") convergeDetails.push(`merge '${id}' replays as a fresh merge`)
   }
-  const again = options.before ? auditTransition(options.before, after) : null
-  if (transition && JSON.stringify(again) !== JSON.stringify(transition)) convergeDetails.push("audit is not idempotent")
+  // Idempotency of the exact (non-heuristic) findings, rechecked WITHOUT the LCS stage so it costs O(n),
+  // not a second full id_churn pass.
+  const exactLevel = (fs: Finding[]) => fs.filter((f) => f.code !== "id_churn" && f.code !== "audit_limited")
+  const again = options.before ? auditTransition(options.before, after, { lcsCellBudget: 0 }) : null
+  if (transition && JSON.stringify(exactLevel(again!)) !== JSON.stringify(exactLevel(transition))) {
+    convergeDetails.push("audit is not idempotent")
+  }
   if (JSON.stringify(auditProvenance(after.S, after.R)) !== JSON.stringify(provenance)) {
     convergeDetails.push("provenance audit is not idempotent")
   }
