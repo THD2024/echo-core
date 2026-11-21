@@ -96,6 +96,14 @@ export interface Interface {
 
 export class Service extends Context.Service<Service, Interface>()("@opencode/Command") {}
 
+// Identity registry of the command objects THIS service built for a default command. A config/MCP override
+// assigns a brand-new object under the same name, so identity (not name, source, agent or text) is the
+// only thing an override cannot forge.
+const builtinCommands = new WeakSet<Info>()
+export function isBuiltinCommand(cmd: Info | undefined): boolean {
+  return cmd !== undefined && builtinCommands.has(cmd)
+}
+
 export const layer = Layer.effect(
   Service,
   Effect.gen(function* () {
@@ -147,6 +155,7 @@ export const layer = Layer.effect(
         },
         hints: ["$ARGUMENTS"],
       }
+      builtinCommands.add(commands[Default.DREAM])
       commands[Default.DISTILL] = {
         name: Default.DISTILL,
         description: "find repeated workflows in recent work and package them into skills, subagents, or commands",

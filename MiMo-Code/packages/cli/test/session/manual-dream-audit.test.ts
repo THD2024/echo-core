@@ -100,10 +100,10 @@ describe("T-g.3 manual /dream predicate", () => {
     no({ isSubtask: true }) // config override with subtask:true runs as a sub-agent task
   })
 
-  test("documented limit: a config override that keeps agent 'dream' is indistinguishable from the built-in", () => {
-    // Config commands also carry source "command"; only the agent/subtask fields can tell them apart. Such a run
-    // is still the dream agent in the user's own session, so observing it is the same observe-only behavior.
-    expect(shouldObserveManualDream({ ...BUILTIN })).toBe(true)
+  test("the predicate never decides identity itself: that comes from Command.isBuiltinCommand (see test/command/builtin-command.test.ts)", () => {
+    // A config override keeping agent=dream/source=command/subtask=false passes these four conditions; it is
+    // excluded because `isDreamCommand` is only true for the service's own built-in object.
+    expect(shouldObserveManualDream({ ...BUILTIN, isDreamCommand: false })).toBe(false)
   })
 })
 
@@ -339,7 +339,7 @@ describe("T-g.3 boundaries", () => {
     // The hook is fed exactly the approved sources.
     const call = source.slice(hook, source.indexOf("})\n", hook))
     for (const needle of [
-      "input.command === Command.Default.DREAM",
+      "input.command === Command.Default.DREAM && Command.isBuiltinCommand(cmd)",
       "source: cmd.source",
       "agentName",
       "isSubtask",
@@ -349,5 +349,16 @@ describe("T-g.3 boundaries", () => {
     ]) {
       expect(call).toContain(needle)
     }
+  })
+
+  test("command/index.ts: identity registry only; no marker field, no name/description/template guessing", async () => {
+    const source = await Bun.file(path.join(import.meta.dir, "../../src/command/index.ts")).text()
+    expect(source.match(/builtinCommands\.add\(/g)).toHaveLength(1)
+    expect(source).toContain("builtinCommands.add(commands[Default.DREAM])")
+    expect(source).toContain("new WeakSet<Info>()")
+    const dream = source.slice(source.indexOf("commands[Default.DREAM] = {"), source.indexOf("builtinCommands.add("))
+    expect(dream).not.toContain("bundled") // identity is not a wire/UI-visible flag
+    const hook = (await read("prompt.ts"))
+    expect(hook).not.toMatch(/cmd\.(description|template|hints)\s*(===|==|\.includes)/)
   })
 })

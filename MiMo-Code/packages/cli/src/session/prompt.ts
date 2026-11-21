@@ -6225,7 +6225,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
         provenance: input.provenance,
       })
       const result = yield* observeManualDream(run, {
-        isDreamCommand: input.command === Command.Default.DREAM, source: cmd.source, agentName, isSubtask,
+        isDreamCommand: input.command === Command.Default.DREAM && Command.isBuiltinCommand(cmd), source: cmd.source, agentName, isSubtask,
         sessionID: input.sessionID, projectID: session.projectID,
         getBudget: () => config.get().pipe(Effect.map((c) => c.checkpoint?.push_caps?.memory)),
       })
