@@ -140,12 +140,17 @@ export const observeManualDream = <A, E, R>(run: Effect.Effect<A, E, R>, input: 
     if (!instanceProject || instanceProject === "global" || instanceProject !== String(input.projectID)) {
       return Effect.succeed(run)
     }
-    return Effect.suspend(() => input.getBudget()).pipe(
+    // Non-interrupt budget failures are recovered below; the cast only narrows the error channel back to never.
+    const budget = Effect.suspend(() => input.getBudget()).pipe(
       Effect.catchCause((cause) => (Cause.hasInterruptsOnly(cause) ? Effect.failCause(cause) : Effect.succeed(undefined))),
-      // Effect.suspend (not Effect.try): a sync throw while building the observer is a defect that the outer
-      // catchCause turns into "run unobserved". The Effect is returned as a VALUE.
-      Effect.flatMap((memoryBudgetTokens) =>
-        Effect.suspend(() => {
+    ) as Effect.Effect<number | undefined>
+    return budget.pipe(
+      // Effect.sync, NOT Effect.suspend: `suspend` flattens, so it would EXECUTE the observed Effect here (inside
+      // the setup guard). `sync` hands it back as a VALUE that only the final flatMap runs, so a dream failure can
+      // never be mistaken for a setup failure (no re-run) and the result is never altered. A sync throw while
+      // building is a defect that the guard below turns into "run unobserved".
+      Effect.map((memoryBudgetTokens) =>
+        (() => {
           const rawNow = input.overrides?.now ?? Date.now
           // A throwing clock must never reach T-g.2 (its `started = now()` runs inside its own gen).
           const now = () => {
@@ -215,7 +220,7 @@ export const observeManualDream = <A, E, R>(run: Effect.Effect<A, E, R>, input: 
                 : Effect.void,
             ),
           )
-        }),
+        })(),
       ),
     )
   }).pipe(Effect.catchCause((cause) => (Cause.hasInterruptsOnly(cause) ? Effect.failCause(cause) : Effect.succeed(run))))
