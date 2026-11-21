@@ -260,8 +260,9 @@ describe("T-g.3 lifecycle: the prompt result is never altered", () => {
 
   test("audit failure never replaces the dream failure", async () => {
     const { input, w, s } = observed()
+    const prev = input.overrides ?? { memoryFile: FILE }
     input.overrides = {
-      ...input.overrides,
+      ...prev,
       audit: () => {
         throw new Error("audit exploded")
       },
@@ -298,8 +299,9 @@ describe("T-g.3 lifecycle: the prompt result is never altered", () => {
 
   test("a failing snapshot reader never changes the result", async () => {
     const { input, s } = observed()
+    const prev = input.overrides ?? { memoryFile: FILE }
     input.overrides = {
-      ...input.overrides,
+      ...prev,
       readText: async () => {
         throw new Error("disk on fire")
       },
