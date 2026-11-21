@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { Cause, Effect, Exit } from "effect"
+import { Cause, Deferred, Effect, Exit, Fiber } from "effect"
 import * as path from "path"
 import { auditInvariants } from "../../src/memory/audit"
 import { DEFAULT_MEMORY_BUDGET_TOKENS } from "../../src/session/budgeted-read"
@@ -519,6 +519,33 @@ describe("T-g.4 P1-D observer setup isolation", () => {
       expect(runs).toBe(1)
     })
   }
+
+  test("caller-fiber interruption while the dream runs yields exactly one interrupted manual event", async () => {
+    const { input, s } = observed()
+    const program = Effect.gen(function* () {
+      const gate = yield* Deferred.make<void>()
+      const fiber = yield* observeManualDream(Deferred.await(gate), input).pipe(Effect.forkChild)
+      yield* Effect.sleep("20 millis")
+      yield* Fiber.interrupt(fiber)
+      return yield* Fiber.await(fiber)
+    })
+    const exit = await Effect.runPromise(program)
+    expect(Exit.isFailure(exit) && Cause.hasInterruptsOnly(exit.cause)).toBe(true)
+    expect(s.events).toHaveLength(1)
+    expect(s.events[0]!.extra.run.kind).toBe("manual-dream")
+    expect(s.events[0]!.extra.dream.outcome).toBe("interrupted")
+  })
+
+  test("observer actually observes (regression: setup must not silently fall back to the bare run)", async () => {
+    const { input, w, s } = observed()
+    const dream = Effect.sync(() => {
+      w.files.set(FILE, S1)
+      return assistant()
+    })
+    await runExit(observeManualDream(dream, input))
+    expect(s.events).toHaveLength(1)
+    expect(s.events[0]!.extra.changed).toBe(true)
+  })
 
   test("enabled getter that throws is fail-closed to the original run", async () => {
     const { input } = observed()

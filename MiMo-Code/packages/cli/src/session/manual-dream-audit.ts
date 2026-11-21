@@ -14,9 +14,9 @@
  *  - project scope, snapshot cap, step timeout and window semantics are all inherited from T-g.2.
  * This module must not import tools, merge/retract code or any write API (a test pins that).
  */
-import { Cause, Effect } from "effect"
+import { Cause, Effect, Exit } from "effect"
 import { Log } from "@/util"
-import { T_G_AUDIT_ENABLED, autoDreamAuditDeps, observeDreamRun, type AuditLog, type ObserveDeps } from "./dream-audit"
+import { AUDIT_SCHEMA_VERSION, AUDIT_VERSION, T_G_AUDIT_ENABLED, autoDreamAuditDeps, observeDreamRun, type AuditLog, type ObserveDeps } from "./dream-audit"
 
 export const MANUAL_DREAM_RUN_KIND = "manual-dream"
 
@@ -142,12 +142,36 @@ export const observeManualDream = <A, E, R>(run: Effect.Effect<A, E, R>, input: 
     }
     return Effect.suspend(() => input.getBudget()).pipe(
       Effect.catchCause((cause) => (Cause.hasInterruptsOnly(cause) ? Effect.failCause(cause) : Effect.succeed(undefined))),
+      // Effect.suspend (not Effect.try): a sync throw while building the observer is a defect that the outer
+      // catchCause turns into "run unobserved". The Effect is returned as a VALUE.
       Effect.flatMap((memoryBudgetTokens) =>
-        Effect.try(() => {
-          const now = input.overrides?.now ?? Date.now
+        Effect.suspend(() => {
+          const rawNow = input.overrides?.now ?? Date.now
+          // A throwing clock must never reach T-g.2 (its `started = now()` runs inside its own gen).
+          const now = () => {
+            try {
+              return rawNow()
+            } catch {
+              return Date.now()
+            }
+          }
+          const baseLog = input.overrides?.log ?? Log.create({ service: "dream-audit" })
+          let started = false
+          let emitted = false
           let startedAt = Number.POSITIVE_INFINITY
           let outcome: DreamOutcome | undefined
+          const trackedLog: AuditLog = {
+            info: (m, e) => {
+              emitted = true
+              baseLog.info(m, e)
+            },
+            warn: (m, e) => {
+              emitted = true
+              baseLog.warn(m, e)
+            },
+          }
           const tracked = Effect.suspend(() => {
+            started = true
             startedAt = now()
             return run
           }).pipe(
@@ -157,15 +181,39 @@ export const observeManualDream = <A, E, R>(run: Effect.Effect<A, E, R>, input: 
               }),
             ),
           )
-          return observeDreamRun(
+          const observed = observeDreamRun(
             tracked,
             manualDreamAuditDeps({
               sessionID: input.sessionID,
               projectID: input.projectID,
               memoryBudgetTokens,
-              overrides: input.overrides,
+              overrides: { ...input.overrides, now, log: trackedLog } as ManualDreamOverrides,
               outcomeOf: () => outcome,
             }),
+          )
+          // `Effect.exit(inner)` inside T-g.2 never returns when the CALLER fiber is interrupted, so its own
+          // "interrupted" event is lost. onExit still runs: emit the minimal event here (never alters the exit).
+          return observed.pipe(
+            Effect.onExit((exit) =>
+              Exit.isFailure(exit) && Cause.hasInterruptsOnly(exit.cause) && started && !emitted
+                ? Effect.sync(() => {
+                    try {
+                      baseLog.info("memory.audit", {
+                        schema: AUDIT_SCHEMA_VERSION,
+                        auditVersion: AUDIT_VERSION,
+                        window: "between_snapshots",
+                        scope: "project",
+                        run: { kind: MANUAL_DREAM_RUN_KIND, sessionID: input.sessionID },
+                        dream: { outcome: "interrupted" },
+                        snapshots: { before: { ok: false, reason: "not_taken" }, after: { ok: false, reason: "not_taken" } },
+                        changed: false,
+                        result: { status: "skipped", reason: "interrupted" },
+                        durationMs: Math.max(0, now() - (Number.isFinite(startedAt) ? startedAt : now())),
+                      })
+                    } catch {}
+                  })
+                : Effect.void,
+            ),
           )
         }),
       ),

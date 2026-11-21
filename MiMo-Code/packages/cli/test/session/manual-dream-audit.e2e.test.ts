@@ -393,7 +393,7 @@ describe("T-g.4 manual /dream audit: real end-to-end", () => {
           const sessions = yield* Session.Service
           const chat = yield* sessions.create({ title: "manual-dream-failure" })
           yield* seedMemory(memoryPath(chat.projectID), MEMORY_V1)
-          yield* llm.error(500, { error: { message: "upstream exploded" } })
+          yield* llm.error(400, { error: { message: "upstream exploded" } })
           const cap = capture()
           try {
             const result = yield* runDream(chat.id)
