@@ -7,6 +7,7 @@ import { memoryPath } from "../../src/session/checkpoint-paths"
 import { T_G_AUDIT_ENABLED, observeDreamRun } from "../../src/session/dream-audit"
 import {
   MANUAL_DREAM_RUN_KIND,
+  classifyDreamResult,
   manualDreamAuditDeps,
   observeManualDream,
   relabelRunKind,
@@ -46,6 +47,9 @@ function sink(opts: { throws?: boolean } = {}) {
   return { events, log: { info: push("info"), warn: push("warn") } }
 }
 
+/** What `prompt` returns for a finished dream turn: a fresh assistant message. */
+const assistant = (over: Record<string, unknown> = {}) => ({ info: { role: "assistant", time: { created: NOW }, ...over }, parts: [] })
+
 const BUILTIN = { isDreamCommand: true, source: "command", agentName: "dream", isSubtask: false } as const
 
 /** A fully observable input over a fake file system; every call to getBudget is counted. */
@@ -56,6 +60,7 @@ function observed(over: Partial<ManualDreamObserveInput> = {}, w = world({ [FILE
     ...BUILTIN,
     sessionID: "ses_user",
     projectID: PROJECT,
+    getInstanceProjectID: () => "p1",
     enabled: true,
     getBudget: () => {
       budgetCalls.n++
@@ -169,7 +174,10 @@ describe("T-g.3 flag on: manual events", () => {
     const run = (label: "auto" | "manual") => {
       const w = world({ [FILE]: S0 })
       const s = sink()
-      const dream = Effect.sync(() => void w.files.set(FILE, S1))
+      const dream = Effect.sync(() => {
+        w.files.set(FILE, S1)
+        return assistant()
+      })
       const seen: number[] = []
       const audit = (after: { S: string; R: string }, options: Parameters<typeof auditInvariants>[1]) => {
         seen.push(options.budgetTokens)
@@ -347,6 +355,8 @@ describe("T-g.3 boundaries", () => {
       "isSubtask",
       "sessionID: input.sessionID",
       "projectID: session.projectID",
+      "getInstanceProjectID: () => Instance.current?.project?.id",
+      "enabled: Flag.MIMOCODE_EXPERIMENTAL_DREAM_AUDIT",
       "c.checkpoint?.push_caps?.memory",
     ]) {
       expect(call).toContain(needle)
@@ -362,5 +372,213 @@ describe("T-g.3 boundaries", () => {
     expect(dream).not.toContain("bundled") // identity is not a wire/UI-visible flag
     const hook = (await read("prompt.ts"))
     expect(hook).not.toMatch(/cmd\.(description|template|hints)\s*(===|==|\.includes)/)
+  })
+})
+
+describe("T-g.4 P1-A outcome classification (prompt returns normally on cancel/error)", () => {
+  const T0 = NOW
+
+  test("classifier: fresh assistant message without error is success; nothing else is", () => {
+    expect(classifyDreamResult(assistant(), T0)).toEqual({ outcome: "success" })
+    expect(classifyDreamResult(assistant({ time: { created: T0 + 5 } }), T0)).toEqual({ outcome: "success" })
+  })
+
+  test("classifier: MessageAbortedError is interrupted, any other error name is failure, only the NAME is kept", () => {
+    expect(classifyDreamResult(assistant({ error: { name: "MessageAbortedError", data: { message: "secret" } } }), T0)).toEqual({
+      outcome: "interrupted",
+      error: "MessageAbortedError",
+    })
+    expect(classifyDreamResult(assistant({ error: { name: "APIError", data: { message: "key=sk-123" } } }), T0)).toEqual({
+      outcome: "failure",
+      error: "APIError",
+    })
+    expect(classifyDreamResult(assistant({ error: {} }), T0)).toEqual({ outcome: "failure", error: "unknown_error" })
+  })
+
+  test("classifier: a STALE assistant message (cancel before the dream produced one) is not success", () => {
+    expect(classifyDreamResult(assistant({ time: { created: T0 - 1 } }), T0)).toEqual({ outcome: "interrupted", error: "no_new_assistant_message" })
+    expect(classifyDreamResult(assistant({ time: {} }), T0)).toMatchObject({ outcome: "interrupted" })
+  })
+
+  test("classifier: malformed or non-assistant results are failure, never success; never throws", () => {
+    for (const bad of [undefined, null, "ok", 42, {}, { info: null }, { info: { role: "user", time: { created: T0 } } }]) {
+      expect(classifyDreamResult(bad, T0)).toEqual({ outcome: "failure", error: "unexpected_result" })
+    }
+    const hostile = { get info(): never { throw new Error("boom") } }
+    expect(classifyDreamResult(hostile, T0)).toBeUndefined()
+  })
+
+  test("event: Esc-cancel returned normally is logged as interrupted, and the returned message is untouched", async () => {
+    const { input, w, s } = observed()
+    const msg = assistant({ error: { name: "MessageAbortedError" } })
+    const dream = Effect.sync(() => {
+      w.files.set(FILE, S1)
+      return msg
+    })
+    expect(value(await runExit(observeManualDream(dream, input)))).toBe(msg)
+    expect(s.events[0]!.extra.dream).toEqual({ outcome: "interrupted", error: "MessageAbortedError" })
+    expect(s.events[0]!.extra.run.kind).toBe("manual-dream")
+  })
+
+  test("event: a business error returned normally is logged as failure", async () => {
+    const { input, s } = observed()
+    const msg = assistant({ error: { name: "APIError", data: { message: "key=sk-123" } } })
+    expect(value(await runExit(observeManualDream(Effect.succeed(msg), input)))).toBe(msg)
+    expect(s.events[0]!.extra.dream).toEqual({ outcome: "failure", error: "APIError" })
+    expect(JSON.stringify(s.events[0])).not.toContain("sk-123")
+  })
+
+  test("event: genuine success stays success; a stale result is not success", async () => {
+    const ok = observed()
+    await runExit(observeManualDream(Effect.succeed(assistant()), ok.input))
+    expect(ok.s.events[0]!.extra.dream).toEqual({ outcome: "success" })
+    const stale = observed()
+    await runExit(observeManualDream(Effect.succeed(assistant({ time: { created: NOW - 10 } })), stale.input))
+    expect(stale.s.events[0]!.extra.dream.outcome).toBe("interrupted")
+  })
+
+  test("relabelRunKind without an outcome source keeps the T-g.3 behavior; with one it rewrites only `dream`", () => {
+    const seen: unknown[] = []
+    const base = { info: (_m: string, e?: Record<string, unknown>) => void seen.push(e), warn: () => {} }
+    relabelRunKind(base).info("m", { run: { kind: "auto-dream" }, dream: { outcome: "success" } })
+    relabelRunKind(base, () => ({ outcome: "failure", error: "X" })).info("m", { run: { kind: "auto-dream" }, dream: { outcome: "success" }, changed: true })
+    relabelRunKind(base, () => ({ outcome: "failure", error: "X" })).info("m", { run: { kind: "auto-dream" } }) // no dream field: not invented
+    expect(seen).toEqual([
+      { run: { kind: "manual-dream" }, dream: { outcome: "success" } },
+      { run: { kind: "manual-dream" }, dream: { outcome: "failure", error: "X" }, changed: true },
+      { run: { kind: "manual-dream" } },
+    ])
+  })
+})
+
+describe("T-g.4 P1-B project/path guard (fail-closed)", () => {
+  const cases: Array<[string, () => string | undefined]> = [
+    ["different Instance project", () => "p2"],
+    ["no Instance project", () => undefined],
+    ["global fallback", () => "global"],
+    ["empty id", () => ""],
+  ]
+  for (const [name, getInstanceProjectID] of cases) {
+    test(`${name}: same Effect result, zero reads/budget/log`, async () => {
+      const { input, w, s, budgetCalls } = observed({ getInstanceProjectID })
+      const run = Effect.succeed(assistant())
+      const out = value(await runExit(observeManualDream(run, input)))
+      expect(out).toEqual(assistant())
+      expect(w.reads).toEqual([])
+      expect(s.events).toEqual([])
+      expect(budgetCalls.n).toBe(0)
+    })
+  }
+
+  test("session project that is the global fallback is never observed even when the Instance says global", async () => {
+    const { input, w, s } = observed({ projectID: "global" as unknown as ProjectID, getInstanceProjectID: () => "global" })
+    await runExit(observeManualDream(Effect.succeed(assistant()), input))
+    expect(w.reads).toEqual([])
+    expect(s.events).toEqual([])
+  })
+
+  test("a throwing Instance lookup never stops the dream, and the dream runs exactly once", async () => {
+    let runs = 0
+    const { input, s } = observed({
+      getInstanceProjectID: () => {
+        throw new Error("no ALS")
+      },
+    })
+    const run = Effect.sync(() => {
+      runs++
+      return assistant()
+    })
+    expect(value(await runExit(observeManualDream(run, input)))).toEqual(assistant())
+    expect(runs).toBe(1)
+    expect(s.events).toEqual([])
+  })
+
+  test("matching project observes and the audited file is memoryPath(projectID)", () => {
+    expect(manualDreamAuditDeps({ sessionID: "s", projectID: PROJECT }).memoryFile).toBe(memoryPath(PROJECT))
+  })
+})
+
+describe("T-g.4 P1-D observer setup isolation", () => {
+  const sets: Array<[string, Partial<ManualDreamObserveInput>]> = [
+    ["getBudget throws synchronously", { getBudget: () => { throw new Error("sync budget") } }],
+    ["getBudget fails", { getBudget: () => Effect.fail(new Error("budget fail")) }],
+    ["getBudget dies", { getBudget: () => Effect.die(new Error("budget die")) }],
+    ["now throws", { overrides: { memoryFile: FILE, now: () => { throw new Error("clock") } } }],
+    ["log sink throws", { overrides: { memoryFile: FILE, log: sink({ throws: true }).log, now: () => NOW } }],
+  ]
+  for (const [name, over] of sets) {
+    test(`${name}: the dream still runs exactly once and its result is untouched`, async () => {
+      let runs = 0
+      const { input } = observed(over)
+      const msg = assistant()
+      const run = Effect.sync(() => {
+        runs++
+        return msg
+      })
+      expect(value(await runExit(observeManualDream(run, input)))).toBe(msg)
+      expect(runs).toBe(1)
+    })
+  }
+
+  test("enabled getter that throws is fail-closed to the original run", async () => {
+    const { input } = observed()
+    Object.defineProperty(input, "enabled", { get() { throw new Error("flag") } })
+    const run = Effect.succeed(1)
+    expect(observeManualDream(run, input)).toBe(run)
+  })
+
+  test("a dream failure is not swallowed by the setup guard and the dream is not re-run", async () => {
+    let runs = 0
+    const { input } = observed()
+    const run = Effect.suspend(() => {
+      runs++
+      return Effect.fail(new Error("dream boom"))
+    })
+    const exit = await runExit(observeManualDream(run, input))
+    expect(Exit.isFailure(exit)).toBe(true)
+    expect(runs).toBe(1)
+  })
+
+  test("caller-fiber interruption during setup stays an interruption (the dream does not start)", async () => {
+    let runs = 0
+    const { input } = observed({ getBudget: () => Effect.interrupt })
+    const run = Effect.sync(() => void runs++)
+    const exit = await runExit(observeManualDream(run, input))
+    expect(Exit.isFailure(exit) && Cause.hasInterruptsOnly(exit.cause)).toBe(true)
+    expect(runs).toBe(0)
+  })
+})
+
+describe("T-g.4 P1-C manual-only dynamic flag", () => {
+  const flagSource = () => Bun.file(path.join(import.meta.dir, "../../src/flag/flag.ts")).text()
+
+  test("dynamic getter, default false, read lazily from its own env var", async () => {
+    const { Flag } = await import("../../src/flag/flag")
+    const key = "MIMOCODE_EXPERIMENTAL_DREAM_AUDIT"
+    const prev = process.env[key]
+    try {
+      delete process.env[key]
+      expect(Flag.MIMOCODE_EXPERIMENTAL_DREAM_AUDIT).toBe(false)
+      process.env[key] = "1"
+      expect(Flag.MIMOCODE_EXPERIMENTAL_DREAM_AUDIT).toBe(true)
+      process.env[key] = "false"
+      expect(Flag.MIMOCODE_EXPERIMENTAL_DREAM_AUDIT).toBe(false)
+    } finally {
+      if (prev === undefined) delete process.env[key]
+      else process.env[key] = prev
+    }
+  })
+
+  test("the umbrella MIMOCODE_EXPERIMENTAL does not turn it on, and the auto-dream switch stays off", async () => {
+    const source = await flagSource()
+    expect(source).toMatch(/get MIMOCODE_EXPERIMENTAL_DREAM_AUDIT\(\) \{\s*return truthy\("MIMOCODE_EXPERIMENTAL_DREAM_AUDIT"\)\s*\}/)
+    expect(source).not.toMatch(/MIMOCODE_EXPERIMENTAL\s*\|\|\s*truthy\("MIMOCODE_EXPERIMENTAL_DREAM_AUDIT"\)/)
+    expect(T_G_AUDIT_ENABLED).toBe(false)
+  })
+
+  test("only the manual hook reads it; the auto-dream hook still keys off T_G_AUDIT_ENABLED", async () => {
+    const source = await Bun.file(path.join(import.meta.dir, "../../src/session/prompt.ts")).text()
+    expect(source.match(/MIMOCODE_EXPERIMENTAL_DREAM_AUDIT/g)).toHaveLength(1)
+    expect(source).toMatch(/T_G_AUDIT_ENABLED\s*\?\s*observeDreamRun\(dream, autoDreamAuditDeps\(/)
   })
 })

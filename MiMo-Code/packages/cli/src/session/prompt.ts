@@ -148,6 +148,7 @@ import { Process } from "@/util"
 import { Cause, Deferred, Effect, Exit, Fiber, Layer, Option, Scope, Context } from "effect"
 import { EffectLogger } from "@/effect"
 import { InstanceState } from "@/effect"
+import { Instance } from "@/project/instance"
 import { PARALLEL_READONLY_TOOLS } from "@/tool/gate"
 import * as ToolSettlement from "@/tool/settlement"
 import { ActorTool, type ActorPromptOps } from "@/tool/actor"
@@ -6227,6 +6228,8 @@ NOTE: At any point in time through this workflow you should feel free to ask the
       const result = yield* observeManualDream(run, {
         isDreamCommand: input.command === Command.Default.DREAM && Command.isBuiltinCommand(cmd), source: cmd.source, agentName, isSubtask,
         sessionID: input.sessionID, projectID: session.projectID,
+        getInstanceProjectID: () => Instance.current?.project?.id,
+        enabled: Flag.MIMOCODE_EXPERIMENTAL_DREAM_AUDIT,
         getBudget: () => config.get().pipe(Effect.map((c) => c.checkpoint?.push_caps?.memory)),
       })
       yield* bus.publish(Command.Event.Executed, {

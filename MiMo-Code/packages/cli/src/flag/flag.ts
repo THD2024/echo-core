@@ -141,6 +141,12 @@ export const Flag = {
   get MIMOCODE_DISABLE_CHECKPOINT() {
     return truthy("MIMOCODE_DISABLE_CHECKPOINT")
   },
+  // Defaults to false. Observe-only Memory audit of the built-in MANUAL `/dream` command (T-g.4).
+  // Manual-only: it does not enable auto-dream auditing (T_G_AUDIT_ENABLED) and is deliberately NOT
+  // part of MIMOCODE_EXPERIMENTAL. Read lazily so tests and in-process embedders can toggle it.
+  get MIMOCODE_EXPERIMENTAL_DREAM_AUDIT() {
+    return truthy("MIMOCODE_EXPERIMENTAL_DREAM_AUDIT")
+  },
   // Defaults to protection on. Opt out to continue a batch after tool failure.
   get MIMOCODE_DISABLE_FAIL_CASCADE() {
     return truthy("MIMOCODE_DISABLE_FAIL_CASCADE")

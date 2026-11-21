@@ -14,7 +14,7 @@
  *  - project scope, snapshot cap, step timeout and window semantics are all inherited from T-g.2.
  * This module must not import tools, merge/retract code or any write API (a test pins that).
  */
-import { Effect } from "effect"
+import { Cause, Effect } from "effect"
 import { Log } from "@/util"
 import { T_G_AUDIT_ENABLED, autoDreamAuditDeps, observeDreamRun, type AuditLog, type ObserveDeps } from "./dream-audit"
 
@@ -43,12 +43,46 @@ export function shouldObserveManualDream(run: ManualDreamRun): boolean {
   return run.isDreamCommand && run.source === "command" && run.agentName === "dream" && !run.isSubtask
 }
 
-/** Forward every event unchanged except `run.kind`, which becomes "manual-dream". */
-export function relabelRunKind(base: AuditLog): AuditLog {
+export type DreamOutcome = { outcome: "success" | "failure" | "interrupted"; error?: string }
+
+/**
+ * Classify what the manual `/dream` prompt RETURNED. `prompt` has error channel `never`: model/business
+ * errors and Esc-cancel come back as a normal assistant message (`info.error`), and a cancel before the
+ * dream produced any message returns a STALE earlier assistant message. Only the error NAME is kept
+ * (no message text), so nothing from the error body reaches the log.
+ */
+export function classifyDreamResult(result: unknown, startedAt: number): DreamOutcome | undefined {
+  try {
+    const info = (result as { info?: Record<string, any> } | null | undefined)?.info
+    if (!info || typeof info !== "object") return { outcome: "failure", error: "unexpected_result" }
+    if (info.role !== "assistant") return { outcome: "failure", error: "unexpected_result" }
+    const err = info.error as { name?: unknown } | undefined
+    if (err) {
+      const name = typeof err.name === "string" ? err.name.slice(0, 80) : "unknown_error"
+      return name === "MessageAbortedError" ? { outcome: "interrupted", error: name } : { outcome: "failure", error: name }
+    }
+    const created = info.time?.created
+    if (typeof created !== "number" || created < startedAt) return { outcome: "interrupted", error: "no_new_assistant_message" }
+    return { outcome: "success" }
+  } catch {
+    return undefined
+  }
+}
+
+/**
+ * Forward every event unchanged except `run.kind` (becomes "manual-dream") and, when `outcomeOf()` yields a
+ * classification, `dream` (the T-g.2 combinator only sees a normal return and would say "success").
+ */
+export function relabelRunKind(base: AuditLog, outcomeOf?: () => DreamOutcome | undefined): AuditLog {
   const relabel = (extra?: Record<string, unknown>): Record<string, unknown> | undefined => {
     const run = extra?.run
     if (!run || typeof run !== "object") return extra
-    return { ...extra, run: { ...(run as Record<string, unknown>), kind: MANUAL_DREAM_RUN_KIND } }
+    const o = outcomeOf?.()
+    return {
+      ...extra,
+      run: { ...(run as Record<string, unknown>), kind: MANUAL_DREAM_RUN_KIND },
+      ...(o && extra?.dream && typeof extra.dream === "object" ? { dream: o } : {}),
+    }
   }
   return {
     info: (message, extra) => base.info(message, relabel(extra)),
@@ -62,6 +96,7 @@ export function manualDreamAuditDeps(input: {
   projectID: ProjectID
   memoryBudgetTokens?: number
   overrides?: ManualDreamOverrides
+  outcomeOf?: () => DreamOutcome | undefined
 }): ObserveDeps {
   const base = autoDreamAuditDeps({
     sessionID: input.sessionID,
@@ -69,7 +104,7 @@ export function manualDreamAuditDeps(input: {
     memoryBudgetTokens: input.memoryBudgetTokens,
   })
   const { log, ...rest } = input.overrides ?? {}
-  return { ...base, ...rest, enabled: true, log: relabelRunKind(log ?? Log.create({ service: "dream-audit" })) }
+  return { ...base, ...rest, enabled: true, log: relabelRunKind(log ?? Log.create({ service: "dream-audit" }), input.outcomeOf) }
 }
 
 export interface ManualDreamObserveInput extends ManualDreamRun {
@@ -79,6 +114,8 @@ export interface ManualDreamObserveInput extends ManualDreamRun {
   projectID: ProjectID
   /** Lazy: only called when the run is actually observed. A failure falls back to the shared default budget. */
   getBudget: () => Effect.Effect<number | undefined, unknown>
+  /** The current Instance project id (what the dream's memory tools and checkpoint paths resolve against). Lazy and fail-closed. */
+  getInstanceProjectID: () => string | undefined
   /** Defaults to T_G_AUDIT_ENABLED. */
   enabled?: boolean
   overrides?: ManualDreamOverrides
@@ -86,23 +123,53 @@ export interface ManualDreamObserveInput extends ManualDreamRun {
 
 /**
  * Wrap the manual `/dream` prompt Effect. Result-equivalent to `run` in every case; when observation does
- * not apply it returns `run` itself.
+ * not apply, or ANY observer setup step fails/throws, it runs `run` itself (fail-closed).
+ *
+ * Project guard: the audited file is `memoryPath(session.projectID)`, while the dream's tools write under
+ * the Instance project. Observe only when the two are the same and not the global fallback.
  */
 export const observeManualDream = <A, E, R>(run: Effect.Effect<A, E, R>, input: ManualDreamObserveInput): Effect.Effect<A, E, R> => {
-  if (!(input.enabled ?? T_G_AUDIT_ENABLED)) return run
-  if (!shouldObserveManualDream(input)) return run
-  return input.getBudget().pipe(
-    Effect.catchCause(() => Effect.succeed(undefined)),
-    Effect.flatMap((memoryBudgetTokens) =>
-      observeDreamRun(
-        run,
-        manualDreamAuditDeps({
-          sessionID: input.sessionID,
-          projectID: input.projectID,
-          memoryBudgetTokens,
-          overrides: input.overrides,
+  try {
+    if (!(input.enabled ?? T_G_AUDIT_ENABLED)) return run
+    if (!shouldObserveManualDream(input)) return run
+  } catch {
+    return run
+  }
+  const prepared = Effect.suspend((): Effect.Effect<Effect.Effect<A, E, R>> => {
+    const instanceProject = input.getInstanceProjectID()
+    if (!instanceProject || instanceProject === "global" || instanceProject !== String(input.projectID)) {
+      return Effect.succeed(run)
+    }
+    return Effect.suspend(() => input.getBudget()).pipe(
+      Effect.catchCause((cause) => (Cause.hasInterruptsOnly(cause) ? Effect.failCause(cause) : Effect.succeed(undefined))),
+      Effect.flatMap((memoryBudgetTokens) =>
+        Effect.try(() => {
+          const now = input.overrides?.now ?? Date.now
+          let startedAt = Number.POSITIVE_INFINITY
+          let outcome: DreamOutcome | undefined
+          const tracked = Effect.suspend(() => {
+            startedAt = now()
+            return run
+          }).pipe(
+            Effect.tap((result) =>
+              Effect.sync(() => {
+                outcome = classifyDreamResult(result, startedAt)
+              }),
+            ),
+          )
+          return observeDreamRun(
+            tracked,
+            manualDreamAuditDeps({
+              sessionID: input.sessionID,
+              projectID: input.projectID,
+              memoryBudgetTokens,
+              overrides: input.overrides,
+              outcomeOf: () => outcome,
+            }),
+          )
         }),
       ),
-    ),
-  )
+    )
+  }).pipe(Effect.catchCause((cause) => (Cause.hasInterruptsOnly(cause) ? Effect.failCause(cause) : Effect.succeed(run))))
+  return prepared.pipe(Effect.flatMap((observed) => observed))
 }
