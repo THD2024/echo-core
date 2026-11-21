@@ -165,6 +165,7 @@ import { errorMessage } from "../util/error"
 import { RecoverableError } from "../tool/recoverable"
 import { shouldAutoDream, shouldAutoDistill, DREAM_TASK, DISTILL_TASK, AUTO_DREAM_TITLE, AUTO_DISTILL_TITLE } from "./auto-dream"
 import { T_G_AUDIT_ENABLED, observeDreamRun, autoDreamAuditDeps } from "./dream-audit"
+import { observeManualDream } from "./manual-dream-audit"
 import {
   announcedDeferredMcpTools,
   createMcpToolSearchCatalog,
@@ -6209,7 +6210,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
         yield* title({ session, agent: userAgent, history, arguments: input.arguments, files: input.parts?.filter(part => part.type === "file"), model: userModel, titleLocale: input.titleLocale })
       }
 
-      const result = yield* prompt({
+      const run = prompt({
         sessionID: input.sessionID,
         messageID: input.messageID,
         model: userModel,
@@ -6222,6 +6223,11 @@ NOTE: At any point in time through this workflow you should feel free to ask the
         harness: input.harness,
         source: input.source ?? "user",
         provenance: input.provenance,
+      })
+      const result = yield* observeManualDream(run, {
+        isDreamCommand: input.command === Command.Default.DREAM, source: cmd.source, agentName, isSubtask,
+        sessionID: input.sessionID, projectID: session.projectID,
+        getBudget: () => config.get().pipe(Effect.map((c) => c.checkpoint?.push_caps?.memory)),
       })
       yield* bus.publish(Command.Event.Executed, {
         name: input.command,
