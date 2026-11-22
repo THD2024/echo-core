@@ -293,3 +293,153 @@ describe("tool.assertExternalDirectory", () => {
     })
   }
 })
+
+// ---------------------------------------------------------------------------
+// F2: Memory-tree containment must canonicalize root AND target with one policy.
+// ---------------------------------------------------------------------------
+import { AppFileSystem } from "@mimo-ai/shared/filesystem"
+import { canonicalizeForContainment, containsAppOwned } from "../../src/tool/external-directory"
+import { mkdirSync, mkdtempSync, realpathSync, rmSync, symlinkSync, writeFileSync } from "fs"
+import os from "os"
+
+/**
+ * In-memory filesystem: `links` rewrite a path prefix (junction/symlink), `existing` lists REAL paths that
+ * exist. Anything else is ENOENT; `denied` prefixes raise EACCES. Posix-shaped so it runs on every OS.
+ */
+function fakeFs(opts: { links?: Record<string, string>; existing: string[]; denied?: string[] }) {
+  const existing = new Set(opts.existing)
+  const links = Object.entries(opts.links ?? {}).sort((a, b) => b[0].length - a[0].length)
+  const calls: string[] = []
+  const realpath = (p: string): string => {
+    calls.push(p)
+    let out = p
+    for (const [from, to] of links) {
+      if (out === from || out.startsWith(from + "/")) {
+        out = to + out.slice(from.length)
+        break
+      }
+    }
+    if ((opts.denied ?? []).some((d) => out === d || out.startsWith(d + "/"))) throw Object.assign(new Error("EACCES"), { code: "EACCES" })
+    if (!existing.has(out)) throw Object.assign(new Error("ENOENT"), { code: "ENOENT" })
+    return out
+  }
+  return { realpath, calls }
+}
+
+describe("F2 containsAppOwned (win32 policy, injected filesystem)", () => {
+  const ROOT = "/c/data/memory" // junction -> /d/mem
+  const base = {
+    links: { [ROOT]: "/d/mem" },
+    existing: ["/", "/c", "/c/data", "/d", "/d/mem", "/d/mem/sessions", "/d/mem/sessions/s1", "/d/mem/sessions/s1/checkpoint.md", "/d/outside", "/d/outside/secret.md"],
+  }
+
+  test("control: the OLD comparison (raw root vs realpathed target) false-denies an existing file", () => {
+    const fs = fakeFs(base)
+    const target = ROOT + "/sessions/s1/checkpoint.md"
+    expect(AppFileSystem.contains(ROOT, fs.realpath(target))).toBe(false)
+  })
+
+  test("existing file under a junction-backed root is contained", () => {
+    const fs = fakeFs(base)
+    expect(containsAppOwned(ROOT, ROOT + "/sessions/s1/checkpoint.md", "win32", fs.realpath)).toBe(true)
+  })
+
+  test("NOT-YET-CREATED file under a junction-backed root is contained (no flip to the other form)", () => {
+    const fs = fakeFs(base)
+    expect(containsAppOwned(ROOT, ROOT + "/sessions/s1/notes.md", "win32", fs.realpath)).toBe(true)
+    expect(containsAppOwned(ROOT, ROOT + "/projects/p1/MEMORY.md", "win32", fs.realpath)).toBe(true)
+  })
+
+  test("a link INSIDE the tree that resolves outside it fails closed (existing and not-yet-created leaf)", () => {
+    const fs = fakeFs({ ...base, links: { ...base.links, [ROOT + "/sessions/s1/escape"]: "/d/outside" } })
+    expect(containsAppOwned(ROOT, ROOT + "/sessions/s1/escape/secret.md", "win32", fs.realpath)).toBe(false)
+    expect(containsAppOwned(ROOT, ROOT + "/sessions/s1/escape/new.md", "win32", fs.realpath)).toBe(false)
+  })
+
+  test("non-memory target, prefix-lookalike sibling, and .. traversal are not contained", () => {
+    const fs = fakeFs(base)
+    expect(containsAppOwned(ROOT, "/d/outside/secret.md", "win32", fs.realpath)).toBe(false)
+    expect(containsAppOwned(ROOT, "/c/data/memory-other/x.md", "win32", fs.realpath)).toBe(false)
+    expect(containsAppOwned(ROOT, ROOT + "/../secret.md", "win32", fs.realpath)).toBe(false)
+  })
+
+  test("a realpath error other than ENOENT fails closed instead of throwing", () => {
+    const fs = fakeFs({ ...base, denied: ["/d/mem/sessions"] })
+    expect(containsAppOwned(ROOT, ROOT + "/sessions/s1/checkpoint.md", "win32", fs.realpath)).toBe(false)
+  })
+
+  test("root that does not exist at all still contains its lexical children (nothing to resolve)", () => {
+    const fs = fakeFs({ existing: ["/"] })
+    expect(containsAppOwned("/x/memory", "/x/memory/sessions/s/a.md", "win32", fs.realpath)).toBe(true)
+    expect(containsAppOwned("/x/memory", "/x/other/a.md", "win32", fs.realpath)).toBe(false)
+  })
+
+  test("non-win32 keeps the previous lexical behavior and never touches the filesystem", () => {
+    const fs = fakeFs({ existing: [] })
+    expect(containsAppOwned("/a/memory", "/a/memory/x.md", "linux", fs.realpath)).toBe(true)
+    expect(containsAppOwned("/a/memory", "/a/memory-other/x.md", "linux", fs.realpath)).toBe(false)
+    expect(fs.calls).toEqual([])
+  })
+
+  test("canonicalizeForContainment re-appends the missing remainder in order", () => {
+    const fs = fakeFs(base)
+    expect(canonicalizeForContainment(ROOT + "/sessions/s1/a/b/c.md", fs.realpath)).toBe("/d/mem/sessions/s1/a/b/c.md")
+  })
+})
+
+describe("F2 containsAppOwned on real Windows junctions (Windows-native only)", () => {
+  const win = process.platform === "win32"
+  const make = () => {
+    const tmp = realpathSync(mkdtempSync(path.join(os.tmpdir(), "f2-")))
+    const real = path.join(tmp, "real-memory")
+    const outside = path.join(tmp, "outside")
+    mkdirSync(path.join(real, "sessions", "s1"), { recursive: true })
+    mkdirSync(outside, { recursive: true })
+    writeFileSync(path.join(real, "sessions", "s1", "checkpoint.md"), "x")
+    writeFileSync(path.join(outside, "secret.md"), "x")
+    const junction = path.join(tmp, "data-memory") // stands in for <data>/memory
+    symlinkSync(real, junction, "junction")
+    return { tmp, real, outside, junction, done: () => rmSync(tmp, { recursive: true, force: true }) }
+  }
+
+  test("junction-form existing + new targets are contained; realpath-form too", () => {
+    if (!win) return
+    const w = make()
+    try {
+      expect(containsAppOwned(w.junction, path.join(w.junction, "sessions", "s1", "checkpoint.md"))).toBe(true)
+      expect(containsAppOwned(w.junction, path.join(w.junction, "sessions", "s1", "new.md"))).toBe(true)
+      expect(containsAppOwned(w.junction, path.join(w.real, "sessions", "s1", "checkpoint.md"))).toBe(true)
+      expect(containsAppOwned(w.junction, path.join(w.real, "sessions", "s1", "new.md"))).toBe(true)
+    } finally {
+      w.done()
+    }
+  })
+
+  test("a junction inside the tree pointing outside fails closed; non-memory target denied", () => {
+    if (!win) return
+    const w = make()
+    try {
+      symlinkSync(w.outside, path.join(w.real, "sessions", "s1", "escape"), "junction")
+      expect(containsAppOwned(w.junction, path.join(w.junction, "sessions", "s1", "escape", "secret.md"))).toBe(false)
+      expect(containsAppOwned(w.junction, path.join(w.junction, "sessions", "s1", "escape", "new.md"))).toBe(false)
+      expect(containsAppOwned(w.junction, path.join(w.outside, "secret.md"))).toBe(false)
+    } finally {
+      w.done()
+    }
+  })
+
+  test("separator and case normalization; UNC / other-drive targets fail closed", () => {
+    if (!win) return
+    const w = make()
+    try {
+      const target = path.join(w.junction, "sessions", "s1", "checkpoint.md")
+      expect(containsAppOwned(w.junction, target.replaceAll("\\", "/"))).toBe(true)
+      expect(containsAppOwned(w.junction, target.toUpperCase())).toBe(true)
+      expect(containsAppOwned(w.junction, "\\\\server\\share\\sessions\\s1\\checkpoint.md")).toBe(false)
+      const otherDrive = target.startsWith("Z:") ? "Y:\\x.md" : "Z:\\x.md"
+      expect(containsAppOwned(w.junction, otherDrive)).toBe(false)
+    } finally {
+      w.done()
+    }
+  })
+})

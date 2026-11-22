@@ -1,4 +1,5 @@
 import path from "path"
+import { realpathSync } from "fs"
 import { Effect, Option } from "effect"
 import { EffectLogger } from "@/effect"
 import { InstanceState } from "@/effect"
@@ -10,6 +11,55 @@ import { Instance } from "../project/instance"
 import { ProjectID } from "../project/schema"
 import { assertMemoryWriteAllowed, assertAgentWriteSandbox } from "./memory-path-guard"
 import { AppFileSystem } from "@mimo-ai/shared/filesystem"
+
+type RealpathFn = (p: string) => string
+
+/**
+ * Canonical form for containment checks on Windows.
+ *
+ * `AppFileSystem.normalizePath` realpaths only when the path EXISTS and otherwise falls back to the
+ * un-resolved string. With a junction-backed data dir (e.g. `C:\\Users\\x\\...\\memory` -> `D:\\MiMoMemory`)
+ * that makes an existing file report the `D:` form while a not-yet-created file keeps the `C:` form, and a
+ * raw (never-resolved) root matches neither consistently. So: realpath the deepest EXISTING ancestor and
+ * re-append the not-yet-existing remainder. Root and target then share one policy whether or not the
+ * target exists yet. Any error other than "does not exist" returns the lexically resolved path, which
+ * then fails containment against a canonical root (fail closed).
+ */
+export function canonicalizeForContainment(p: string, realpath: RealpathFn = realpathSync.native): string {
+  const resolved = path.resolve(AppFileSystem.windowsPath(p))
+  const rest: string[] = []
+  let current = resolved
+  for (;;) {
+    try {
+      const real = realpath(current)
+      return rest.length === 0 ? real : path.join(real, ...[...rest].reverse())
+    } catch (e: any) {
+      if (e?.code !== "ENOENT" && e?.code !== "ENOTDIR") return resolved
+    }
+    const parent = path.dirname(current)
+    if (parent === current) return resolved
+    rest.push(path.basename(current))
+    current = parent
+  }
+}
+
+/**
+ * Whether `target` lies under the app-owned `root` (memory / worktree base).
+ *
+ * Windows: both sides go through `canonicalizeForContainment`, so a legitimate path under a junction-backed
+ * root is contained, while a junction/symlink INSIDE the tree that resolves outside it is not (its realpath
+ * leaves the canonical root) and falls through to the normal ask. Cross-drive / UNC mismatches fail closed
+ * (`AppFileSystem.contains` rejects an absolute relative path). Other platforms keep the previous behavior.
+ */
+export function containsAppOwned(
+  root: string,
+  target: string,
+  platform: NodeJS.Platform = process.platform,
+  realpath?: RealpathFn,
+): boolean {
+  if (platform !== "win32") return AppFileSystem.contains(root, target)
+  return AppFileSystem.contains(canonicalizeForContainment(root, realpath), canonicalizeForContainment(target, realpath))
+}
 
 type Kind = "file" | "directory"
 
@@ -38,7 +88,7 @@ export const assertExternalDirectoryEffect = Effect.fn("Tool.assertExternalDirec
   // is redundant and, in headless run mode (no permission replier), deadlocks on a
   // never-resolved Deferred. memory-path-guard allows a task-bound subagent its own
   // tasks/<taskId>/*.md and rejects cross-task / wrong-agent writes.
-  if (AppFileSystem.contains(path.join(Global.Path.data, "memory"), full)) return
+  if (containsAppOwned(path.join(Global.Path.data, "memory"), full)) return
 
   // App-managed worktrees live under <data>/worktree/<projectID>/<name>. They are
   // TRUSTED workspaces created and owned by the app itself (workflow isolation and
@@ -48,7 +98,7 @@ export const assertExternalDirectoryEffect = Effect.fn("Tool.assertExternalDirec
   // child has no interactive replier so the ask fails closed. Trust the managed
   // base here, exactly as the memory subtree above. Genuinely external user paths
   // are unaffected and still prompt.
-  if (AppFileSystem.contains(path.join(Global.Path.data, "worktree"), full)) return
+  if (containsAppOwned(path.join(Global.Path.data, "worktree"), full)) return
 
   const kind = options?.kind ?? "file"
   const dir = kind === "directory" ? full : path.dirname(full)
@@ -161,7 +211,7 @@ export const askEditUnlessMemory = Effect.fn("Tool.askEditUnlessMemory")(functio
   input: { patterns: string[]; diff: string; files?: unknown },
 ) {
   const full = process.platform === "win32" ? AppFileSystem.normalizePath(filepath) : filepath
-  if (AppFileSystem.contains(path.join(Global.Path.data, "memory"), full)) return
+  if (containsAppOwned(path.join(Global.Path.data, "memory"), full)) return
   yield* ctx.ask({
     permission: "edit",
     patterns: input.patterns,

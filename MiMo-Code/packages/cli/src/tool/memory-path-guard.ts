@@ -4,6 +4,16 @@ import type { SessionID } from "../session/schema"
 
 const VALID_SCOPES = ["global", "projects", "sessions"] as const
 
+/**
+ * Structural path components (scope dirs and the reserved `tasks` dir) name the SAME directory regardless of
+ * case on Windows, so they are compared case-insensitively there. Only these fixed literals are folded:
+ * ids and file names keep their exact comparison, and every fold is applied to both the accept and the
+ * reserve side so accepting `PROJECTS`/`SESSIONS` cannot open a bypass of the `tasks` reservation.
+ */
+function fold(part: string | undefined): string | undefined {
+  return process.platform === "win32" ? part?.toLowerCase() : part
+}
+
 /** Agents that may write memory or the project's `.mimocode/` directory. The
  *  checkpoint writer has a stricter memory-only policy below. */
 const WRITE_SANDBOXED_AGENTS: ReadonlySet<string> = new Set(["dream", "distill"])
@@ -96,7 +106,7 @@ const TASK_ID_RE = /^T\d+(\.\d+)*$/
 function isCheckpointWriterAllowed(parts: string[]): boolean {
   if (parts.length < 3) return false
 
-  if (parts[0] === "projects") {
+  if (fold(parts[0]) === "projects") {
     if (parts.length !== 3) return false
     const file = parts[2]
     if (!file.endsWith(".md")) return false
@@ -104,14 +114,14 @@ function isCheckpointWriterAllowed(parts: string[]): boolean {
     return lower === "memory.md" || lower.startsWith("memory-")
   }
 
-  if (parts[0] === "sessions") {
+  if (fold(parts[0]) === "sessions") {
     const rest = parts.slice(2)
     if (rest.length === 1) {
       const file = rest[0]
       if (!file.endsWith(".md")) return false
       return file === "checkpoint.md" || file === "notes.md" || file.startsWith("checkpoint-")
     }
-    if (rest.length === 3 && rest[0] === "tasks") {
+    if (rest.length === 3 && fold(rest[0]) === "tasks") {
       return TASK_ID_RE.test(rest[1]) && rest[2].endsWith(".md")
     }
     return false
@@ -149,9 +159,9 @@ function formatMainAgentHelp(memoryFile: string, notesFile: string, target: stri
  * teaches it the rules).
  */
 function isReservedForCheckpointWriter(parts: string[]): boolean {
-  if (parts[0] !== "sessions" || parts.length < 4) return false
+  if (fold(parts[0]) !== "sessions" || parts.length < 4) return false
   // Anything under <sid>/tasks/ is writer-managed (use task tool revise action).
-  if (parts[2] === "tasks") return true
+  if (fold(parts[2]) === "tasks") return true
   return false
 }
 
@@ -232,7 +242,7 @@ export function assertMemoryWriteAllowed(input: {
     throw new Error(formatMainAgentHelp(memoryFile, notesFile, target))
   }
   const scope = parts[0]
-  if (!VALID_SCOPES.includes(scope as (typeof VALID_SCOPES)[number])) {
+  if (!VALID_SCOPES.includes(fold(scope) as (typeof VALID_SCOPES)[number])) {
     throw new Error(formatMainAgentHelp(memoryFile, notesFile, target))
   }
 
@@ -260,7 +270,7 @@ export function assertMemoryWriteAllowed(input: {
     // guard still confines it to its own task, so the extra depth is safe.
     if (
       input.taskId &&
-      parts[2] === "tasks" &&
+      fold(parts[2]) === "tasks" &&
       parts[3] === input.taskId &&
       parts.length >= 5 &&
       parts[parts.length - 1].endsWith(".md")

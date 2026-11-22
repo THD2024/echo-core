@@ -904,3 +904,64 @@ describe("assertMemoryWriteAllowed — memory write switch", () => {
     expect(message).toContain("Do NOT retry with another memory path")
   })
 })
+
+describe("F2 Windows scope-component case folding (fail-closed on both sides)", () => {
+  const asWin32 = <T,>(fn: () => T): T => {
+    const desc = Object.getOwnPropertyDescriptor(process, "platform")!
+    Object.defineProperty(process, "platform", { value: "win32" })
+    try {
+      return fn()
+    } finally {
+      Object.defineProperty(process, "platform", desc)
+    }
+  }
+  const run = (agentName: string, rel: string[], taskId?: string) =>
+    assertMemoryWriteAllowed({
+      target: path.join(MEMORY_ROOT, ...rel),
+      agentName,
+      memoryRoot: MEMORY_ROOT,
+      projectID: PROJECT_ID,
+      sessionID: SESSION_ID,
+      taskId,
+    })
+
+  test("win32: checkpoint-writer is accepted under PROJECTS / SESSIONS", () => {
+    asWin32(() => {
+      expect(() => run("checkpoint-writer", ["PROJECTS", "p_test", "MEMORY.md"])).not.toThrow()
+      expect(() => run("checkpoint-writer", ["SESSIONS", "sid", "checkpoint.md"])).not.toThrow()
+      expect(() => run("checkpoint-writer", ["Sessions", "sid", "TASKS", "T1", "x.md"])).not.toThrow()
+    })
+  })
+
+  test("win32: accepting the case-variant scope does NOT open the tasks reservation for the main agent", () => {
+    asWin32(() => {
+      for (const rel of [
+        ["sessions", "sid", "TASKS", "T1", "x.md"],
+        ["SESSIONS", "sid", "tasks", "T1", "x.md"],
+        ["SESSIONS", "sid", "Tasks", "T1", "x.md"],
+      ]) {
+        expect(() => run("build", rel)).toThrow(/reserved for the checkpoint-writer/)
+      }
+    })
+  })
+
+  test("win32: a task-bound subagent still reaches only ITS OWN tasks/<TID> subtree, case-insensitively on the structural parts", () => {
+    asWin32(() => {
+      expect(() => run("build", ["SESSIONS", "sid", "TASKS", "T1", "x.md"], "T1")).not.toThrow()
+      expect(() => run("build", ["SESSIONS", "sid", "TASKS", "T2", "x.md"], "T1")).toThrow(/reserved/)
+    })
+  })
+
+  test("win32: unknown scopes and look-alikes are still rejected; ids and file names are NOT folded", () => {
+    asWin32(() => {
+      expect(() => run("build", ["PROJECTSX", "p_test", "a.md"])).toThrow(/Memory writes go under/)
+      expect(() => run("checkpoint-writer", ["PROJECTS", "p_test", "pinned.md"])).toThrow(/allowlist/)
+      expect(() => run("checkpoint-writer", ["SESSIONS", "sid", "CHECKPOINT.MD"])).toThrow(/allowlist/)
+    })
+  })
+
+  test("non-win32 behavior is unchanged: upper-case scope is an invalid scope", () => {
+    if (process.platform === "win32") return
+    expect(() => run("build", ["PROJECTS", "p_test", "a.md"])).toThrow(/Memory writes go under/)
+  })
+})
