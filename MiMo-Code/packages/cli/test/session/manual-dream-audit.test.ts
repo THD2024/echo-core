@@ -596,6 +596,20 @@ describe("T-g.4 P1-C manual-only dynamic flag", () => {
     }
   })
 
+  test("behavior: setting the umbrella MIMOCODE_EXPERIMENTAL does not turn the manual audit flag on", async () => {
+    const { Flag } = await import("../../src/flag/flag")
+    const keys = ["MIMOCODE_EXPERIMENTAL", "MIMOCODE_EXPERIMENTAL_DREAM_AUDIT"] as const
+    const prev = keys.map((k) => process.env[k])
+    try {
+      delete process.env.MIMOCODE_EXPERIMENTAL_DREAM_AUDIT
+      process.env.MIMOCODE_EXPERIMENTAL = "1"
+      expect(Flag.MIMOCODE_EXPERIMENTAL_DREAM_AUDIT).toBe(false)
+      expect(T_G_AUDIT_ENABLED).toBe(false)
+    } finally {
+      keys.forEach((k, i) => (prev[i] === undefined ? delete process.env[k] : (process.env[k] = prev[i]!)))
+    }
+  })
+
   test("the umbrella MIMOCODE_EXPERIMENTAL does not turn it on, and the auto-dream switch stays off", async () => {
     const source = await flagSource()
     expect(source).toMatch(/get MIMOCODE_EXPERIMENTAL_DREAM_AUDIT\(\) \{\s*return truthy\("MIMOCODE_EXPERIMENTAL_DREAM_AUDIT"\)\s*\}/)

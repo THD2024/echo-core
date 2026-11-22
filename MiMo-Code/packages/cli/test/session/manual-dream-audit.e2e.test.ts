@@ -65,6 +65,10 @@ import { Inbox } from "../../src/inbox"
 import { Metrics } from "../../src/metrics"
 import { memoryPath } from "../../src/session/checkpoint-paths"
 import { Flag } from "../../src/flag/flag"
+import { eq } from "drizzle-orm"
+import { Database } from "../../src/storage"
+import { ProjectTable } from "../../src/project/project.sql"
+import { SessionTable } from "../../src/session/session.sql"
 
 /**
  * T-g.4 REAL end-to-end tests: the built-in manual /dream through SessionPrompt.command with the real
@@ -90,6 +94,8 @@ const ref = {
 function mcpLayer(
   tools: (context?: MCP.TurnContext) => Record<string, AITool> = () => ({}),
   clients: () => Record<string, any> = () => ({}),
+  prompts: Record<string, any> = {},
+  promptText = "",
 ) {
   return Layer.succeed(
     MCP.Service,
@@ -97,12 +103,15 @@ function mcpLayer(
       status: () => Effect.succeed({}),
       clients: () => Effect.sync(clients),
       tools: (context) => Effect.sync(() => tools(context)),
-      prompts: () => Effect.succeed({}),
+      prompts: () => Effect.succeed(prompts) as any,
       resources: () => Effect.succeed({}),
       add: () => Effect.succeed({ status: { status: "disabled" as const } }),
       connect: () => Effect.void,
       disconnect: () => Effect.void,
-      getPrompt: () => Effect.succeed(undefined),
+      getPrompt: () =>
+        Effect.succeed(
+          promptText ? ({ messages: [{ role: "user", content: { type: "text", text: promptText } }] } as any) : undefined,
+        ),
       readResource: () => Effect.succeed(undefined),
       startAuth: () => Effect.die("unexpected MCP auth in prompt-effect tests"),
       authenticate: () => Effect.die("unexpected MCP auth in prompt-effect tests"),
@@ -521,5 +530,157 @@ describe("T-g.4 manual /dream audit: real end-to-end", () => {
         },
       ),
     ),
+  )
+})
+
+/** T-g.5: negative / containment paths through the REAL SessionPrompt.command. */
+const itMcp = testEffect(
+  Layer.provideMerge(
+    makeHttp(mcpLayer(() => ({}), () => ({}), { dream: { name: "dream", description: "mcp dream", client: "srv" } }, "mcp custom dream")),
+    EffectLogger.layer,
+  ),
+)
+
+const setSessionProject = (sessionID: SessionID, projectID: string) =>
+  Effect.sync(() =>
+    Database.use((db) => {
+      const now = Date.now()
+      db.insert(ProjectTable)
+        .values({ id: projectID as any, worktree: "/tmp", sandboxes: [] as any, time_created: now, time_updated: now } as any)
+        .onConflictDoNothing()
+        .run()
+      db.update(SessionTable).set({ project_id: projectID as any }).where(eq(SessionTable.id, sessionID)).run()
+    }),
+  )
+
+const ASSISTANT_OK = (result: { info: { role: string; error?: unknown } }) => {
+  expect(result.info.role).toBe("assistant")
+  expect(result.info.error).toBeUndefined()
+}
+
+describe("T-g.5 manual /dream audit: production-path containment (real command path)", () => {
+  for (const projectID of ["proj_other_t5", "global"]) {
+    it.live(`session project ${projectID} != Instance project: dream still runs once, ZERO audit events`, () =>
+      withFlag("1", () =>
+        provideTmpdirServer(
+          Effect.fnUntraced(function* ({ llm }) {
+            const sessions = yield* Session.Service
+            const chat = yield* sessions.create({ title: `manual-dream-${projectID}` })
+            yield* setSessionProject(chat.id, projectID)
+            yield* llm.text("done")
+            const cap = capture()
+            try {
+              ASSISTANT_OK(yield* runDream(chat.id))
+              expect(yield* llm.calls).toBe(1)
+              expect(audits(cap.events)).toEqual([])
+            } finally {
+              cap.restore()
+            }
+          }),
+          { git: true, config: providerCfg },
+        ),
+      ),
+    )
+  }
+
+  itMcp.live("MCP prompt registered as `dream` replaces the built-in and is NOT observed", () =>
+    withFlag("1", () =>
+      provideTmpdirServer(
+        Effect.fnUntraced(function* ({ llm }) {
+          const sessions = yield* Session.Service
+          const chat = yield* sessions.create({ title: "manual-dream-mcp" })
+          yield* llm.text("mcp ran")
+          const cap = capture()
+          try {
+            yield* runDream(chat.id)
+            expect(audits(cap.events)).toEqual([])
+          } finally {
+            cap.restore()
+          }
+        }),
+        { git: true, config: providerCfg },
+      ),
+    ),
+  )
+
+  it.live("MEMORY.md unreadable (is a directory): dream result untouched, event (if any) is skipped/audit_failed", () =>
+    withFlag("1", () =>
+      provideTmpdirServer(
+        Effect.fnUntraced(function* ({ llm }) {
+          const sessions = yield* Session.Service
+          const chat = yield* sessions.create({ title: "manual-dream-readfault" })
+          const file = memoryPath(chat.projectID)
+          yield* Effect.promise(async () => {
+            const { mkdirSync } = await import("node:fs")
+            mkdirSync(file, { recursive: true }) // a directory where the file should be
+          })
+          yield* llm.text("done")
+          const cap = capture()
+          try {
+            ASSISTANT_OK(yield* runDream(chat.id))
+            expect(yield* llm.calls).toBe(1)
+            const found = audits(cap.events)
+            expect(found.length).toBeLessThanOrEqual(1)
+            for (const e of found) {
+              expect(e.extra.run.kind).toBe("manual-dream")
+              expect(["skipped", "audit_failed"]).toContain(e.extra.result.status)
+              expect(e.extra.changed).not.toBe(true)
+            }
+          } finally {
+            cap.restore()
+          }
+        }),
+        { git: true, config: providerCfg },
+      ),
+    ),
+  )
+
+  it.live("MEMORY.md over the 256 KiB snapshot cap: dream result untouched, no memory text in any event", () =>
+    withFlag("1", () =>
+      provideTmpdirServer(
+        Effect.fnUntraced(function* ({ llm }) {
+          const sessions = yield* Session.Service
+          const chat = yield* sessions.create({ title: "manual-dream-overlimit" })
+          const file = memoryPath(chat.projectID)
+          const secret = "TOPSECRET-MEMORY-BODY"
+          yield* seedMemory(file, `## Facts\n\n${REC("z1", secret)}` + "x".repeat(300 * 1024))
+          yield* llm.text("done")
+          const cap = capture()
+          try {
+            ASSISTANT_OK(yield* runDream(chat.id))
+            const found = audits(cap.events)
+            expect(found.length).toBeLessThanOrEqual(1)
+            expect(JSON.stringify(cap.events)).not.toContain(secret)
+            for (const e of found) expect(["skipped", "audit_failed"]).toContain(e.extra.result.status)
+          } finally {
+            cap.restore()
+          }
+        }),
+        { git: true, config: providerCfg },
+      ),
+    ),
+  )
+
+  it.live("dream returns the same message with the audit flag on as off (audit is a pure side effect)", () =>
+    Effect.gen(function* () {
+      const outcome = (flag: string | undefined) =>
+        withFlag(flag, () =>
+          provideTmpdirServer(
+            Effect.fnUntraced(function* ({ llm }) {
+              const sessions = yield* Session.Service
+              const chat = yield* sessions.create({ title: "manual-dream-equiv" })
+              yield* llm.text("equivalent")
+              const result = yield* runDream(chat.id)
+              const text = result.parts.flatMap((p: any) => (p.type === "text" ? [p.text] : [])).join("")
+              return { role: result.info.role, error: result.info.error, text, calls: yield* llm.calls }
+            }),
+            { git: true, config: providerCfg },
+          ),
+        )
+      const off = yield* outcome(undefined)
+      const on = yield* outcome("1")
+      expect(on).toEqual(off)
+      expect(on.calls).toBe(1)
+    }),
   )
 })
