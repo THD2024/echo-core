@@ -303,23 +303,39 @@ import { mkdirSync, mkdtempSync, realpathSync, rmSync, symlinkSync, writeFileSyn
 import os from "os"
 
 /**
+ * Host-shaped path from a posix-looking fixture string: `/c/data/memory` is `/c/data/memory` on posix and
+ * `C:\\data\\memory` on win32. The production helper uses the HOST `path` module, so a fixture in the wrong
+ * shape silently misses every key and the test passes without ever exercising the link (a false green).
+ */
+const H = (p: string) => {
+  if (process.platform !== "win32") return p
+  const out = p.replace(/^\/([a-z])(?=\/|$)/i, (_, d: string) => d.toUpperCase() + ":").replaceAll("/", "\\")
+  return /^[A-Z]:$/.test(out) ? out + "\\" : out // a bare drive means "current dir on that drive"; force the root
+}
+
+/**
  * In-memory filesystem: `links` rewrite a path prefix (junction/symlink), `existing` lists REAL paths that
- * exist. Anything else is ENOENT; `denied` prefixes raise EACCES. Posix-shaped so it runs on every OS.
+ * exist. Anything else is ENOENT; `denied` prefixes raise EACCES. All inputs are host-shaped via `H`.
  */
 function fakeFs(opts: { links?: Record<string, string>; existing: string[]; denied?: string[] }) {
-  const existing = new Set(opts.existing)
-  const links = Object.entries(opts.links ?? {}).sort((a, b) => b[0].length - a[0].length)
+  const norm = (p: string) => path.resolve(H(p))
+  const within = (p: string, root: string) => p === root || p.startsWith(root.endsWith(path.sep) ? root : root + path.sep)
+  const existing = new Set(opts.existing.map(norm))
+  const links = Object.entries(opts.links ?? {})
+    .map(([from, to]) => [norm(from), norm(to)] as const)
+    .sort((a, b) => b[0].length - a[0].length)
+  const denied = (opts.denied ?? []).map(norm)
   const calls: string[] = []
   const realpath = (p: string): string => {
     calls.push(p)
     let out = p
     for (const [from, to] of links) {
-      if (out === from || out.startsWith(from + "/")) {
+      if (within(out, from)) {
         out = to + out.slice(from.length)
         break
       }
     }
-    if ((opts.denied ?? []).some((d) => out === d || out.startsWith(d + "/"))) throw Object.assign(new Error("EACCES"), { code: "EACCES" })
+    if (denied.some((d) => within(out, d))) throw Object.assign(new Error("EACCES"), { code: "EACCES" })
     if (!existing.has(out)) throw Object.assign(new Error("ENOENT"), { code: "ENOENT" })
     return out
   }
@@ -327,63 +343,81 @@ function fakeFs(opts: { links?: Record<string, string>; existing: string[]; deni
 }
 
 describe("F2 containsAppOwned (win32 policy, injected filesystem)", () => {
-  const ROOT = "/c/data/memory" // junction -> /d/mem
+  const ROOT = H("/c/data/memory") // junction -> /d/mem
+  const at = (...segs: string[]) => path.join(ROOT, ...segs)
   const base = {
-    links: { [ROOT]: "/d/mem" },
-    existing: ["/", "/c", "/c/data", "/d", "/d/mem", "/d/mem/sessions", "/d/mem/sessions/s1", "/d/mem/sessions/s1/checkpoint.md", "/d/outside", "/d/outside/secret.md"],
+    links: { "/c/data/memory": "/d/mem" },
+    existing: [
+      "/c", "/c/data", "/d", "/d/mem", "/d/mem/sessions", "/d/mem/sessions/s1",
+      "/d/mem/sessions/s1/checkpoint.md", "/d/outside", "/d/outside/secret.md",
+    ],
+  }
+  /** The link really was followed: the injected realpath saw the junction path and resolved it. */
+  const followedLink = (fs: ReturnType<typeof fakeFs>) => {
+    expect(fs.calls.length).toBeGreaterThan(0)
+    expect(fs.calls).toContain(path.resolve(ROOT))
   }
 
   test("control: the OLD comparison (raw root vs realpathed target) false-denies an existing file", () => {
     const fs = fakeFs(base)
-    const target = ROOT + "/sessions/s1/checkpoint.md"
-    expect(AppFileSystem.contains(ROOT, fs.realpath(target))).toBe(false)
+    expect(AppFileSystem.contains(ROOT, fs.realpath(at("sessions", "s1", "checkpoint.md")))).toBe(false)
   })
 
   test("existing file under a junction-backed root is contained", () => {
     const fs = fakeFs(base)
-    expect(containsAppOwned(ROOT, ROOT + "/sessions/s1/checkpoint.md", "win32", fs.realpath)).toBe(true)
+    expect(containsAppOwned(ROOT, at("sessions", "s1", "checkpoint.md"), "win32", fs.realpath)).toBe(true)
+    followedLink(fs)
   })
 
   test("NOT-YET-CREATED file under a junction-backed root is contained (no flip to the other form)", () => {
     const fs = fakeFs(base)
-    expect(containsAppOwned(ROOT, ROOT + "/sessions/s1/notes.md", "win32", fs.realpath)).toBe(true)
-    expect(containsAppOwned(ROOT, ROOT + "/projects/p1/MEMORY.md", "win32", fs.realpath)).toBe(true)
+    expect(containsAppOwned(ROOT, at("sessions", "s1", "notes.md"), "win32", fs.realpath)).toBe(true)
+    expect(containsAppOwned(ROOT, at("projects", "p1", "MEMORY.md"), "win32", fs.realpath)).toBe(true)
+    followedLink(fs)
   })
 
   test("a link INSIDE the tree that resolves outside it fails closed (existing and not-yet-created leaf)", () => {
-    const fs = fakeFs({ ...base, links: { ...base.links, [ROOT + "/sessions/s1/escape"]: "/d/outside" } })
-    expect(containsAppOwned(ROOT, ROOT + "/sessions/s1/escape/secret.md", "win32", fs.realpath)).toBe(false)
-    expect(containsAppOwned(ROOT, ROOT + "/sessions/s1/escape/new.md", "win32", fs.realpath)).toBe(false)
+    const fs = fakeFs({ ...base, links: { ...base.links, "/c/data/memory/sessions/s1/escape": "/d/outside" } })
+    expect(containsAppOwned(ROOT, at("sessions", "s1", "escape", "secret.md"), "win32", fs.realpath)).toBe(false)
+    expect(containsAppOwned(ROOT, at("sessions", "s1", "escape", "new.md"), "win32", fs.realpath)).toBe(false)
+    followedLink(fs)
   })
 
   test("non-memory target, prefix-lookalike sibling, and .. traversal are not contained", () => {
     const fs = fakeFs(base)
-    expect(containsAppOwned(ROOT, "/d/outside/secret.md", "win32", fs.realpath)).toBe(false)
-    expect(containsAppOwned(ROOT, "/c/data/memory-other/x.md", "win32", fs.realpath)).toBe(false)
-    expect(containsAppOwned(ROOT, ROOT + "/../secret.md", "win32", fs.realpath)).toBe(false)
+    expect(containsAppOwned(ROOT, H("/d/outside/secret.md"), "win32", fs.realpath)).toBe(false)
+    expect(containsAppOwned(ROOT, H("/c/data/memory-other/x.md"), "win32", fs.realpath)).toBe(false)
+    expect(containsAppOwned(ROOT, ROOT + path.sep + ".." + path.sep + "secret.md", "win32", fs.realpath)).toBe(false)
   })
 
   test("a realpath error other than ENOENT fails closed instead of throwing", () => {
     const fs = fakeFs({ ...base, denied: ["/d/mem/sessions"] })
-    expect(containsAppOwned(ROOT, ROOT + "/sessions/s1/checkpoint.md", "win32", fs.realpath)).toBe(false)
+    expect(containsAppOwned(ROOT, at("sessions", "s1", "checkpoint.md"), "win32", fs.realpath)).toBe(false)
+    followedLink(fs)
   })
 
   test("root that does not exist at all still contains its lexical children (nothing to resolve)", () => {
-    const fs = fakeFs({ existing: ["/"] })
-    expect(containsAppOwned("/x/memory", "/x/memory/sessions/s/a.md", "win32", fs.realpath)).toBe(true)
-    expect(containsAppOwned("/x/memory", "/x/other/a.md", "win32", fs.realpath)).toBe(false)
+    const fs = fakeFs({ existing: ["/c"] })
+    expect(containsAppOwned(H("/c/x/memory"), H("/c/x/memory/sessions/s/a.md"), "win32", fs.realpath)).toBe(true)
+    expect(containsAppOwned(H("/c/x/memory"), H("/c/x/other/a.md"), "win32", fs.realpath)).toBe(false)
+    expect(fs.calls.length).toBeGreaterThan(0)
   })
 
   test("non-win32 keeps the previous lexical behavior and never touches the filesystem", () => {
     const fs = fakeFs({ existing: [] })
-    expect(containsAppOwned("/a/memory", "/a/memory/x.md", "linux", fs.realpath)).toBe(true)
-    expect(containsAppOwned("/a/memory", "/a/memory-other/x.md", "linux", fs.realpath)).toBe(false)
+    const root = path.resolve(H("/c/a/memory"))
+    expect(containsAppOwned(root, path.join(root, "x.md"), "linux", fs.realpath)).toBe(true)
+    expect(containsAppOwned(root, root + "-other" + path.sep + "x.md", "linux", fs.realpath)).toBe(false)
     expect(fs.calls).toEqual([])
   })
 
-  test("canonicalizeForContainment re-appends the missing remainder in order", () => {
+  test("canonicalizeForContainment resolves the junction and re-appends the missing remainder in order", () => {
     const fs = fakeFs(base)
-    expect(canonicalizeForContainment(ROOT + "/sessions/s1/a/b/c.md", fs.realpath)).toBe("/d/mem/sessions/s1/a/b/c.md")
+    expect(canonicalizeForContainment(at("sessions", "s1", "a", "b", "c.md"), fs.realpath)).toBe(
+      path.join(path.resolve(H("/d/mem")), "sessions", "s1", "a", "b", "c.md"),
+    )
+    // it walked up from the missing leaf and resolved the deepest EXISTING ancestor through the link
+    expect(fs.calls).toContain(at("sessions", "s1"))
   })
 })
 
