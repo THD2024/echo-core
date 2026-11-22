@@ -157,7 +157,8 @@ function makeHttp(mcpService = mcp, providerLayer = ProviderSvc.defaultLayer) {
     LLM.defaultLayer,
     Env.defaultLayer,
     AgentSvc.defaultLayer,
-    Command.defaultLayer,
+    // appLayer over the injected MCP service: Command.defaultLayer carries its own real MCP, which would mask a mock's prompts.
+    Command.appLayer.pipe(Layer.provide(mcpService)),
     Permission.defaultLayer,
     Plugin.defaultLayer,
     Config.defaultLayer,
@@ -670,9 +671,12 @@ describe("T-g.5 manual /dream audit: production-path containment (real command p
               const sessions = yield* Session.Service
               const chat = yield* sessions.create({ title: "manual-dream-equiv" })
               yield* llm.text("equivalent")
+              // llm.calls is cumulative over the layer's lifetime: compare the DELTA this run caused.
+              const before = yield* llm.calls
               const result = yield* runDream(chat.id)
               const text = result.parts.flatMap((p: any) => (p.type === "text" ? [p.text] : [])).join("")
-              return { role: result.info.role, error: result.info.error, text, calls: yield* llm.calls }
+              const error = result.info.role === "assistant" ? result.info.error : undefined
+              return { role: result.info.role, error, text, calls: (yield* llm.calls) - before }
             }),
             { git: true, config: providerCfg },
           ),
