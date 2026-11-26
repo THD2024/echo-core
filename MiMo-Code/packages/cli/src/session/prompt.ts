@@ -167,6 +167,7 @@ import { RecoverableError } from "../tool/recoverable"
 import { shouldAutoDream, shouldAutoDistill, DREAM_TASK, DISTILL_TASK, AUTO_DREAM_TITLE, AUTO_DISTILL_TITLE } from "./auto-dream"
 import { T_G_AUDIT_ENABLED, observeDreamRun, autoDreamAuditDeps } from "./dream-audit"
 import { observeManualDream } from "./manual-dream-audit"
+import { observeFormation } from "../memory/formation/observe"
 import {
   announcedDeferredMcpTools,
   createMcpToolSearchCatalog,
@@ -6225,12 +6226,20 @@ NOTE: At any point in time through this workflow you should feel free to ask the
         source: input.source ?? "user",
         provenance: input.provenance,
       })
-      const result = yield* observeManualDream(run, {
+      const dreamObserved = observeManualDream(run, {
         isDreamCommand: input.command === Command.Default.DREAM && Command.isBuiltinCommand(cmd), source: cmd.source, agentName, isSubtask,
         sessionID: input.sessionID, projectID: session.projectID,
         getInstanceProjectID: () => Instance.current?.project?.id,
         enabled: Flag.MIMOCODE_EXPERIMENTAL_DREAM_AUDIT,
         getBudget: () => config.get().pipe(Effect.map((c) => c.checkpoint?.push_caps?.memory)),
+      })
+      // Memory Formation Phase 1 (default off): composes OUTSIDE the T-g.4 wrapper and returns `dreamObserved` itself when off.
+      const result = yield* observeFormation(dreamObserved, {
+        isDreamCommand: input.command === Command.Default.DREAM && Command.isBuiltinCommand(cmd), source: cmd.source, agentName, isSubtask,
+        sessionID: input.sessionID, projectID: session.projectID,
+        getInstanceProjectID: () => Instance.current?.project?.id,
+        enabled: Flag.MIMOCODE_EXPERIMENTAL_MEMORY_FORMATION,
+        worktree: Instance.worktree,
       })
       yield* bus.publish(Command.Event.Executed, {
         name: input.command,

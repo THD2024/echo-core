@@ -22,6 +22,7 @@ import PROMPT_TITLE from "./prompt/title.txt"
 import { Permission } from "@/permission"
 import { mergeDeep, pipe, sortBy, values } from "remeda"
 import { Global } from "@/global"
+import { formationDenyConfig } from "../memory/formation/guard"
 import path from "path"
 import { Plugin } from "@/plugin"
 import { Skill } from "../skill"
@@ -477,6 +478,16 @@ export const layer = Layer.effect(
             agents[name].permission,
             Permission.fromConfig({ external_directory: Object.fromEntries(globs.map((g) => [g, "allow" as const])) }),
           )
+        }
+
+        // Memory Formation Phase 1 (default off): tool-layer deny for <data>/formation on EVERY agent. hardPermission is
+        // re-appended after user/session rules, so a user `external_directory` allow cannot override it. Convenience layer,
+        // not isolation (bash is not covered); the store treats the directory as untrusted regardless.
+        if (Flag.MIMOCODE_EXPERIMENTAL_MEMORY_FORMATION) {
+          const formationDeny = Permission.fromConfig(formationDenyConfig(Global.Path.data))
+          for (const name in agents) {
+            agents[name].hardPermission = Permission.merge(agents[name].hardPermission ?? [], formationDeny)
+          }
         }
 
         const get = Effect.fnUntraced(function* (agent: string) {

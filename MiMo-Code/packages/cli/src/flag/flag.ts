@@ -147,6 +147,12 @@ export const Flag = {
   get MIMOCODE_EXPERIMENTAL_DREAM_AUDIT() {
     return truthy("MIMOCODE_EXPERIMENTAL_DREAM_AUDIT")
   },
+  // Defaults to false. Memory Formation Phase 1 (experience -> candidate -> validation -> shadow ledger under
+  // <data>/formation) for the built-in MANUAL `/dream` command. Never commits to MEMORY.md. Deliberately NOT part of
+  // MIMOCODE_EXPERIMENTAL; read lazily so tests and in-process embedders can toggle it.
+  get MIMOCODE_EXPERIMENTAL_MEMORY_FORMATION() {
+    return truthy("MIMOCODE_EXPERIMENTAL_MEMORY_FORMATION")
+  },
   // Defaults to protection on. Opt out to continue a batch after tool failure.
   get MIMOCODE_DISABLE_FAIL_CASCADE() {
     return truthy("MIMOCODE_DISABLE_FAIL_CASCADE")
