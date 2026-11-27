@@ -60,8 +60,9 @@ const MARKER_TAIL = /\s*<!--m\b[^>]*-->\s*$/
 const BULLET = /^\s{0,3}(?:[-*+]|\d+[.)])\s+(?:\[[ xX]\]\s+)?/
 
 /** Record bodies of a MEMORY-style document (bullet stripped, trailing first-line marker stripped and counted). */
-export function recordContents(raw: string): { contents: string[]; markers: number } {
+export function recordContents(raw: string): { contents: string[]; markers: number; marked: Set<number> } {
   const contents: string[] = []
+  const marked = new Set<number>()
   let markers = 0
   for (const seg of listRecords(parseMemoryDocument(raw))) {
     if (seg.kind !== "record") continue
@@ -72,11 +73,12 @@ export function recordContents(raw: string): { contents: string[]; markers: numb
     if (MARKER_TAIL.test(first)) {
       first = first.replace(MARKER_TAIL, "")
       markers++
+      marked.add(contents.length)
     }
     t = (first + rest).replace(BULLET, "")
     contents.push(t.trim())
   }
-  return { contents, markers }
+  return { contents, markers, marked }
 }
 
 /** Snapshot of the project MEMORY.md before the dream. Never throws; undefined = cannot diff (formation is skipped). */
@@ -97,13 +99,14 @@ async function step(deps: FormationDeps, before: string): Promise<FormationSumma
   const beforeSet = new Set(b.contents.map(normText))
   const seen = new Set<string>()
   const fresh: string[] = []
-  for (const c of a.contents) {
+  // Only markers on FRESH candidates count as "dropped": markers on pre-existing records are none of our business.
+  for (const [i, c] of a.contents.entries()) {
     const n = normText(c)
     if (!n || beforeSet.has(n) || seen.has(n)) continue
     seen.add(n)
     fresh.push(c)
+    if (a.marked.has(i)) sum.droppedMarkers++
   }
-  sum.droppedMarkers = a.markers
   if (fresh.length === 0) return sum
   if (fresh.length > MAX_CANDIDATES_PER_RUN) {
     sum.overCap = fresh.length - MAX_CANDIDATES_PER_RUN

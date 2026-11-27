@@ -326,7 +326,7 @@ describe("run: experience -> candidate -> validation -> shadow", () => {
     expect(s.candidates).toBe(3)
     expect(s.accepted).toBe(1)
     expect(s.written).toBe(1)
-    expect(s.droppedMarkers).toBe(2)
+    expect(s.droppedMarkers).toBe(1) // only the fresh record carried a marker; the pre-existing record's marker is not counted
     expect(s.rejected.secret).toBe(1)
     expect(s.rejected.transient).toBe(1)
     expect(JSON.stringify(files)).toBe(snapshot)

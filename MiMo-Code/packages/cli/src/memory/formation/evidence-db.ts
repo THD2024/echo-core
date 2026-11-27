@@ -24,7 +24,24 @@ export function dbResolver(opts: { worktree?: string }): EvidenceResolver {
         .get(),
     )
   return {
+    // Contract: neither method throws. Any DB / fs error (missing file, bad path, locked DB) is "not found" => false.
     exists(e: Evidence): boolean {
+      try {
+        return existsUnsafe(e)
+      } catch {
+        return false
+      }
+    },
+    quoteMatches(e, quote): boolean {
+      try {
+        return quoteUnsafe(e, quote)
+      } catch {
+        return false
+      }
+    },
+  }
+
+  function existsUnsafe(e: Evidence): boolean {
       switch (e.type) {
         case "user_message": {
           const row = Database.use((db) =>
@@ -60,8 +77,9 @@ export function dbResolver(opts: { worktree?: string }): EvidenceResolver {
           return e.end_line <= lines
         }
       }
-    },
-    quoteMatches(e, quote): boolean {
+  }
+
+  function quoteUnsafe(e: Extract<Evidence, { type: "user_message" }>, quote: string): boolean {
       const rows = Database.use((db) =>
         db
           .select({ data: PartTable.data })
@@ -73,7 +91,6 @@ export function dbResolver(opts: { worktree?: string }): EvidenceResolver {
         const d = rec(r.data)
         return d?.type === "text" && typeof d.text === "string" && d.text.includes(quote)
       })
-    },
   }
 }
 
