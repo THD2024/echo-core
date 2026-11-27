@@ -120,8 +120,10 @@ describe("observeFormation: observed runs", () => {
     })
     const fiber = Effect.runFork(observeFormation(run, r.input))
     await Effect.runPromise(Deferred.await(started))
-    const exit = await Effect.runPromise(Fiber.interrupt(fiber))
-    expect(Exit.isFailure(exit)).toBe(true)
+    // Same shape as manual-dream-audit.e2e: Fiber.interrupt returns void in this Effect version; the Exit comes from Fiber.await.
+    await Effect.runPromise(Fiber.interrupt(fiber))
+    const exit = await Effect.runPromise(Fiber.await(fiber))
+    expect(Exit.isFailure(exit) && Cause.hasInterruptsOnly(exit.cause)).toBe(true)
     expect(ranLedger(r.base)).toBe(false)
   })
   test("a throwing/failing before-snapshot leaves the run untouched", async () => {
